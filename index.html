@@ -1,83 +1,379 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="アストモスでんき 新ベーシックプランのご案内">
-<title>新ベーシックプラン｜アストモスでんき</title>
+  <meta charset="UTF-8">
+<base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>アストモスでんき 電気料金シミュレーション</title>
+
 <style>
+/* =========================================================
+   色設定（色を変更するときは、まずこのブロックだけ編集してください）
+   --bg             ページ全体の背景色（指定画像の色：#EAA527）
+   --main           メインカラー（ボタン・選択中エリア・アクセント）
+   --dark           メインカラーの濃い色（ボタンの影・文字）
+   --soft           薄いアクセント背景
+   --surface        カードなどの基本背景
+   --surface-soft   見出し・入力欄などの薄い背景
+   --ink            基本文字色 / --muted 補足文字色
+   --line           枠線色
+   --chart-current  現在の電力会社のグラフ線色
+   --chart-astomos  アストモスでんきのグラフ線色
+   ========================================================= */
+:root {
+  --bg: #EAA527;
+  --main: #f58220;
+  --dark: #c95f0b;
+  --soft: #fff0df;
+  --surface: #ffffff;
+  --surface-soft: #fffaf5;
+  --input-bg: #fff8f0;
+  --focus: #f5c49d;
+  --ink: #303030;
+  --muted: #666b70;
+  --line: #f0d8c2;
+  --good: #187647;
+  --bad: #b42318;
+  --chart-current: #4b91c8;
+  --chart-astomos: #f58220;
+  --map-hover: #ffe0c6;
+  --apply-button-bg: #f58220; /* 「この内容で申し込む」ボタンの背景色 */
+  --apply-button-shadow: #c95f0b; /* 申込ボタンの影の色 */
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;line-height:1.65}
+.header{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center}.in,.shell{width:min(1000px,calc(100% - 28px));margin:auto}
+.logo{font-size:22px;font-weight:900}.logo span{color:var(--main)}.sim-hero{text-align:center;padding:32px 15px;background:linear-gradient(120deg,#fff 0 58%,var(--soft) 58%)}
+.sim-hero h1{margin:3px 0;font-size:clamp(25px,5vw,37px)}.sim-hero p{margin:0;color:var(--muted);font-size:14px}.shell{margin-top:28px;margin-bottom:60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 7px 25px #0000000d;margin-bottom:22px;overflow:hidden}
+.head{padding:23px 28px 17px;border-bottom:1px solid var(--line)}.step{color:var(--main);font-weight:900;font-size:13px}.head h2{margin:2px 0;font-size:22px}.head p{margin:0;color:var(--muted);font-size:13px}.body{padding:25px 28px}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.choices.two{grid-template-columns:1fr 1fr}.choice{min-height:60px;padding:12px;border:2px solid var(--line);border-radius:9px;background:#fff;font:inherit;font-weight:800;cursor:pointer}
+.choice:hover,.choice.hovered,.choice.selected{border-color:var(--main);background:var(--soft);color:var(--main)}.choice.selected{background:var(--main);color:#fff}
+.method{text-align:left;padding:18px}.method strong,.method span{display:block}.method span{font-size:13px;color:var(--muted);font-weight:400}.method.selected span{color:#fff}
+.input{display:none;margin-top:20px;padding:18px;background:#fafafa;border:1px solid var(--line);border-radius:9px}.input.show{display:block}
+.field{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.field label{font-weight:800}.field select,.field input{height:47px;border:1px solid #bbb;border-radius:7px;padding:0 12px;font-size:16px;background:#fff}.field input{width:150px;text-align:right}
+.amp-note{display:none;color:var(--muted);font-size:13px;padding:10px 12px;background:#f3f3f3;border-radius:7px}.amp-note.show{display:inline-block}
+.actions{text-align:center;padding:0 28px 27px}.btn{min-height:54px;min-width:260px;border:0;border-radius:27px;background:var(--main);color:#fff;font-weight:900;font-size:16px;padding:12px 28px;box-shadow:0 4px 0 var(--dark);cursor:pointer}.btn:disabled{background:#bbb;box-shadow:none;cursor:not-allowed}.btn.secondary{background:#fff;color:var(--main);border:2px solid var(--main);box-shadow:none}
+.error{display:none;margin:0 28px 20px;padding:11px 14px;background:#fff0f0;color:var(--bad);font-weight:800;border-radius:7px}.loading{display:none;text-align:center;color:var(--main);font-weight:900;padding-bottom:20px}
+.result{display:none}.result.show{display:block}.resultTop{background:var(--soft);padding:27px;text-align:center}.resultTop h2{margin:0 0 15px}.prices{display:grid;grid-template-columns:1fr 1fr;gap:13px}.price{background:#fff;border:1px solid var(--line);border-radius:9px;padding:15px}.price.new{border:2px solid var(--main)}.price small{display:block;color:var(--muted)}.price strong{font-size:clamp(24px,5vw,35px)}.saving{font-size:21px;font-weight:900;margin-top:15px}.good{color:var(--good)}.bad{color:var(--bad)}
+.resultBody{padding:25px 28px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.summary div{padding:11px;background:#fafafa;border:1px solid var(--line);border-radius:8px}.summary small{display:block;color:var(--muted)}
+.chart{height:225px;display:flex;align-items:flex-end;gap:6px;border-left:1px solid #aaa;border-bottom:1px solid #aaa;margin:10px 0 35px;padding:10px 6px 0}.group{height:100%;flex:1;display:flex;align-items:flex-end;justify-content:center;gap:2px;position:relative}.bar{width:39%;min-width:6px;border-radius:3px 3px 0 0}.old{background:#9ca4ab}.newbar{background:var(--main)}.month{position:absolute;bottom:-24px;font-size:10px}.legend{text-align:center;font-size:13px}.legend i{display:inline-block;width:11px;height:11px;margin:0 5px 0 14px}
+.table{overflow:auto;border:1px solid var(--line);border-radius:9px}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;font-size:14px}th{background:#f1f1f1}th:first-child,td:first-child{text-align:center}.notes{margin-top:18px;padding:13px;background:#fff8e8;border-left:4px solid var(--main);font-size:13px}.notes p{margin:3px 0}
+/* 注意事項：Code.gsから渡される文章の改行を画面にも反映 */
+#disclaimer{white-space:pre-line;line-height:1.8}
+.disclaimer-title{font-weight:900;margin:12px 0 8px;line-height:1.6}
+
+/* 地域選択 */
+.region-layout{display:grid;grid-template-columns:360px 1fr;gap:34px;align-items:center}.region-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.region-selected{margin-top:18px;padding:14px 16px;background:#fafafa;border-radius:10px;border:1px solid var(--line);font-weight:800}.region-selected strong{color:var(--main);font-size:20px;margin-left:8px}
+.map-wrap{position:relative;min-height:350px;background:linear-gradient(180deg,#fff,#fcfcfc);border-radius:12px}.japan-map{width:100%;height:350px;overflow:visible}
+.map-region{fill:#efefef;stroke:#fff;stroke-width:5;cursor:pointer;transition:.16s}.map-region:hover,.map-region.hovered{fill:#ffd7b5;stroke:var(--main)}.map-region.selected{fill:var(--main);stroke:#fff}
+.map-region.area-disabled{fill:#f3f3f3;stroke:#e5e5e5;cursor:not-allowed;opacity:.75}.map-region.area-disabled:hover,.map-region.area-disabled.hovered{fill:#f3f3f3;stroke:#e5e5e5}
+.map-label.area-disabled{font-weight:400;fill:#aaa}.map-label.area-disabled.selected{fill:#aaa}
+.region-buttons .choice.area-disabled{background:#f1f1f1;color:#aaa;border-color:#ddd;cursor:not-allowed;box-shadow:none}.region-buttons .choice.area-disabled:hover{transform:none;border-color:#ddd;background:#f1f1f1}
+.map-label{font-size:13px;font-weight:800;fill:#555;pointer-events:none}.map-label.selected{fill:#fff}.map-title{font-size:12px;fill:#777}
+.map-help{text-align:center;color:var(--muted);font-size:12px;margin-top:-4px}
+
+@media(max-width:760px){
+  .region-layout{grid-template-columns:1fr}.map-wrap{order:2}.region-buttons{order:1}.japan-map{height:300px}.summary{grid-template-columns:1fr 1fr}
+}
+@media(max-width:630px){
+  .choices{grid-template-columns:1fr 1fr}.choices.two,.prices{grid-template-columns:1fr}.form-item.full{grid-column:auto}.head,.body,.resultBody{padding-left:17px;padding-right:17px}.actions{padding-left:17px;padding-right:17px}.btn,.cta-area .btn{width:100%;min-width:0}.chart{gap:2px}.month{font-size:9px}.region-buttons{grid-template-columns:repeat(3,1fr);gap:7px}.region-buttons .choice{font-size:13px;padding:7px;min-height:48px}.map-wrap{min-height:260px}.japan-map{height:260px}.summary{grid-template-columns:1fr}
+}
+
+/* 申込CTA中央揃え */
+.cta-area{
+  border-top:1px solid var(--line);
+  padding:30px 25px;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.cta-area p{
+  width:100%;
+  margin:0 0 16px;
+  text-align:center;
+  font-weight:800;
+}
+.cta-area .btn{
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+  font-size:18px;
+  min-width:330px;
+}
+
+/* スマートフォン対応：共通ルールより後に置いて上書きする */
+html { -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+button, input, select { color:var(--ink); }
+.region-layout > *, .summary > *, .prices > * { min-width:0; }
+.table { max-width:100%; -webkit-overflow-scrolling:touch; }
+button:focus-visible, select:focus-visible, input:focus-visible {
+  outline:3px solid #995000; outline-offset:3px;
+}
+@media(max-width:760px) {
+  .region-layout { grid-template-columns:minmax(0,1fr); gap:18px; }
+  .choices.two { grid-template-columns:minmax(0,1fr); }
+  .map-wrap { min-height:0; }
+  .japan-map { display:block; height:auto; aspect-ratio:620/360; }
+}
+@media(max-width:630px) {
+  .header { height:60px; }
+  .in,.shell { width:calc(100% - 24px); }
+  .shell { margin-top:18px; margin-bottom:32px; }
+  .sim-hero { padding:24px 16px; }
+  .sim-hero h1 { font-size:26px; line-height:1.45; overflow-wrap:anywhere; }
+  .sim-hero p { font-size:14px; margin-top:8px; }
+  .head,.body,.resultBody,.resultTop { padding:20px 16px; }
+  .head h2 { font-size:21px; }
+  .head p,.method span,.notes,.amp-note,.summary small,.price small { font-size:14px; }
+  .region-buttons { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+  .region-buttons .choice { min-height:52px; padding:10px 4px; font-size:16px; }
+  .region-selected { padding:12px; font-size:14px; }
+  .region-selected strong { font-size:18px; }
+  .method { padding:16px; }
+  .method strong { font-size:17px; }
+  .input { padding:14px; }
+  .field { display:flex; gap:8px; align-items:center; }
+  .field > label { flex-basis:100%; margin-top:8px; }
+  .field select { width:100%; max-width:100%; min-width:0; font-size:16px; }
+  .field input { flex:1; width:0; min-width:0; font-size:16px; }
+  #ampereFields { width:100%; }
+  #ampereFields label { display:block; margin:12px 0 8px !important; }
+  .amp-note.show { width:100%; }
+  .actions,.cta-area { padding:20px 16px; }
+  .btn,.cta-area .btn { width:100%; min-width:0; max-width:100%; font-size:16px; padding:14px 12px; white-space:normal; overflow-wrap:anywhere; }
+  .prices,.summary { grid-template-columns:minmax(0,1fr); }
+  .error { margin-left:16px; margin-right:16px; }
+  .legend { font-size:14px; }
+  .month { font-size:12px; }
+  .chart { gap:0; padding-left:0; padding-right:0; }
+  .group { min-width:0; gap:1px; }
+  .bar { min-width:0; }
+  .map-title { font-size:16px; }
+  .map-label { font-size:18px; }
+  .map-help { font-size:14px; margin-top:8px; }
+}
+@media(max-width:360px) {
+  .region-buttons { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+/* 結果画面：年間合計と料金推移を中心に、スマホでも横スクロール不要に */
+.resultTop{padding:22px 24px 20px;background:linear-gradient(135deg,#fff8f1 0%,#fff1e4 100%)}
+.result-eyebrow{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--dark);margin-bottom:3px}
+.resultTop h2{font-size:clamp(21px,3vw,27px);margin:0 0 14px}
+.result .prices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:760px;margin:0 auto}
+.result .price{min-width:0;padding:14px 12px;border:1px solid #e9e1d8;border-radius:12px;text-align:left;box-shadow:0 3px 12px #5a34110a}
+.result .price.new{border:2px solid var(--main);background:#fffaf5}
+.result .price small{display:block;min-height:2.7em;font-size:12px;line-height:1.4;font-weight:700;color:#5f5f5f;overflow-wrap:anywhere}
+.annual-price{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.annual-price strong{font-size:clamp(20px,3.2vw,32px);line-height:1.25;letter-spacing:-.03em;white-space:nowrap}
+.annual-price span{font-size:11px;color:var(--muted);white-space:nowrap}
+.result .saving{display:inline-block;margin:14px auto 0;padding:10px 18px;border-radius:999px;background:#e8f6ed;color:#126b36;font-size:clamp(15px,2.3vw,20px);line-height:1.45}
+.result .saving.bad{background:#fff0ed;color:#a02b1f}
+.result .saving.neutral{background:#f1f1f1;color:#555}
+.resultBody{padding:20px 24px 24px}
+.result .summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:22px}
+.result .summary div{min-width:0;padding:10px 12px;background:#fbfbfb;border:1px solid #ececec;border-radius:9px}
+.result .summary small{font-size:11px;line-height:1.4;color:var(--muted)}
+.result .summary strong{display:block;font-size:clamp(14px,2vw,18px);line-height:1.45;overflow-wrap:anywhere}
+.chart-section{border:1px solid #ececec;border-radius:12px;padding:16px 16px 10px;background:#fff}
+.chart-section h3{margin:0;font-size:18px}
+.chart-caption{margin:3px 0 10px;font-size:12px;color:var(--muted)}
+.chart-legend{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;font-size:12px;margin:8px 0 0}
+.chart-legend>span{display:inline-flex;align-items:center;gap:7px}
+.legend-line{display:inline-block;width:22px;height:3px;border-radius:3px}
+.legacy-line{background:var(--chart-current)}.astomos-line{background:var(--chart-astomos)}
+.line-chart{width:100%;min-width:0;margin:0 auto;overflow:hidden}
+.line-chart svg{display:block;width:100%;height:auto;max-width:100%}
+.condition-note{margin-top:13px;padding:10px 12px;background:#f8f8f8;border-radius:8px;font-size:12px;color:#555;overflow-wrap:anywhere}
+.notes{margin-top:12px;font-size:12px}
+@media(max-width:630px){
+  .resultTop{padding:17px 12px 15px}
+  .resultTop h2{font-size:21px;margin-bottom:10px}
+  .result .prices{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .result .price{padding:11px 8px;border-radius:10px}
+  .result .price small{font-size:10px;min-height:3.1em}
+  .annual-price{display:block}
+  .annual-price strong{display:block;font-size:clamp(17px,5.1vw,23px);white-space:normal;overflow-wrap:anywhere}
+  .annual-price span{display:block;font-size:10px;margin-top:2px}
+  .result .saving{display:block;width:100%;padding:9px 8px;font-size:15px;margin-top:10px}
+  .resultBody{padding:13px 12px 18px}
+  .result .summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:13px}
+  .result .summary div{padding:8px 6px}
+  .result .summary small{font-size:10px}
+  .result .summary strong{font-size:13px;line-height:1.4}
+  .chart-section{padding:12px 7px 7px;border-radius:10px}
+  .chart-section h3{font-size:16px;padding-left:4px}
+  .chart-caption{font-size:11px;padding:0 4px}
+  .chart-legend{gap:10px;font-size:10px}
+  .legend-line{width:17px}
+  .condition-note{font-size:11px;padding:9px}
+  .notes{font-size:11px;padding:10px}
+}
+
+/* 月別シミュレーション結果：ご提示いただいたPC・スマホ画像に合わせた表 */
+.monthly-table-section{margin:0 0 16px;padding:0;background:var(--surface);min-width:0}
+.monthly-table-section h3{margin:0 0 7px;color:#c98213;font-size:16px;font-weight:700;line-height:1.5}
+.monthly-table-wrap{width:100%;overflow-x:auto;border:1px solid #f58220}
+.monthly-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;line-height:1.35;color:#222;background:#fff}
+.monthly-table .col-month{width:7.5%}.monthly-table .col-usage{width:21%}.monthly-table .col-current{width:18%}.monthly-table .col-astomos{width:24%}.monthly-table .col-diff{width:16%}
+.monthly-table th,.monthly-table td{border:1px solid #f0b86c;padding:5px 7px;vertical-align:middle;overflow-wrap:anywhere}
+.monthly-table thead th{background:#f5ead9;text-align:center;font-weight:500;color:#333;padding:6px 4px}
+.monthly-table tbody th,.monthly-table tfoot th{font-weight:400;text-align:right;white-space:nowrap}
+.monthly-table tbody td,.monthly-table tfoot td{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.monthly-table tbody tr:nth-child(even){background:#faf7f2}
+.monthly-table tfoot th,.monthly-table tfoot td{font-weight:700;background:#fff;border-top:2px solid #f58220}
+@media(max-width:630px){
+  .monthly-table-section h3{font-size:14px;margin-bottom:5px}
+  .monthly-table{font-size:10px;line-height:1.3}
+  .monthly-table th,.monthly-table td{padding:4px 3px;letter-spacing:-.02em}
+  .monthly-table .col-month{width:9%}.monthly-table .col-usage{width:20%}.monthly-table .col-current{width:20%}.monthly-table .col-astomos{width:24%}.monthly-table .col-diff{width:16%}
+  .monthly-table thead th{padding:5px 2px}
+}
+
+
+/* PCでは通常表記、スマートフォンでは短い申込表記に切り替え */
+.mobile-apply-label{display:none}
+@media (max-width:630px){
+  .desktop-apply-label{display:none !important}
+  .mobile-apply-label{display:inline !important}
+}
+
+</style>
+
+<style>
+/* LPとヘッダーのサイズ・位置・色を統一 */
+.topbar{padding:8px 0;background:#eaa527;color:#fff;font-size:13px;line-height:1.6}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;gap:10px 20px;flex-wrap:wrap}
+.header{height:76px;background:#fff;border-bottom:1px solid #f0d8c5;box-shadow:none;display:flex;align-items:center}
+.header .header-inner{width:min(1100px,92%);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:76px}
+.header .brand-logo{display:block;width:268px;max-width:100%;height:auto;object-fit:contain;flex:0 1 auto}
+.header .nav{display:flex;align-items:center;justify-content:flex-end;gap:20px;font-size:13px;white-space:nowrap}
+.header .nav a{text-decoration:none;color:#555}
+.header .nav a:hover{opacity:.8}
+.header .nav .nav-cta{display:inline-flex;align-items:center;justify-content:center;padding:9px 15px;border-radius:999px;background:#e15f56;color:#fff;font-weight:800;border:1px solid #e15f56;box-shadow:none}
+@media(max-width:900px){
+  .header .nav{gap:12px}
+  .header .nav a:not(.nav-cta){display:none}
+}
+@media(max-width:630px){
+  .topbar{font-size:11px;padding:6px 0}
+  .topbar-inner{gap:2px 8px}
+  .topbar-inner span:last-child{display:none}
+  .header{height:66px}
+  .header .header-inner{width:92%;min-height:66px;gap:8px}
+  .header .brand-logo{width:clamp(130px,36vw,220px)}
+  .header .nav .nav-cta{padding:9px 11px;font-size:11px;white-space:nowrap}
+}
+</style>
+
+<style>
+/* 共通ヘッダーを常時上部に固定し、LPとシミュレーションを切り替える */
+.site-header-shell{position:sticky;top:0;z-index:1000;isolation:isolate}
+.site-header-shell .topbar,.site-header-shell .header{position:relative}
+.brand-link{display:inline-flex;align-items:center;flex:0 1 auto;min-width:0;text-decoration:none;line-height:1}
+.header .nav .nav-simulation{display:inline-flex;align-items:center;justify-content:center;padding:9px 2px;color:#555;text-decoration:none;font-weight:600}
+.header .nav .nav-simulation:hover{color:#E15F56}
+.simulation-page{display:none;min-height:60vh;background:#fff}
+.simulation-page.is-active{display:block}
+.sim-hero-inner{width:min(1100px,92%);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.sim-hero-inner h1{margin:0}
+.back-to-lp{flex:0 0 auto;padding:10px 16px;border:1px solid #E15F56;border-radius:999px;background:#fff;color:#E15F56;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.back-to-lp:hover{background:#fff5f4}
+html{scroll-padding-top:120px}
+#features,#flow,#faq,#price,#top{scroll-margin-top:120px}
+@media(max-width:900px){.header .nav .nav-simulation{display:none}}
+@media(max-width:630px){
+  .site-header-shell .topbar{padding:6px 0}
+  .site-header-shell .header{height:66px}
+  .site-header-shell .header .header-inner{min-height:66px}
+  .sim-hero-inner{align-items:flex-start;flex-direction:column;gap:10px}
+  .sim-hero-inner h1{font-size:24px}
+  .back-to-lp{padding:8px 12px;font-size:12px}
+  html{scroll-padding-top:100px}
+  #features,#flow,#faq,#price,#top{scroll-margin-top:100px}
+}
+</style>
+
+<style>
+/* LP section styles scoped to .lp-content; header is shared with simulation page */
+
 /* =========================================================
    アストモスでんき 新ベーシックプラン LP
    色・文字サイズ・余白は、まずこの設定一覧から変更できます。
    ========================================================= */
 :root {
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", Meiryo, sans-serif;
-  --page-bg: #ffffff; --text: #222222; --muted: #555555; --content-width: 1100px;
-  --orange: #eaa527; --orange-dark: #c65d16; --orange-pale: #fff0d9; --orange-light: #fff7ef;
-  --border: #f0d8c5; --topbar-bg: #eaa527; --topbar-text: #ffffff;
-  --header-bg: #ffffff; --header-height: 76px; --logo-color: #eaa527;
-  --hero-start: #fff0d0; --hero-middle: #eaa527; --hero-end: #f9dfaa;
-  --hero-title-color: #ffffff; --hero-text-color: #ffffff; --hero-padding-y: 76px;
-  --section-padding-y: 70px; --section-heading-color: #eaa527; --section-eyebrow-color: #c65d16;
-  --card-bg: #ffffff; --card-border: #f7b97a; --card-radius: 18px;
-  --flow-bg: #faf9f6; --flow-icon-color: #eaa527;
-  --price-section-bg: #ffffff; --price-table-border: #ead9c2;
+  --lp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", Meiryo, sans-serif;
+  --lp-page-bg: #ffffff; --lp-text: #222222; --lp-muted: #555555; --lp-content-width: 1100px;
+  --lp-orange: #4d4d4d; --lp-orange-dark: #c65d16; --lp-orange-pale: #fff0d9; --lp-orange-light: #fff7ef;
+  --lp-border: #f0d8c5; --lp-topbar-bg: #eaa527; --lp-topbar-text: #ffffff;
+  --lp-header-bg: #ffffff; --lp-header-height: 76px; --lp-logo-color: #eaa527;
+  --lp-hero-start: #fff0d0; --lp-hero-middle: #eaa527; --lp-hero-end: #f9dfaa;
+  --lp-hero-title-color: #ffffff; --lp-hero-text-color: #ffffff; --lp-hero-padding-y: 76px;
+  --lp-section-padding-y: 70px; --lp-section-heading-color: #4d4d4d; --lp-section-eyebrow-color: #c65d16;
+  --lp-card-bg: #ffffff; --lp-card-border: #f7b97a; --lp-card-radius: 18px;
+  --lp-flow-bg: #faf9f6; --lp-flow-icon-color: #eaa527;
+  --lp-price-section-bg: #ffffff; --lp-price-table-border: #ead9c2;
   /* 料金表：アストモス列を強調 */
-  --price-table-astomos-bg: #fff0d9;
-  --price-table-astomos-text: #a84e08;
-  --price-table-astomos-heading: #e58b24;
-  --price-table-competitor-bg: #ffffff;
-  --price-table-competitor-text: #4b5563;
-  --price-table-competitor-heading: #667085;
-  --price-table-label-bg: #f4f1ec;
-  --price-table-note-bg: #fffaf3; --price-table-note-text: #715b2b; --price-table-note-border: #eaa527;
-  --button-bg: #eaa527; --button-text: #ffffff; --button-radius: 999px;
+  --lp-price-table-astomos-bg: #fff0d9;
+  --lp-price-table-astomos-text: #a84e08;
+  --lp-price-table-astomos-heading: #e58b24;
+  --lp-price-table-competitor-bg: #ffffff;
+  --lp-price-table-competitor-text: #4b5563;
+  --lp-price-table-competitor-heading: #667085;
+  --lp-price-table-label-bg: #f4f1ec;
+  --lp-price-table-note-bg: #fffaf3; --lp-price-table-note-text: #715b2b; --lp-price-table-note-border: #eaa527;
+  --lp-button-bg: #eaa527; --lp-button-text: #ffffff; --lp-button-radius: 999px;
   /* ボタン色：それぞれ独立して変更できます */
-  --hero-simulation-btn-bg: #ffffff; --hero-simulation-btn-text: var(--orange); --hero-simulation-btn-border: var(--orange);
-  --hero-apply-btn-bg: #ffffff; --hero-apply-btn-text: var(--orange); --hero-apply-btn-border: var(--orange);
-  --flow-apply-btn-bg: #E15F56; --flow-apply-btn-text: #ffffff; --flow-apply-btn-border: #E15F56;
-  --faq-bg: #fff7ef; --cta-bg-start: #eaa527; --cta-bg-end: #eaa527;
-  --footer-bg: #ffffff; --footer-text: #222222;
+  --lp-hero-simulation-btn-bg: #ffffff; --lp-hero-simulation-btn-text: var(--lp-orange); --lp-hero-simulation-btn-border: var(--lp-orange);
+  --lp-hero-apply-btn-bg: #ffffff; --lp-hero-apply-btn-text: var(--lp-orange); --lp-hero-apply-btn-border: var(--lp-orange);
+  --lp-flow-apply-btn-bg: #E15F56; --lp-flow-apply-btn-text: #ffffff; --lp-flow-apply-btn-border: #E15F56;
+  --lp-faq-bg: #fff7ef; --lp-cta-bg-start: #eaa527; --lp-cta-bg-end: #eaa527;
+  --lp-footer-bg: #ffffff; --lp-footer-text: #222222;
 }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; font-family: var(--font); color: var(--text); background: var(--page-bg); font-size: 16px; line-height: 1.8; }
-a { color: inherit; }
-.wrap { width: min(var(--content-width), 92%); margin: 0 auto; }
-.topbar { padding: 8px 0; background: var(--topbar-bg); color: var(--topbar-text); font-size: 13px; line-height: 1.6; }
-.topbar .wrap { display: flex; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; }
-.header { background: var(--header-bg); border-bottom: 1px solid var(--border); }
-.header-inner { min-height: var(--header-height); display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-.brand { display:flex; align-items:center; flex:0 1 auto; min-width:0; text-decoration:none; line-height:1; }
-.brand-logo { display:block; width:268px; max-width:100%; height:auto; object-fit:contain; }
-.brand small { display:none; }
-.nav { display: flex; align-items: center; gap: 20px; font-size: 13px; }
-.nav a { text-decoration: none; color: #555; }
-.nav .nav-cta { padding: 9px 15px; color: #fff; background: var(--button-bg); border-radius: var(--button-radius); font-weight: 700; }
-.hero { position: relative; overflow: hidden; background: linear-gradient(120deg,var(--hero-start),var(--hero-middle) 52%,var(--hero-end)); }
-.hero:after { content: ""; position: absolute; width: 390px; height: 390px; border-radius: 50%; background: rgba(255,255,255,.35); right: -110px; top: -130px; }
-.hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; padding: var(--hero-padding-y) 0; }
-.pill { display: inline-block; padding: 5px 13px; border: 1px solid var(--orange); border-radius: 999px; background: #fff; color: var(--orange); font-size: 12px; font-weight: 700; }
-.eyebrow { color: var(--section-eyebrow-color); font-size: 13px; font-weight: 800; letter-spacing: .13em; }
-.hero .eyebrow { margin-top: 18px; color: #c65d16; }
-.hero h1 { margin: 14px 0 20px; color: var(--hero-title-color); font-size: clamp(34px,5vw,54px); font-weight: 800; line-height: 1.28; letter-spacing: .02em; }
-.hero-copy { max-width: 620px; margin: 0 0 25px; color: var(--hero-text-color); }
-.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 23px; border-radius: var(--button-radius); font-size: 14px; font-weight: 800; text-decoration: none; transition: transform .2s, box-shadow .2s; }
-.btn:hover { transform: translateY(-2px); }
-.btn-primary { background: #fff; color: var(--orange); border: 1px solid var(--orange); box-shadow: 0 7px 16px rgba(232,117,34,.16); }
-.btn-secondary { background: #fff; color: var(--orange); border: 1px solid var(--orange); }
+
+
+
+
+.lp-content .wrap{ width: min(var(--lp-content-width), 92%); margin: 0 auto; }
+
+
+
+
+
+
+
+
+
+
+.lp-content .lp-hero{ position: relative; overflow: hidden; background: linear-gradient(120deg,var(--lp-hero-start),var(--lp-hero-middle) 52%,var(--lp-hero-end)); }
+.lp-content .lp-hero:after{ content: ""; position: absolute; width: 390px; height: 390px; border-radius: 50%; background: rgba(255,255,255,.35); right: -110px; top: -130px; }
+.lp-content .hero-inner{ position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; padding: var(--lp-hero-padding-y) 0; }
+.lp-content .pill{ display: inline-block; padding: 5px 13px; border: 1px solid var(--lp-orange); border-radius: 999px; background: #fff; color: var(--lp-orange); font-size: 12px; font-weight: 700; }
+.lp-content .eyebrow{ color: var(--lp-section-eyebrow-color); font-size: 13px; font-weight: 800; letter-spacing: .13em; }
+.lp-content .lp-hero .eyebrow{ margin-top: 18px; color: #c65d16; }
+.lp-content .lp-hero h1{ margin: 14px 0 20px; color: var(--lp-hero-title-color); font-size: clamp(34px,5vw,54px); font-weight: 800; line-height: 1.28; letter-spacing: .02em; }
+.lp-content .hero-copy{ max-width: 620px; margin: 0 0 25px; color: var(--lp-hero-text-color); }
+.lp-content .btn-row{ display: flex; flex-wrap: wrap; gap: 12px; }
+.lp-content .lp-btn{ display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 23px; border-radius: var(--lp-button-radius); font-size: 14px; font-weight: 800; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+.lp-content .lp-btn:hover{ transform: translateY(-2px); }
+.lp-content .btn-primary{ background: #fff; color: var(--lp-orange); border: 1px solid var(--lp-orange); box-shadow: 0 7px 16px rgba(232,117,34,.16); }
+.lp-content .btn-secondary{ background: #fff; color: var(--lp-orange); border: 1px solid var(--lp-orange); }
 /* 上部「料金シミュレーションへ」ボタン */
-.hero-simulation-btn { background: var(--hero-simulation-btn-bg); color: var(--hero-simulation-btn-text); border: 1px solid var(--hero-simulation-btn-border); }
+.lp-content .hero-simulation-btn{ background: var(--lp-hero-simulation-btn-bg); color: var(--lp-hero-simulation-btn-text); border: 1px solid var(--lp-hero-simulation-btn-border); }
 /* 上部「申し込む」ボタン：上部シミュレーションボタンとは別に色を設定 */
-.hero-apply-btn { background: var(--hero-apply-btn-bg); color: var(--hero-apply-btn-text); border: 1px solid var(--hero-apply-btn-border); }
+.lp-content .hero-apply-btn{ background: var(--lp-hero-apply-btn-bg); color: var(--lp-hero-apply-btn-text); border: 1px solid var(--lp-hero-apply-btn-border); }
 /* 下部「お申し込みはこちら」ボタン */
-.flow-apply-btn { background: var(--flow-apply-btn-bg); color: var(--flow-apply-btn-text); border: 1px solid var(--flow-apply-btn-border); box-shadow: 0 7px 16px rgba(225,95,86,.20); }
-.flow-apply-btn:hover { filter: brightness(.96); }
+.lp-content .flow-apply-btn{ background: var(--lp-flow-apply-btn-bg); color: var(--lp-flow-apply-btn-text); border: 1px solid var(--lp-flow-apply-btn-border); box-shadow: 0 7px 16px rgba(225,95,86,.20); }
+.lp-content .flow-apply-btn:hover{ filter: brightness(.96); }
 /* 公開環境の共通ボタンCSSより優先して、申込フロー内のボタン色を固定 */
-#flow .flow-apply-action a.btn.flow-apply-btn { background-color: #E15F56 !important; color: #ffffff !important; border-color: #E15F56 !important; }
-#flow .flow-apply-action a.btn.flow-apply-btn:hover { background-color: #E15F56 !important; color: #ffffff !important; border-color: #E15F56 !important; filter: brightness(.96); }
-.hero-card {
+.lp-content #flow .flow-apply-action a.lp-btn.flow-apply-btn{ background-color: #E15F56 !important; color: #ffffff !important; border-color: #E15F56 !important; }
+.lp-content #flow .flow-apply-action a.lp-btn.flow-apply-btn:hover{ background-color: #E15F56 !important; color: #ffffff !important; border-color: #E15F56 !important; filter: brightness(.96); }
+.lp-content .hero-card{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,8 +386,8 @@ a { color: inherit; }
   text-align: center;
   min-width: 0;
 }
-.hero-card-illustration { display: none; }
-.hero-half-kicker {
+.lp-content .hero-card-illustration{ display: none; }
+.lp-content .hero-half-kicker{
   color: #a94d00;
   font-size: clamp(21px, 2.2vw, 30px);
   font-weight: 900;
@@ -99,7 +395,7 @@ a { color: inherit; }
   line-height: 1.35;
   text-shadow: 0 1px 0 rgba(255,255,255,.3);
 }
-.hero-half-price {
+.lp-content .hero-half-price{
   margin-top: 2px;
   color: #f04455;
   font-size: clamp(62px, 7vw, 100px);
@@ -109,14 +405,14 @@ a { color: inherit; }
   white-space: nowrap;
   text-shadow: 2px 3px 0 rgba(255,255,255,.9), 4px 5px 0 rgba(172,77,0,.14);
 }
-.hero-half-price .half-mark { font-size: .48em; vertical-align: .18em; letter-spacing: 0; }
-.hero-half-note {
+.lp-content .hero-half-price .half-mark{ font-size: .48em; vertical-align: .18em; letter-spacing: 0; }
+.lp-content .hero-half-note{
   margin-top: 10px;
   color: rgba(82,52,22,.9);
   font-size: 12px;
   line-height: 1.5;
 }
-.hero-half-rays {
+.lp-content .hero-half-rays{
   color: #ffd21c;
   font-size: 30px;
   font-weight: 900;
@@ -124,245 +420,270 @@ a { color: inherit; }
   line-height: 1;
   margin-bottom: 10px;
 }
-section { padding: var(--section-padding-y) 0; }
-.section-head { max-width: 700px; margin: 0 auto 34px; text-align: center; }
-.section-head .eyebrow { margin-bottom: 8px; }
-.section-head h2 { margin: 0 0 12px; color: var(--section-heading-color); font-size: clamp(26px,3.4vw,36px); font-weight: 800; line-height: 1.4; }
-.section-head p { margin: 0; color: var(--muted); }
-#features { background: #fff; }
-.features { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; }
-.feature { padding: 25px; border: 1px solid var(--card-border); border-radius: var(--card-radius); background: var(--card-bg); }
-.feature .num { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 16px; border-radius: 13px; background: #fff7ed; color: var(--orange-dark); font-size: 16px; font-weight: 900; }
-.feature h3 { margin: 0 0 8px; color: #B95B0B; font-size: 18px; line-height: 1.5; font-weight: 800; }
-.feature p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.8; }
-#flow { padding: 34px 0 40px; background: var(--flow-bg); }
-#flow .section-head { max-width: 100%; margin-bottom: 30px; }
-#flow .section-head h2 { display: inline-block; margin: 0; padding-bottom: 5px; border-bottom: 2px dotted var(--orange); color: var(--orange); font-size: clamp(25px,3vw,34px); }
-#flow .section-head .eyebrow, #flow .section-head p { display: none; }
-.flow { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 24px; align-items: start; }
-.flow-item { position: relative; min-width: 0; padding: 0; text-align: center; }
-.flow-item:before { content: attr(data-step); display: block; margin-bottom: 12px; color: var(--orange); font-size: 14px; font-weight: 500; }
-.flow-icon { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 155px; height: 126px; margin: 0 auto 10px; border-radius: 16px; background: #fff; }
-.flow-icon svg { width: 50px; height: 50px; fill: none; stroke: var(--flow-icon-color); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.flow-item p { max-width: 175px; margin: 0 auto; color: #222; font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
-.flow-item:not(:last-child)::after { content: ""; position: absolute; top: 47px; right: -20px; width: 11px; height: 11px; border-top: 4px solid #111; border-right: 4px solid #111; transform: rotate(45deg); }
-.disclaimer { margin-top: 20px; color: var(--muted); font-size: 12px; line-height: 1.7; }
-#price { background: var(--price-section-bg); }
-#price .section-head p { font-size: 16px; }
-.price-comparison { width: 100%; max-width: 1000px; margin: 0 auto; }
-.price-table-scroll { width: 100%; overflow: hidden; border: 1px solid var(--price-table-border); border-radius: 10px; background: #fff; }
-.price-comparison table { width: 100%; min-width: 0; table-layout: fixed; border-collapse: separate; border-spacing: 0; color: #333; font-size: 14px; line-height: 1.5; }
-.price-comparison col.category-col { width: 12%; }
-.price-comparison col.item-col { width: 23%; }
-.price-comparison col.company-col { width: 32.5%; }
-.price-comparison th, .price-comparison td { padding: 13px 12px; border-right: 1px solid var(--price-table-border); border-bottom: 1px solid var(--price-table-border); vertical-align: middle; overflow-wrap: anywhere; }
-.price-comparison tr > *:last-child { border-right: none; }
-.price-comparison tbody tr:last-child > * { border-bottom: none; }
-.price-comparison thead th { background: var(--price-table-competitor-heading); color: #fff; font-size: 15px; font-weight: 700; text-align: center; }
-.price-comparison thead th:first-child { background: #f4f1ec; color: #4b5563; }
-.price-comparison thead th.price-main-heading { background: var(--price-table-astomos-heading); color: #fff; font-weight: 800; }
-.price-comparison thead th.price-competitor-heading { background: var(--price-table-competitor-heading); color: #fff; }
-.price-comparison .price-category { background: #fff5e8; color: #754b1b; text-align: center; font-weight: 700; }
-.price-comparison .price-item { background: #f8f7f5; color: #333; text-align: left; font-weight: 600; }
-.price-comparison .price-value { text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.price-comparison .price-main { background: var(--price-table-astomos-bg); color: var(--price-table-astomos-text); font-weight: 800; font-size: 1.05em; }
-.price-comparison .price-competitor { background: var(--price-table-competitor-bg); color: var(--price-table-competitor-text); font-weight: 500; }
-.price-table-notes { margin-top: 18px; padding: 14px 16px; background: var(--price-table-note-bg); border-left: 4px solid var(--price-table-note-border); border-radius: 0 10px 10px 0; color: var(--price-table-note-text); font-size: 12px; line-height: 1.8; }
-.price-table-notes p { margin: 0 0 6px; }
-.price-table-notes p:last-child { margin-bottom: 0; }
-.price-comparison-action { margin-top: 26px; text-align: center; }
-#price .price-comparison-action .btn { background: var(--button-bg); color: var(--button-text); border: 1px solid var(--button-bg); }
-#faq { background: var(--faq-bg); }
-.faq { max-width: 850px; margin: 0 auto; }
-.faq details { padding: 18px 4px; border-bottom: 1px solid var(--border); }
-.faq summary { cursor: pointer; color: #555; font-size: 16px; font-weight: 800; }
-.faq details p { margin: 10px 0 0; color: #555; font-size: 14px; line-height: 1.8; }
-.cta-band { padding: 58px 20px; background: linear-gradient(115deg,var(--cta-bg-start),var(--cta-bg-end)); text-align: center; }
-.cta-band h2 { margin: 0 0 12px; color: #fff; font-size: clamp(25px,3vw,34px); font-weight: 800; line-height: 1.4; }
-.cta-band p { max-width: 650px; margin: 0 auto 25px; color: #ffead8; }
-.cta-band .btn { background: #fff; color: var(--orange); border: 1px solid #fff; }
-.footer { padding: 28px 0; background: var(--footer-bg); color: var(--footer-text); font-size: 12px; }
-.footer-inner { display: flex; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
+.lp-content section{ padding: var(--lp-section-padding-y) 0; }
+.lp-content .section-head{ max-width: 700px; margin: 0 auto 34px; text-align: center; }
+.lp-content .section-head .eyebrow{ margin-bottom: 8px; }
+.lp-content .section-head h2{ margin: 0 0 12px; color: var(--lp-section-heading-color); font-size: clamp(26px,3.4vw,36px); font-weight: 800; line-height: 1.4; }
+.lp-content .section-head p{ margin: 0; color: var(--lp-muted); }
+.lp-content #features{ background: #fff; }
+/* PC：特徴を縦に3段配置し、イラストを左右交互に見せる */
+.lp-content .features{ display: grid; grid-template-columns: minmax(0,1fr); gap: 22px; max-width: 1000px; margin: 0 auto; }
+.lp-content .feature{ display: grid; grid-template-columns: minmax(220px,.8fr) minmax(0,1.2fr); align-items: center; gap: clamp(24px,4vw,54px); min-height: 220px; padding: 26px clamp(24px,4vw,48px); border: 1px solid var(--lp-card-border); border-radius: var(--lp-card-radius); background: var(--lp-card-bg); box-shadow: 0 8px 24px rgba(95,70,42,.045); }
+.lp-content .feature-illustration{ grid-column: 1; grid-row: 1; display: flex; align-items: center; justify-content: center; min-height: 160px; padding: 18px; border-radius: 18px; background: linear-gradient(145deg,#fff9f1,#fff0d9); color: #c65d16; }
+.lp-content .feature-illustration svg{ display: block; width: min(100%,210px); height: auto; max-height: 150px; overflow: visible; }
+.lp-content .feature-content{ grid-column: 2; grid-row: 1; min-width: 0; }
+.lp-content .feature:nth-child(even){ grid-template-columns: minmax(0,1.2fr) minmax(220px,.8fr); }
+.lp-content .feature:nth-child(even) .feature-content{ grid-column: 1; grid-row: 1; }
+.lp-content .feature:nth-child(even) .feature-illustration{ grid-column: 2; grid-row: 1; }
+.lp-content .feature .num{ display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 16px; border-radius: 13px; background: #fff7ed; color: var(--lp-orange-dark); font-size: 16px; font-weight: 900; }
+.lp-content .feature h3{ margin: 0 0 10px; color: #B95B0B; font-size: clamp(19px,2vw,23px); line-height: 1.5; font-weight: 800; }
+.lp-content .feature p{ margin: 0; color: var(--lp-muted); font-size: 15px; line-height: 1.9; }
+.lp-content #flow{ padding: 34px 0 40px; background: var(--lp-flow-bg); }
+.lp-content #flow .section-head{ max-width: 100%; margin-bottom: 30px; }
+.lp-content #flow .section-head h2{ display: inline-block; margin: 0; padding-bottom: 5px; border-bottom: 2px dotted var(--lp-orange); color: var(--lp-orange); font-size: clamp(25px,3vw,34px); }
+.lp-content #flow .section-head .eyebrow, .lp-content #flow .section-head p{ display: none; }
+.lp-content .flow{ display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 24px; align-items: start; }
+.lp-content .flow-item{ position: relative; min-width: 0; padding: 0; text-align: center; }
+.lp-content .flow-item:before{ content: attr(data-step); display: block; margin-bottom: 12px; color: var(--lp-orange); font-size: 14px; font-weight: 500; }
+.lp-content .flow-icon{ display: flex; align-items: center; justify-content: center; width: 100%; max-width: 155px; height: 126px; margin: 0 auto 10px; border-radius: 16px; background: #fff; }
+.lp-content .flow-icon svg{ width: 50px; height: 50px; fill: none; stroke: var(--lp-flow-icon-color); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.lp-content .flow-item p{ max-width: 175px; margin: 0 auto; color: #222; font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
+.lp-content .flow-item:not(:last-child)::after{ content: ""; position: absolute; top: 47px; right: -20px; width: 11px; height: 11px; border-top: 4px solid #111; border-right: 4px solid #111; transform: rotate(45deg); }
+.lp-content .disclaimer{ margin-top: 20px; color: var(--lp-muted); font-size: 12px; line-height: 1.7; }
+.lp-content #price{ background: var(--lp-price-section-bg); }
+.lp-content #price .section-head p{ font-size: 16px; }
+.lp-content .price-comparison{ width: 100%; max-width: 1000px; margin: 0 auto; }
+.lp-content .price-table-scroll{ width: 100%; overflow: hidden; border: 1px solid var(--lp-price-table-border); border-radius: 10px; background: #fff; }
+.lp-content .price-comparison table{ width: 100%; min-width: 0; table-layout: fixed; border-collapse: separate; border-spacing: 0; color: #333; font-size: 14px; line-height: 1.5; }
+.lp-content .price-comparison col.category-col{ width: 12%; }
+.lp-content .price-comparison col.item-col{ width: 23%; }
+.lp-content .price-comparison col.company-col{ width: 32.5%; }
+.lp-content .price-comparison th, .lp-content .price-comparison td{ padding: 13px 12px; border-right: 1px solid var(--lp-price-table-border); border-bottom: 1px solid var(--lp-price-table-border); vertical-align: middle; overflow-wrap: anywhere; }
+.lp-content .price-comparison tr > *:last-child{ border-right: none; }
+.lp-content .price-comparison tbody tr:last-child > *{ border-bottom: none; }
+.lp-content .price-comparison thead th{ background: var(--lp-price-table-competitor-heading); color: #fff; font-size: 15px; font-weight: 700; text-align: center; }
+.lp-content .price-comparison thead th:first-child{ background: #f4f1ec; color: #4b5563; }
+.lp-content .price-comparison thead th.price-main-heading{ background: var(--lp-price-table-astomos-heading); color: #fff; font-weight: 800; }
+.lp-content .price-comparison thead th.price-competitor-heading{ background: var(--lp-price-table-competitor-heading); color: #fff; }
+.lp-content .price-comparison .price-category{ background: #fff5e8; color: #754b1b; text-align: center; font-weight: 700; }
+.lp-content .price-comparison .price-item{ background: #f8f7f5; color: #333; text-align: left; font-weight: 600; }
+.lp-content .price-comparison .price-value{ text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.lp-content .price-comparison .price-main{ background: var(--lp-price-table-astomos-bg); color: var(--lp-price-table-astomos-text); font-weight: 800; font-size: 1.05em; }
+.lp-content .price-comparison .price-competitor{ background: var(--lp-price-table-competitor-bg); color: var(--lp-price-table-competitor-text); font-weight: 500; }
+.lp-content .price-table-notes{ margin-top: 18px; padding: 14px 16px; background: var(--lp-price-table-note-bg); border-left: 4px solid var(--lp-price-table-note-border); border-radius: 0 10px 10px 0; color: var(--lp-price-table-note-text); font-size: 12px; line-height: 1.8; }
+.lp-content .price-table-notes p{ margin: 0 0 6px; }
+.lp-content .price-table-notes p:last-child{ margin-bottom: 0; }
+.lp-content .price-comparison-action{ margin-top: 26px; text-align: center; }
+.lp-content #price .price-comparison-action .lp-btn{ background: var(--lp-button-bg); color: var(--lp-button-text); border: 1px solid var(--lp-button-bg); }
+.lp-content #faq{ background: var(--lp-faq-bg); }
+.lp-content .faq{ max-width: 850px; margin: 0 auto; }
+.lp-content .faq details{ padding: 18px 4px; border-bottom: 1px solid var(--lp-border); }
+.lp-content .faq summary{ cursor: pointer; color: #555; font-size: 16px; font-weight: 800; }
+.lp-content .faq details p{ margin: 10px 0 0; color: #555; font-size: 14px; line-height: 1.8; }
+.lp-content .cta-band{ padding: 58px 20px; background: linear-gradient(115deg,var(--lp-cta-bg-start),var(--lp-cta-bg-end)); text-align: center; }
+.lp-content .cta-band h2{ margin: 0 0 12px; color: #fff; font-size: clamp(25px,3vw,34px); font-weight: 800; line-height: 1.4; }
+.lp-content .cta-band p{ max-width: 650px; margin: 0 auto 25px; color: #ffead8; }
+.lp-content .cta-band .lp-btn{ background: #fff; color: var(--lp-orange); border: 1px solid #fff; }
+.lp-content .footer{ padding: 28px 0; background: var(--lp-footer-bg); color: var(--lp-footer-text); font-size: 12px; }
+.lp-content .footer-inner{ display: flex; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
 
 
 /* 特定商取引法に基づく表記：参考画像に合わせた表形式 */
-#legal-disclosure { padding: 48px 0 12px; background: #f7f7f5; }
-#legal-disclosure .section-head { margin-bottom: 22px; }
-#legal-disclosure .section-head h2 { display: inline-block; padding-bottom: 5px; border-bottom: 1px dotted var(--orange); }
-.legal-panel { padding: 8px; background: #fff; border-radius: 4px; box-shadow: 0 1px 8px rgba(0,0,0,.025); }
-.legal-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; line-height: 1.65; }
-.legal-table th, .legal-table td { padding: 7px 14px; border-bottom: 1px dotted #eaa527; vertical-align: middle; text-align: left; overflow-wrap: anywhere; }
-.legal-table th { width: 175px; color: #fff; background: #eaa527; text-align: center; font-weight: 600; border-radius: 3px; }
-.legal-table td { color: #444; }
-.legal-table strong { color: #222; }
-.legal-table a { color: inherit; text-decoration: underline; }
+.lp-content #legal-disclosure{ padding: 48px 0 12px; background: #f7f7f5; }
+.lp-content #legal-disclosure .section-head{ margin-bottom: 22px; }
+.lp-content #legal-disclosure .section-head h2{ display: inline-block; padding-bottom: 5px; border-bottom: 1px dotted var(--lp-orange); }
+.lp-content .legal-panel{ padding: 8px; background: #fff; border-radius: 4px; box-shadow: 0 1px 8px rgba(0,0,0,.025); }
+.lp-content .legal-table{ width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; line-height: 1.65; }
+.lp-content .legal-table th, .lp-content .legal-table td{ padding: 7px 14px; border-bottom: 1px dotted #eaa527; vertical-align: middle; text-align: left; overflow-wrap: anywhere; }
+.lp-content .legal-table th{ width: 175px; color: #fff; background: #eaa527; text-align: center; font-weight: 600; border-radius: 3px; }
+.lp-content .legal-table td{ color: #444; }
+.lp-content .legal-table strong{ color: #222; }
+.lp-content .legal-table a{ color: inherit; text-decoration: underline; }
 @media (max-width: 600px) {
-  #legal-disclosure { padding: 38px 0 8px; }
-  .legal-panel { padding: 7px; }
-  .legal-table, .legal-table tbody, .legal-table tr, .legal-table th, .legal-table td { display: block; width: 100%; }
-  .legal-table tr { margin-bottom: 10px; border-bottom: 1px dotted #eaa527; }
-  .legal-table th { padding: 7px 10px; border-radius: 3px; }
-  .legal-table td { padding: 8px 10px; border-bottom: 0; font-size: 13px; }
+  .lp-content #legal-disclosure{ padding: 38px 0 8px; }
+  .lp-content .legal-panel{ padding: 7px; }
+  .lp-content .legal-table, .lp-content .legal-table tbody, .lp-content .legal-table tr, .lp-content .legal-table th, .lp-content .legal-table td{ display: block; width: 100%; }
+  .lp-content .legal-table tr{ margin-bottom: 10px; border-bottom: 1px dotted #eaa527; }
+  .lp-content .legal-table th{ padding: 7px 10px; border-radius: 3px; }
+  .lp-content .legal-table td{ padding: 8px 10px; border-bottom: 0; font-size: 13px; }
 }
 
 /* タブレット */
 @media (max-width: 900px) {
-  .nav { gap: 12px; }
-  .nav a:not(.nav-cta) { display: none; }
-  .hero-inner { gap: 24px; }
-  .features { gap: 12px; }
-  .feature { padding: 20px; }
-  .flow { grid-template-columns: repeat(3,minmax(0,1fr)); row-gap: 30px; column-gap: 18px; }
-  .flow-item:not(:last-child)::after { display: none; }
+  
+  .lp-content .nav a:not(.nav-cta){ display: none; }
+  .lp-content .hero-inner{ gap: 24px; }
+  .lp-content .features{ gap: 12px; }
+  .lp-content .feature{ padding: 20px; }
+  .lp-content .flow{ grid-template-columns: repeat(3,minmax(0,1fr)); row-gap: 30px; column-gap: 18px; }
+  .lp-content .flow-item:not(:last-child)::after{ display: none; }
 }
 
 /* スマートフォン：手順は横にスワイプ、料金表は縦型カードに変換 */
 @media (max-width: 600px) {
-  body { font-size: 15px; }
-  .wrap { width: 92%; }
-  .topbar { font-size: 11px; }
-  .topbar .wrap { gap: 2px 8px; }
-  .topbar .wrap span:last-child { display: none; }
-  .header-inner { min-height: 66px; gap: 8px; }
-  .brand-logo { width:clamp(130px,36vw,210px); }
-  .nav .nav-cta { padding: 9px 11px; font-size: 11px; white-space: nowrap; }
-  .hero-inner { grid-template-columns: 1fr; padding: 48px 0; gap: 26px; }
-  .hero h1 { font-size: clamp(32px,9vw,42px); }
-  .hero-copy { font-size: 14px; }
-  .hero-card { max-width: 480px; padding: 0; border: 0 !important; border-radius: 0; background: transparent !important; box-shadow: none !important; }
-  .btn-row { flex-direction: column; align-items: center; }
-  .btn-row .btn { width: min(100%, 280px); max-width: 280px; }
-  section { padding: 48px 0; }
-  .section-head { margin-bottom: 25px; }
-  .section-head h2 { font-size: 26px; }
-  .section-head p { font-size: 14px; }
-  .features { grid-template-columns: 1fr; gap: 12px; }
-  .feature { padding: 20px; }
-  #flow { padding: 36px 0; }
-  #flow .section-head { margin-bottom: 24px; }
-  #flow .section-head h2 { font-size: 23px; }
+  
+  .lp-content .wrap{ width: 92%; }
+  
+  
+  .lp-content .topbar .wrap span:last-child{ display: none; }
+  
+  
+  
+  .lp-content .hero-inner{ grid-template-columns: 1fr; padding: 48px 0; gap: 26px; }
+  .lp-content .lp-hero h1{ font-size: clamp(32px,9vw,42px); }
+  .lp-content .hero-copy{ font-size: 14px; }
+  .lp-content .hero-card{ max-width: 480px; padding: 0; border: 0 !important; border-radius: 0; background: transparent !important; box-shadow: none !important; }
+  .lp-content .btn-row{ flex-direction: column; align-items: center; }
+  .lp-content .btn-row .lp-btn{ width: min(100%, 280px); max-width: 280px; }
+  .lp-content section{ padding: 48px 0; }
+  .lp-content .section-head{ margin-bottom: 25px; }
+  .lp-content .section-head h2{ font-size: 26px; }
+  .lp-content .section-head p{ font-size: 14px; }
+  .lp-content .features{ grid-template-columns: 1fr; gap: 12px; }
+  .lp-content .feature{ padding: 20px; }
+  .lp-content #flow{ padding: 36px 0; }
+  .lp-content #flow .section-head{ margin-bottom: 24px; }
+  .lp-content #flow .section-head h2{ font-size: 23px; }
   /* 横並びの手順：スクロールバーを出さず、右へスワイプ */
-  #flow .flow { display: flex; gap: 14px; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 12px; margin: 0 -1px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-  #flow .flow-item { flex: 0 0 72%; max-width: 250px; scroll-snap-align: start; }
-  #flow .flow-item:before { font-size: 13px; margin-bottom: 8px; }
-  #flow .flow-icon { height: 110px; max-width: 100%; margin-bottom: 10px; border-radius: 14px; }
-  #flow .flow-icon svg { width: 43px; height: 43px; }
-  #flow .flow-item p { max-width: 100%; font-size: 13px; }
-  #flow .flow-item:not(:last-child)::after { display: block; top: 47px; right: -9px; width: 8px; height: 8px; border-width: 3px; }
-  #flow .disclaimer { font-size: 11px; }
-  #price { padding: 44px 0; }
-  #price .section-head { margin-bottom: 24px; }
-  #price .section-head h2 { font-size: 27px; }
-  #price .section-head p { font-size: 14px; }
-  .price-table-scroll { overflow: visible; border: none; border-radius: 0; background: transparent; }
-  .price-comparison table { display: block; width: 100%; min-width: 0; font-size: 13px; }
-  .price-comparison colgroup, .price-comparison thead { display: none; }
-  .price-comparison tbody { display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; }
-  .price-comparison tbody tr { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); overflow: hidden; border: 1px solid #e7e2dc; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.035); }
-  .price-comparison tbody tr > * { min-width: 0; border: none; }
+  .lp-content #flow .flow{ display: flex; gap: 14px; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 12px; margin: 0 -1px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .lp-content #flow .flow-item{ flex: 0 0 72%; max-width: 250px; scroll-snap-align: start; }
+  .lp-content #flow .flow-item:before{ font-size: 13px; margin-bottom: 8px; }
+  .lp-content #flow .flow-icon{ height: 110px; max-width: 100%; margin-bottom: 10px; border-radius: 14px; }
+  .lp-content #flow .flow-icon svg{ width: 43px; height: 43px; }
+  .lp-content #flow .flow-item p{ max-width: 100%; font-size: 13px; }
+  .lp-content #flow .flow-item:not(:last-child)::after{ display: block; top: 47px; right: -9px; width: 8px; height: 8px; border-width: 3px; }
+  .lp-content #flow .disclaimer{ font-size: 11px; }
+  .lp-content #price{ padding: 44px 0; }
+  .lp-content #price .section-head{ margin-bottom: 24px; }
+  .lp-content #price .section-head h2{ font-size: 27px; }
+  .lp-content #price .section-head p{ font-size: 14px; }
+  .lp-content .price-table-scroll{ overflow: visible; border: none; border-radius: 0; background: transparent; }
+  .lp-content .price-comparison table{ display: block; width: 100%; min-width: 0; font-size: 13px; }
+  .lp-content .price-comparison colgroup, .lp-content .price-comparison thead{ display: none; }
+  .lp-content .price-comparison tbody{ display: grid; grid-template-columns: minmax(0,1fr); gap: 12px; }
+  .lp-content .price-comparison tbody tr{ display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); overflow: hidden; border: 1px solid #e7e2dc; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.035); }
+  .lp-content .price-comparison tbody tr > *{ min-width: 0; border: none; }
   /* rowspanの料金区分セルはスマホでは非表示。項目名に内容を表示 */
-  .price-comparison tbody td.price-category { display: none; }
-  .price-comparison tbody td.price-item { grid-column: 1 / -1; padding: 11px 13px; background: var(--price-table-label-bg); border-bottom: 1px solid #e7e2dc; font-size: 13px; font-weight: 600; }
-  .price-comparison tbody td.price-value { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; min-height: 78px; padding: 11px 5px; text-align: center; white-space: normal; }
-  .price-comparison tbody td.price-value::before { content: attr(data-label); display: block; font-size: 10px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
-  .price-comparison tbody td.price-main { background: var(--price-table-astomos-bg); color: var(--price-table-astomos-text); font-size: 15px; font-weight: 800; border-right: 1px solid #f0d8c5; }
-  .price-comparison tbody td.price-main::before { color: var(--price-table-astomos-text); }
-  .price-comparison tbody td.price-competitor { background: var(--price-table-competitor-bg); color: var(--price-table-competitor-text); font-size: 14px; font-weight: 600; }
-  .price-comparison tbody td.price-competitor::before { color: var(--price-table-competitor-text); }
-  .price-table-notes { margin-top: 14px; padding: 12px; font-size: 11px; line-height: 1.8; }
-  .price-comparison-action { margin-top: 22px; }
-  .price-comparison-action .btn { display: flex; width: min(100%, 280px); max-width: 280px; margin: 0 auto; padding: 13px 12px; line-height: 1.6; }
-  #faq { padding: 48px 0; }
-  .faq summary { font-size: 14px; }
-  .faq details p { font-size: 13px; }
-  .cta-band { padding: 44px 0; }
-  .cta-band h2 { font-size: 25px; }
-  .cta-band p { font-size: 14px; }
-  .cta-band .btn { width: min(100%, 280px); max-width: 280px; }
-  .footer-inner { flex-direction: column; gap: 6px; }
+  .lp-content .price-comparison tbody td.price-category{ display: none; }
+  .lp-content .price-comparison tbody td.price-item{ grid-column: 1 / -1; padding: 11px 13px; background: var(--lp-price-table-label-bg); border-bottom: 1px solid #e7e2dc; font-size: 13px; font-weight: 600; }
+  .lp-content .price-comparison tbody td.price-value{ display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; min-height: 78px; padding: 11px 5px; text-align: center; white-space: normal; }
+  .lp-content .price-comparison tbody td.price-value::before{ content: attr(data-label); display: block; font-size: 10px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+  .lp-content .price-comparison tbody td.price-main{ background: var(--lp-price-table-astomos-bg); color: var(--lp-price-table-astomos-text); font-size: 15px; font-weight: 800; border-right: 1px solid #f0d8c5; }
+  .lp-content .price-comparison tbody td.price-main::before{ color: var(--lp-price-table-astomos-text); }
+  .lp-content .price-comparison tbody td.price-competitor{ background: var(--lp-price-table-competitor-bg); color: var(--lp-price-table-competitor-text); font-size: 14px; font-weight: 600; }
+  .lp-content .price-comparison tbody td.price-competitor::before{ color: var(--lp-price-table-competitor-text); }
+  .lp-content .price-table-notes{ margin-top: 14px; padding: 12px; font-size: 11px; line-height: 1.8; }
+  .lp-content .price-comparison-action{ margin-top: 22px; }
+  .lp-content .price-comparison-action .lp-btn{ display: flex; width: min(100%, 280px); max-width: 280px; margin: 0 auto; padding: 13px 12px; line-height: 1.6; }
+  .lp-content #faq{ padding: 48px 0; }
+  .lp-content .faq summary{ font-size: 14px; }
+  .lp-content .faq details p{ font-size: 13px; }
+  .lp-content .cta-band{ padding: 44px 0; }
+  .lp-content .cta-band h2{ font-size: 25px; }
+  .lp-content .cta-band p{ font-size: 14px; }
+  .lp-content .cta-band .lp-btn{ width: min(100%, 280px); max-width: 280px; }
+  .lp-content .footer-inner{ flex-direction: column; gap: 6px; }
 }
 
 /* 2026-10-02 調整：スマートフォンでも料金表・特商法表記を表形式でコンパクトに表示 */
-.price-apply-action { text-align: center; margin: 0 auto 22px; }
-.price-apply-action .btn { display: inline-block; min-width: 220px; text-align: center; }
+.lp-content .price-apply-action{ text-align: center; margin: 0 auto 22px; }
+.lp-content .price-apply-action .lp-btn{ display: inline-block; min-width: 220px; text-align: center; }
 @media (max-width: 600px) {
-  .price-apply-action { margin-bottom: 16px; }
-  .price-apply-action .btn { min-width: 0; width: min(100%, 280px); padding: 12px 16px; font-size: 14px; }
-  #price .section-head { margin-bottom: 14px; }
-  #price .section-head h2 { font-size: 23px; }
-  #price .section-head p { font-size: 12px; }
-  .price-table-scroll { overflow: hidden !important; border: 1px solid var(--price-table-border) !important; border-radius: 6px !important; background: #fff !important; }
-  .price-comparison table { display: table !important; width: 100% !important; min-width: 0 !important; table-layout: fixed !important; border-collapse: collapse !important; font-size: 9px !important; line-height: 1.3 !important; }
-  .price-comparison colgroup { display: table-column-group !important; }
-  .price-comparison col { display: table-column !important; }
-  .price-comparison thead { display: table-header-group !important; }
-  .price-comparison tbody { display: table-row-group !important; }
-  .price-comparison tr { display: table-row !important; }
-  .price-comparison th, .price-comparison td { display: table-cell !important; padding: 4px 2px !important; overflow-wrap: anywhere; word-break: break-word; }
-  .price-comparison th { font-size: 8px !important; }
-  .price-comparison .price-category { font-size: 8px !important; }
-  #legal-disclosure { padding: 26px 0 8px !important; }
-  #legal-disclosure .section-head { margin-bottom: 12px !important; }
-  #legal-disclosure .section-head h2 { font-size: 20px; }
-  .legal-panel { padding: 4px !important; }
-  .legal-table { display: table !important; width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; font-size: 9px !important; line-height: 1.3 !important; }
-  .legal-table tbody { display: table-row-group !important; }
-  .legal-table tr { display: table-row !important; margin: 0 !important; border-bottom: 1px dotted #eaa527; }
-  .legal-table th, .legal-table td { display: table-cell !important; padding: 4px 5px !important; font-size: 9px !important; overflow-wrap: anywhere; word-break: break-word; }
-  .legal-table th { width: 27% !important; }
+  .lp-content .price-apply-action{ margin-bottom: 16px; }
+  .lp-content .price-apply-action .lp-btn{ min-width: 0; width: min(100%, 280px); padding: 12px 16px; font-size: 14px; }
+  .lp-content #price .section-head{ margin-bottom: 14px; }
+  .lp-content #price .section-head h2{ font-size: 23px; }
+  .lp-content #price .section-head p{ font-size: 12px; }
+  .lp-content .price-table-scroll{ overflow: hidden !important; border: 1px solid var(--lp-price-table-border) !important; border-radius: 6px !important; background: #fff !important; }
+  .lp-content .price-comparison table{ display: table !important; width: 100% !important; min-width: 0 !important; table-layout: fixed !important; border-collapse: collapse !important; font-size: 9px !important; line-height: 1.3 !important; }
+  .lp-content .price-comparison colgroup{ display: table-column-group !important; }
+  .lp-content .price-comparison col{ display: table-column !important; }
+  .lp-content .price-comparison thead{ display: table-header-group !important; }
+  .lp-content .price-comparison tbody{ display: table-row-group !important; }
+  .lp-content .price-comparison tr{ display: table-row !important; }
+  .lp-content .price-comparison th, .lp-content .price-comparison td{ display: table-cell !important; padding: 4px 2px !important; overflow-wrap: anywhere; word-break: break-word; }
+  .lp-content .price-comparison th{ font-size: 8px !important; }
+  .lp-content .price-comparison .price-category{ font-size: 8px !important; }
+  .lp-content #legal-disclosure{ padding: 26px 0 8px !important; }
+  .lp-content #legal-disclosure .section-head{ margin-bottom: 12px !important; }
+  .lp-content #legal-disclosure .section-head h2{ font-size: 20px; }
+  .lp-content .legal-panel{ padding: 4px !important; }
+  .lp-content .legal-table{ display: table !important; width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; font-size: 9px !important; line-height: 1.3 !important; }
+  .lp-content .legal-table tbody{ display: table-row-group !important; }
+  .lp-content .legal-table tr{ display: table-row !important; margin: 0 !important; border-bottom: 1px dotted #eaa527; }
+  .lp-content .legal-table th, .lp-content .legal-table td{ display: table-cell !important; padding: 4px 5px !important; font-size: 9px !important; overflow-wrap: anywhere; word-break: break-word; }
+  .lp-content .legal-table th{ width: 27% !important; }
 }
 
 /* 2026-10-02 追加調整：申込ボタンを申込フロー内へ、スマホ表示を一画面風に整理 */
-.flow-apply-action { margin: 24px auto 0; text-align: center; }
-.flow-apply-action .btn { min-width: 240px; }
+.lp-content .flow-apply-action{ margin: 24px auto 0; text-align: center; }
+.lp-content .flow-apply-action .lp-btn{ min-width: 240px; }
 @media (max-width: 600px) {
-  /* 特徴はカードを簡素化し、3つの要点を箇条書き風に */
-  #features .features { display: block; }
-  #features .feature { display: grid; grid-template-columns: 28px minmax(0,1fr); column-gap: 9px; align-items: start; padding: 12px 2px; border: 0; border-bottom: 1px solid #f0d8c5; border-radius: 0; background: transparent; }
-  #features .feature:last-child { border-bottom: 0; }
-  #features .feature .num { display: flex; width: 25px; height: 25px; margin: 2px 0 0; border-radius: 50%; font-size: 12px; }
-  #features .feature h3 { margin: 0 0 4px; color: #A94E08; font-size: 15px; line-height: 1.45; font-weight: 850; }
-  #features .feature p { grid-column: 2; font-size: 12px; line-height: 1.55; }
-  #features .feature p::first-line { }
+  /* スマートフォンではイラストを省き、読みやすいコンパクトなリスト表示 */
+  .lp-content #features .features{ display: block; }
+  .lp-content #features .feature{ display: block; min-height: 0; padding: 12px 2px; border: 0; border-bottom: 1px solid #f0d8c5; border-radius: 0; background: transparent; box-shadow: none; }
+  .lp-content #features .feature:last-child{ border-bottom: 0; }
+  .lp-content #features .feature-illustration{ display: none; }
+  .lp-content #features .feature-content, .lp-content #features .feature:nth-child(even) .feature-content{ display: grid; grid-template-columns: 28px minmax(0,1fr); column-gap: 9px; align-items: start; }
+  .lp-content #features .feature .num{ grid-column: 1; grid-row: 1 / span 2; display: flex; width: 25px; height: 25px; margin: 2px 0 0; border-radius: 50%; font-size: 12px; }
+  .lp-content #features .feature h3{ grid-column: 2; margin: 0 0 4px; color: #A94E08; font-size: 15px; line-height: 1.45; font-weight: 850; }
+  .lp-content #features .feature p{ grid-column: 2; font-size: 12px; line-height: 1.55; }
   /* お申込みの流れ：スマホでは同じ大きさのカードで整理 */
-  #flow { padding: 28px 0 30px; }
-  #flow .section-head { margin-bottom: 16px; }
-  #flow .section-head h2 { font-size: 21px; }
-  #flow .flow { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; padding: 0; margin: 0; overflow: visible; align-items: stretch; }
-  #flow .flow-item { grid-column: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-width: 0; min-height: 150px; max-width: none; padding: 10px 7px; border: 1px solid #eee2d3; border-radius: 10px; background: #fff; }
-  #flow .flow-item:nth-child(4) { grid-column: auto; }
-  #flow .flow-item:nth-child(5) { grid-column: 1 / -1; width: calc((100% - 10px) / 2); justify-self: center; }
-  #flow .flow-item:before { font-size: 10px; margin-bottom: 5px; font-weight: 800; }
-  #flow .flow-icon { flex: 0 0 48px; height: 48px; width: 48px; max-width: 100%; margin: 0 auto 7px; border-radius: 50%; background: #fff7ef; }
-  #flow .flow-icon svg { width: 27px; height: 27px; }
-  #flow .flow-item p { width: 100%; margin: 0 auto; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
-  #flow .flow-item:not(:last-child)::after { display: none; }
-  #flow .disclaimer { margin-top: 10px; font-size: 10px; }
-  .flow-apply-action { margin-top: 16px; }
-  .flow-apply-action .btn { width: min(100%, 245px); max-width: 245px; min-width: 0; padding: 11px 12px; font-size: 13px; }
+  .lp-content #flow{ padding: 28px 0 30px; }
+  .lp-content #flow .section-head{ margin-bottom: 16px; }
+  .lp-content #flow .section-head h2{ font-size: 21px; }
+  .lp-content #flow .flow{ display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; padding: 0; margin: 0; overflow: visible; align-items: stretch; }
+  .lp-content #flow .flow-item{ grid-column: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-width: 0; min-height: 150px; max-width: none; padding: 10px 7px; border: 1px solid #eee2d3; border-radius: 10px; background: #fff; }
+  .lp-content #flow .flow-item:nth-child(4){ grid-column: auto; }
+  .lp-content #flow .flow-item:nth-child(5){ grid-column: 1 / -1; width: calc((100% - 10px) / 2); justify-self: center; }
+  .lp-content #flow .flow-item:before{ font-size: 10px; margin-bottom: 5px; font-weight: 800; }
+  .lp-content #flow .flow-icon{ flex: 0 0 48px; height: 48px; width: 48px; max-width: 100%; margin: 0 auto 7px; border-radius: 50%; background: #fff7ef; }
+  .lp-content #flow .flow-icon svg{ width: 27px; height: 27px; }
+  .lp-content #flow .flow-item p{ width: 100%; margin: 0 auto; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
+  .lp-content #flow .flow-item:not(:last-child)::after{ display: none; }
+  .lp-content #flow .disclaimer{ margin-top: 10px; font-size: 10px; }
+  .lp-content .flow-apply-action{ margin-top: 16px; }
+  .lp-content .flow-apply-action .lp-btn{ width: min(100%, 245px); max-width: 245px; min-width: 0; padding: 11px 12px; font-size: 13px; }
   /* 備考・注記は補助情報として小さめに */
-  .price-table-notes { font-size: 10px !important; line-height: 1.55 !important; padding: 9px 10px !important; }
+  .lp-content .price-table-notes{ font-size: 10px !important; line-height: 1.55 !important; padding: 9px 10px !important; }
 }
+
 </style>
 </head>
 <body>
-<div class="topbar"><div class="wrap"><span>アストモスでんき｜料金プランのご案内</span><span>電気の使い方に合ったプラン選びをサポート</span></div></div>
-<header class="header"><div class="wrap header-inner"><a class="brand" href="#top" aria-label="アストモスでんき トップページへ"><img class="brand-logo" src="data:image/png;base64,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" alt="アストモスでんき"></a><nav class="nav" aria-label="メインナビゲーション"><a href="#features">プランの特徴</a><a href="#flow">ご利用までの流れ</a><a href="#faq">よくあるご質問</a><a class="nav-cta" href="simulation.html">料金をシミュレーション ↗</a></nav></div></header>
+<div class="site-header-shell">
+<div class="topbar"><div class="in topbar-inner"><span>アストモスでんき｜料金プランのご案内</span><span>電気の使い方に合ったプラン選びをサポート</span></div></div>
+<header class="header"><div class="in header-inner"><a class="brand-link" href="#top" aria-label="アストモスでんき トップへ戻る"><img class="brand-logo" src="data:image/png;base64,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" alt="アストモスでんき"></a><nav class="nav" aria-label="メインナビゲーション"><a href="#features">プランの特徴</a><a href="#flow">ご利用までの流れ</a><a href="#faq">よくあるご質問</a><a class="nav-simulation js-open-simulation" href="#simulationArea">料金シミュレーション</a><a class="nav-cta" href="astomos-denki-apply.html"><span class="desktop-apply-label">お申し込みはこちら</span><span class="mobile-apply-label">申し込む</span></a></nav></div></header>
+</div><!-- /.site-header-shell -->
+<div class="lp-content">
 <main id="top">
-<section class="hero"><div class="wrap hero-inner"><div><span class="pill">電気料金プラン</span><div class="eyebrow">ASTOMOS DENKI · PLAN GUIDE</div><h1>新ベーシックプラン</h1><p class="hero-copy">毎日の暮らしに欠かせない電気だからこそ、料金プランの内容を確認して、ご家庭の使い方に合った選択を。新ベーシックプランの詳細をご案内します。</p><div class="btn-row"><a class="btn hero-simulation-btn" href="simulation.html">料金シミュレーションへ <span>→</span></a></div></div><aside class="hero-card" aria-label="基本料金が半額">
+<section class="lp-hero"><div class="wrap hero-inner"><div><span class="pill">電気料金プラン</span><div class="eyebrow">ASTOMOS DENKI · PLAN GUIDE</div><h1>新ベーシックプラン</h1><p class="hero-copy">毎日の暮らしに欠かせない電気だからこそ、料金プランの内容を確認して、ご家庭の使い方に合った選択を。新ベーシックプランの詳細をご案内します。</p><div class="btn-row"><a class="lp-btn hero-simulation-btn" href="#simulationArea">料金シミュレーションへ <span>→</span></a></div></div><aside class="hero-card" aria-label="基本料金が半額">
   <div class="hero-half-rays" aria-hidden="true">✦　✦　✦</div>
   <div class="hero-half-kicker">基本料金が</div>
   <div class="hero-half-price">半額<span class="half-mark">！</span></div>
   <div class="hero-half-note">※対象プラン・エリアの料金条件をご確認ください</div>
 </aside></div></section>
-<section id="features"><div class="wrap"><div class="section-head"><div class="eyebrow">PLAN FEATURES</div><h2>新ベーシックプランについて</h2><p>基本料金や切り替え方法など、新ベーシックプランのポイントを3つにまとめました。ご家庭に合ったプランか、ぜひご確認ください。</p></div><div class="features"><article class="feature"><div class="num">01</div><h3>基本料金が旧一電の半額</h3><p>基本料金を削減し、毎月オトクに。※具体的な単価は最新の料金表をご確認ください。</p></article><article class="feature"><div class="num">02</div><h3>切り替えは工事不要・品質そのまま</h3><p>スマートメーターならすぐに切替可能です。送電網は同じで、電気の品質・停電対応は変わりません。</p></article><article class="feature"><div class="num">03</div><h3>契約期間の縛り、違約金無し</h3><p>契約期間の縛りや途中解約による違約金はございません。※ただし各種キャンペーン適用の場合は諸条件あり</p></article></div></div></section>
+<section id="features"><div class="wrap"><div class="section-head"><div class="eyebrow">PLAN FEATURES</div><h2>プランの特徴</h2><p>ご家庭に合ったプランか、ぜひご確認ください。</p></div><div class="features">
+<article class="feature">
+  <div class="feature-illustration" aria-hidden="true"><svg viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="75" r="62" fill="#FFE4BD"/><circle cx="110" cy="75" r="43" fill="#FFF9F1" stroke="#EAA527" stroke-width="2.5"/><path d="M94 52h32M94 61h32" stroke="#D97719" stroke-width="3" stroke-linecap="round"/><path d="M110 70c-9 0-15 5-15 12 0 7 6 10 15 10s15 3 15 10-6 12-15 12m0-49v56" stroke="#C65D16" stroke-width="4" stroke-linecap="round"/><path d="M35 42l10 10 17-20M160 111l8 8 15-18" stroke="#EAA527" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M43 99l-8 8m0-8 8 8M174 38l-8 8m0-8 8 8" stroke="#D97719" stroke-width="3" stroke-linecap="round"/></svg></div>
+  <div class="feature-content"><div class="num">01</div><h3>基本料金が旧一電の半額</h3><p>基本料金を削減し、毎月オトクに。※具体的な単価は最新の料金表をご確認ください。</p></div>
+</article>
+<article class="feature">
+  <div class="feature-illustration" aria-hidden="true"><svg viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="75" r="62" fill="#FFE4BD"/><path d="M48 73 110 27l62 46" stroke="#C65D16" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M61 68v53h98V68" fill="#FFF9F1" stroke="#D97719" stroke-width="3.5" stroke-linejoin="round"/><path d="M95 121V88a15 15 0 0 1 30 0v33" fill="#FFE4BD" stroke="#EAA527" stroke-width="3"/><path d="m111 54-12 20h13l-5 16 17-24h-13l5-12Z" fill="#EAA527" stroke="#C65D16" stroke-width="2" stroke-linejoin="round"/><path d="M35 46h16m-8-8v16M169 103h17m-8-8v16" stroke="#D97719" stroke-width="3" stroke-linecap="round"/></svg></div>
+  <div class="feature-content"><div class="num">02</div><h3>切り替えは工事不要・品質そのまま</h3><p>スマートメーターならすぐに切替可能です。送電網は同じで、電気の品質・停電対応は変わりません。</p></div>
+</article>
+<article class="feature">
+  <div class="feature-illustration" aria-hidden="true"><svg viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="75" r="62" fill="#FFE4BD"/><rect x="70" y="29" width="80" height="92" rx="10" fill="#FFF9F1" stroke="#D97719" stroke-width="3.5"/><path d="M89 29v-7a21 21 0 0 1 42 0v7" stroke="#C65D16" stroke-width="4" stroke-linecap="round"/><path d="M87 54h45M87 67h29" stroke="#EAA527" stroke-width="3" stroke-linecap="round"/><circle cx="132" cy="100" r="22" fill="#FFE4BD" stroke="#C65D16" stroke-width="3"/><path d="m121 100 7 7 14-15" stroke="#C65D16" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 70h14m-7-7v14M166 42h13m-6-6v12" stroke="#D97719" stroke-width="3" stroke-linecap="round"/></svg></div>
+  <div class="feature-content"><div class="num">03</div><h3>契約期間の縛り、違約金無し</h3><p>契約期間の縛りや途中解約による違約金はございません。※ただし各種キャンペーン適用の場合は諸条件あり</p></div>
+</article>
+</div></div></section>
 <section id="flow"><div class="wrap"><div class="section-head"><h2>新規お申込みの流れ</h2></div><div class="flow">
   <article class="flow-item" data-step="STEP 1"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 5h16l8 8v28a2 2 0 0 1-2 2H13a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z"/><path d="M29 5v9h8M17 23h14M17 30h10"/></svg></div><p>電力会社からの<br>検針票or請求書を<br>ご準備</p></article>
   <article class="flow-item" data-step="STEP 2"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="7" width="38" height="27" rx="2"/><path d="M5 13h38M5 30h38M19 34l-2 7m12-7 2 7M16 41h16"/></svg></div><p>本サイトから<br>お申込み</p></article>
   <article class="flow-item" data-step="STEP 3"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="38" height="28" rx="3"/><path d="m6 13 18 13 18-13"/></svg></div><p>お申込受付時に<br>メールをお送りします</p></article>
   <article class="flow-item" data-step="STEP 4"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="38" height="28" rx="3"/><path d="m6 13 18 13 18-13M15 31h18"/></svg></div><p>供給開始予定日を<br>メールでご案内します。<br>（約1週間後）</p></article>
   <article class="flow-item" data-step="STEP 5"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4a14 14 0 0 0-8 25.5c2 1.5 3 3.1 3 5.5h10c0-2.4 1-4 3-5.5A14 14 0 0 0 24 4Z"/><path d="M19 35h10m-9 4h8m-6 4h4M18 32h12"/></svg></div><p>ご利用の開始<br>（約1か月半後）</p></article>
-</div><p class="disclaimer">※申込内容に不備がある場合は別途ご連絡させていただきます。</p><div class="flow-apply-action"><a class="btn flow-apply-btn" href="simulation.html">お申し込みはこちら →</a></div></div></section>
+</div><p class="disclaimer">※申込内容に不備がある場合は別途ご連絡させていただきます。</p><div class="flow-apply-action"><a class="lp-btn flow-apply-btn" href="astomos-denki-apply.html"><span class="desktop-apply-label">お申し込みはこちら →</span><span class="mobile-apply-label">申し込む</span></a></div></div></section>
 <section id="price"><div class="wrap"><div class="section-head"><div class="eyebrow">PRICE INFORMATION</div><h2>料金について</h2><p>料金単価・適用条件をご確認いただけます。</p></div>
 <div class="price-comparison"><div class="price-table-scroll"><table aria-label="アストモスベーシックと東北電力の料金比較"><colgroup><col class="category-col"><col class="item-col"><col class="company-col"><col class="company-col"></colgroup>
 <thead><tr><th colspan="2">単価項目</th><th class="price-main-heading">アストモス<br>ベーシック</th><th class="price-competitor-heading">東北電力<br>従量電灯B（規制）</th></tr></thead>
@@ -373,12 +694,11 @@ section { padding: var(--section-padding-y) 0; }
 <tr><td class="price-item">～300kWh</td><td class="price-value price-main" data-label="">36.98円</td><td class="price-value price-competitor" data-label="">36.37円</td></tr>
 <tr><td class="price-item">300kWh～</td><td class="price-value price-main" data-label="">38.35円</td><td class="price-value price-competitor" data-label="">40.32円</td></tr>
 </tbody></table></div>
-<div class="price-table-notes"><p>※上記料金単価は掲載用のサンプル値です。公開前に最新の公式料金表と照合してください。</p><p>※電気料金には、燃料費調整額、再生可能エネルギー発電促進賦課金などが別途適用される場合があります。</p><p>※実際の請求額は、ご契約内容や電気の使用状況によって異なります。</p></div>
+<div class="price-table-notes"><p>※上記料金単価は掲載用のサンプル値です。</p><p>※実際に請求される電気料金には、燃料費調整額、再生可能エネルギー発電促進賦課金などが別途適用される場合があります。</p><p>※実際の請求額は、ご契約内容や電気の使用状況によって異なります。</p></div>
 </div></div></section>
 <section id="faq"><div class="wrap"><div class="section-head"><div class="eyebrow">FAQ</div><h2>よくあるご質問</h2><p>プランを検討する際に、事前に確認しておきたいポイントです。</p></div><div class="faq"><details><summary>自分の家庭に合うプランか、どう確認できますか？</summary><p>検針票などで現在の契約アンペアと月間使用量を確認し、料金シミュレーションで条件を入力して比較してください。</p></details><details><summary>シミュレーション結果は実際の請求額と同じですか？</summary><p>シミュレーション結果は入力条件に基づく試算です。実際の請求額は、適用される料金条件や各種調整額などにより異なる場合があります。</p></details><details><summary>申し込み前に何を確認すればよいですか？</summary><p>対象エリア、料金単価、契約条件、適用開始日、注意事項など、最新の公式資料をご確認ください。</p></details></div><p class="disclaimer">※掲載内容は、実際の料金単価、対象エリア、割引、契約条件などの正式情報を確認してから公開する予定です。</p></div></section>
-<section class="cta-band"><div class="wrap"><h2>まずは電気料金を比較してみませんか？</h2><p>現在の使用量をもとに、料金の目安をシミュレーションできます。</p><a class="btn" href="simulation.html">料金シミュレーションを始める →</a></div></section>
+<section class="cta-band"><div class="wrap"><h2>まずは電気料金を比較してみませんか？</h2><p>現在の使用量をもとに、料金の目安をシミュレーションできます。</p><a class="lp-btn" href="#simulationArea">料金シミュレーションを始める →</a></div></section>
 </main>
-
 <section id="legal-disclosure" aria-labelledby="legal-disclosure-title">
   <div class="wrap">
     <div class="section-head">
@@ -403,7 +723,653 @@ section { padding: var(--section-padding-y) 0; }
     </div>
   </div>
 </section>
+</div>
+
+
+<div id="simulationPage" class="simulation-page" aria-hidden="true">
+<section class="sim-hero"><div class="sim-hero-inner"><div><h1>電気料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div><button type="button" class="back-to-lp js-back-to-lp">← プラン案内に戻る</button></div></section>
+
+<div class="shell">
+<section id="simulationArea">
+<section class="card">
+  <div class="head"><div class="step">STEP 1</div><h2>お住まいの地域</h2><p>電気を使用する地域を選択してください。</p></div>
+  <div class="body">
+    <div class="region-layout">
+      <div>
+        <div id="areas" class="region-buttons"></div>
+        <div class="region-selected">選択中のエリア：<strong id="selectedAreaText">未選択</strong></div>
+      </div>
+      <div class="map-wrap">
+        <svg class="japan-map" viewBox="0 0 620 360" role="img" aria-label="日本地図から地域を選択">
+          <text x="320" y="22" text-anchor="middle" class="map-title">地図の地域を押して選択できます</text>
+          <!-- 北海道 -->
+          <path class="map-region" data-area="北海道" d="M472 38 L532 26 L575 53 L559 93 L505 104 L468 77 Z"/>
+          <text class="map-label" data-label="北海道" x="522" y="69" text-anchor="middle">北海道</text>
+          <!-- 東北 -->
+          <path class="map-region" data-area="東北" d="M448 111 L492 103 L512 127 L498 181 L462 194 L440 158 Z"/>
+          <text class="map-label" data-label="東北" x="478" y="149" text-anchor="middle">東北</text>
+          <!-- 東京/関東 -->
+          <path class="map-region" data-area="東京" d="M425 191 L466 188 L488 208 L467 238 L427 232 L411 209 Z"/>
+          <text class="map-label" data-label="東京" x="451" y="216" text-anchor="middle">関東</text>
+          <!-- 中部 -->
+          <path class="map-region" data-area="中部" d="M361 182 L414 180 L427 205 L407 239 L366 245 L344 216 Z"/>
+          <text class="map-label" data-label="中部" x="386" y="215" text-anchor="middle">中部</text>
+          <!-- 北陸 -->
+          <path class="map-region" data-area="北陸" d="M326 163 L372 153 L400 174 L366 194 L326 191 L307 178 Z"/>
+          <text class="map-label" data-label="北陸" x="351" y="177" text-anchor="middle">北陸</text>
+          <!-- 関西 -->
+          <path class="map-region" data-area="関西" d="M305 201 L347 194 L365 220 L348 249 L306 250 L289 226 Z"/>
+          <text class="map-label" data-label="関西" x="327" y="225" text-anchor="middle">関西</text>
+          <!-- 中国 -->
+          <path class="map-region" data-area="中国" d="M225 201 L292 198 L303 224 L278 242 L219 236 L198 220 Z"/>
+          <text class="map-label" data-label="中国" x="252" y="221" text-anchor="middle">中国</text>
+          <!-- 四国 -->
+          <path class="map-region" data-area="四国" d="M262 254 L321 249 L337 269 L313 289 L257 285 L243 269 Z"/>
+          <text class="map-label" data-label="四国" x="291" y="272" text-anchor="middle">四国</text>
+          <!-- 九州 -->
+          <path class="map-region" data-area="九州" d="M157 233 L205 226 L225 251 L207 294 L176 321 L146 300 L139 260 Z"/>
+          <text class="map-label" data-label="九州" x="183" y="268" text-anchor="middle">九州</text>
+          <!-- 沖縄はArea_Configに登録されていないため現在は対象外 -->
+          <path class="map-region area-disabled" data-area="沖縄" d="M101 315 L115 310 L121 322 L111 336 L98 332 Z"/>
+          <text class="map-label area-disabled" data-label="沖縄" x="83" y="338" text-anchor="middle">沖縄</text>
+        </svg>
+        <div id="mapHelp" class="map-help"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="step">STEP 2</div><h2>シミュレーション方法</h2></div>
+  <div class="body">
+    <div class="choices two">
+      <button class="choice method" data-mode="simple"><strong>簡易シミュレーション</strong><span>世帯人数から標準使用量を算出</span></button>
+      <button class="choice method" data-mode="detail"><strong>詳細シミュレーション</strong><span>1か月の使用量・契約容量から年間を推計</span></button>
+    </div>
+
+    <div id="simple" class="input">
+      <div class="field"><label>世帯人数</label>
+        <select id="household"><option value="">選択してください</option><option>1人世帯</option><option>2人世帯</option><option>3～4人世帯</option><option>5人以上世帯</option></select>
+      </div>
+    </div>
+
+    <div id="detail" class="input">
+      <div class="field">
+        <label>対象月</label><select id="baseMonth"><option value="">選択</option></select>
+        <label>使用量</label><input id="baseUsage" type="number" min="1"><span>kWh</span>
+        <span id="ampereFields"><label style="margin-left:6px">契約容量</label>
+          <select id="capacity"><option value="">選択</option><option>10A</option><option>15A</option><option>20A</option><option>30A</option><option>40A</option><option>50A</option><option>60A</option></select>
+        </span>
+        <span id="ampereNotRequired" class="amp-note">このエリアはアンペア数の選択は不要です。</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="error" class="error"></div>
+  <div id="loading" class="loading">計算しています…</div>
+  <div class="actions"><button id="run" class="btn">シミュレーションする</button></div>
+</section>
+
+<section id="result" class="card result">
+  <div class="resultTop">
+    <div class="result-eyebrow">年間の電気料金比較</div>
+    <h2>シミュレーション結果</h2>
+    <div class="prices">
+      <div class="price legacy-price">
+        <small id="oldLabel"></small>
+        <div class="annual-price"><strong id="oldAnnual"></strong><span>円／年</span></div>
+      </div>
+      <div class="price new">
+        <small id="newLabel"></small>
+        <div class="annual-price"><strong id="newAnnual"></strong><span>円／年</span></div>
+      </div>
+    </div>
+    <div id="saving" class="saving" role="status"></div>
+  </div>
+  <div class="resultBody">
+    <div class="summary">
+      <div><small>年間使用量</small><strong id="sumUsage"></strong></div>
+      <div><small>対象エリア</small><strong id="sumArea"></strong></div>
+      <div><small>契約容量</small><strong id="sumCapacity"></strong></div>
+    </div>
+    <section class="monthly-table-section" aria-labelledby="monthlyTableHeading">
+      <h3 id="monthlyTableHeading">月別シミュレーション結果</h3>
+      <div class="monthly-table-wrap">
+        <table id="monthlyTable" class="monthly-table" aria-label="月別の使用量と電気料金の比較">
+          <colgroup><col class="col-month"><col class="col-usage"><col class="col-current"><col class="col-astomos"><col class="col-diff"></colgroup>
+          <thead>
+            <tr><th rowspan="2" scope="col"></th><th rowspan="2" scope="col">使用量（kWh）</th><th colspan="2" scope="colgroup">電気料金（円）</th><th rowspan="2" scope="col">差額（円）</th></tr>
+            <tr><th scope="col" id="tableOldLabel">現在のご契約</th><th scope="col">アストモスでんき</th></tr>
+          </thead>
+          <tbody id="monthlyTableBody"></tbody>
+          <tfoot id="monthlyTableFoot"></tfoot>
+        </table>
+      </div>
+    </section>
+    <div class="condition-note"><strong>試算条件：</strong><span id="sumCondition"></span></div>
+    <div class="notes">
+      <p id="exclude"></p>
+      <div id="disclaimerTitle" class="disclaimer-title">電気料金シミュレーションのご利用上の注意事項</div>
+      <p id="disclaimer"></p>
+    </div>
+</div>
+  <div class="cta-area"><p>シミュレーション結果をご確認のうえ、お申込みへお進みください。</p><button type="button" id="goApplication" class="btn">この内容で申し込む</button></div>
+</section>
+</section>
+</div>
+
+
+<div class="lp-content">
+
 
 <footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜新ベーシックプラン</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span></div></footer>
+</div>
+</div><!-- /#simulationPage -->
+<script>
+const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master":[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1848.0},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.62},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.37},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.32},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":184.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":924.0},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
+const HOUSEHOLDS=['1人世帯','2人世帯','3～4人世帯','5人以上世帯'];
+const AMPERES=['10A','15A','20A','30A','40A','50A','60A'];
+const activeVal=v=>v===true||v===1||['TRUE','1','有効','公開','○','〇'].includes(String(v==null?'':v).trim().toUpperCase());
+const numVal=v=>{if(v===''||v==null)return 0;const n=Number(String(v).replace(/,/g,'').replace(/円|kWh/gi,'').trim());return Number.isFinite(n)?n:0;};
+const capVal=v=>{let s=String(v||'').trim().toUpperCase().replace(/\s/g,'');if(/^\d+$/.test(s))s+='A';return s;};
+const roundVal=v=>Math.round(Number(v)||0);
+function calculateSimulation(input){
+  if(!input||!String(input.area||'').trim())throw new Error('対象エリアを選択してください。');
+  const areas=LOCAL_DATA.Area_Config, standards=LOCAL_DATA.Standard_Usage;
+  const ratios={};LOCAL_DATA.Monthly_Ratio.forEach(r=>{const m=Number(r.Month),v=numVal(r.Ratio);if(m>=1&&m<=12&&v>0&&activeVal(r.IsActive))ratios[m]=v;});
+  for(let m=1;m<=12;m++)if(!ratios[m])throw new Error('Monthly_Ratioの'+m+'月が未設定です。');
+  const area=areas.find(r=>String(r.AreaName).trim()===input.area&&activeVal(r.IsActive));
+  if(!area)throw new Error(input.area+'は現在のシミュレーション対象外です。');
+  if(!['simple','detail'].includes(String(input.mode)))throw new Error('シミュレーション方法を選択してください。');
+  if(input.mode==='simple'&&!HOUSEHOLDS.includes(String(input.household)))throw new Error('世帯人数を選択してください。');
+  if(input.mode==='detail'&&AMPERE_AREAS.includes(String(input.area))&&!AMPERES.includes(capVal(input.capacity)))throw new Error('契約容量（アンペア数）を選択してください。');
+  let usage,capacity=capVal(area.DetailedCapacity||'30A'),condition;
+  if(input.mode==='simple'){
+    const row=standards.find(r=>String(r.AreaName).trim()===input.area&&String(r.HouseholdType).trim()===input.household&&activeVal(r.IsActive));
+    if(!row)throw new Error(input.area+'・'+input.household+'のStandard_Usageがありません。');
+    const annual=numVal(row.AnnualUsageKwh);if(annual<=0)throw new Error('標準年間使用量を設定してください。');
+    capacity=capVal(row.Capacity||capacity);const total=Object.values(ratios).reduce((a,b)=>a+b,0);
+    usage=Array.from({length:12},(_,i)=>annual*ratios[i+1]/total);
+    condition=input.household+'／標準年間使用量 '+Math.round(annual).toLocaleString('ja-JP')+'kWh';
+  }else{
+    const month=Number(input.baseMonth),base=numVal(input.baseUsageKwh);
+    if(month<1||month>12||base<=0)throw new Error('対象月と使用量を入力してください。');
+    if(AMPERE_AREAS.includes(input.area)){const selected=capVal(input.capacity);if(!AMPERES.includes(selected))throw new Error('契約容量（アンペア数）を選択してください。');capacity=selected;}
+    usage=Array.from({length:12},(_,i)=>base*ratios[i+1]/ratios[month]);
+    condition=month+'月 '+Math.round(base).toLocaleString('ja-JP')+'kWhから推計'+(AMPERE_AREAS.includes(input.area)?'／契約容量 '+capacity:'');
+  }
+  const plans=LOCAL_DATA.Plan_Master,rates=LOCAL_DATA.Rate_Master;
+  const oldPlan=plans.find(p=>String(p.PlanID)===String(area.LegacyPlanID)&&activeVal(p.IsActive));
+  const newPlan=plans.find(p=>String(p.PlanID)===String(area.AstomosPlanID)&&activeVal(p.IsActive));
+  if(!oldPlan)throw new Error('比較元のPlan_Masterがありません。PlanID：'+area.LegacyPlanID);
+  if(!newPlan)throw new Error('アストモスでんきのPlan_Masterがありません。PlanID：'+area.AstomosPlanID);
+  function price(planId,kwh,cap){
+    const rows=rates.filter(r=>String(r.PlanID)===String(planId)&&!['燃料費調整額','再エネ賦課金','再生可能エネルギー発電促進賦課金'].includes(String(r.RateType)));
+    if(!rows.length)throw new Error('Rate_Masterに単価がありません。PlanID：'+planId);
+    const basics=rows.filter(r=>['基本料金','最低料金'].includes(String(r.RateType)));
+    const basic=basics.find(r=>capVal(r.Capacity)===capVal(cap))||basics.find(r=>!capVal(r.Capacity));let total=basic?numVal(basic.UnitPrice):0;
+    rows.filter(r=>String(r.RateType)==='電力量料金').sort((a,b)=>numVal(a.MinKwh)-numVal(b.MinKwh)).forEach(r=>{
+      const min=numVal(r.MinKwh),raw=r.MaxKwh,max=raw===''||raw==null||numVal(raw)>=99999?Infinity:numVal(raw);
+      const qty=max===Infinity?Math.max(0,kwh-min):Math.max(0,Math.min(kwh,max)-min);total+=qty*numVal(r.UnitPrice);
+    });return roundVal(total);
+  }
+  let oldAnnual=0,newAnnual=0;
+  const months=usage.map((kwh,i)=>{const old=price(oldPlan.PlanID,kwh,capacity),neo=price(newPlan.PlanID,kwh,capacity);oldAnnual+=old;newAnnual+=neo;return {month:i+1,usageKwh:roundVal(kwh),legacyPrice:old,astomosPrice:neo,saving:roundVal(old-neo)};});
+  oldAnnual=roundVal(oldAnnual);newAnnual=roundVal(newAnnual);
+  return {area:input.area,displayArea:input.area==='東京'?'関東':input.area,mode:input.mode,condition,capacity,capacityRequired:AMPERE_AREAS.includes(input.area),annualUsageKwh:months.reduce((s,m)=>s+m.usageKwh,0),legacy:{company:area.LegacyCompanyName,plan:oldPlan.PlanName,annualPrice:oldAnnual},astomos:{company:'アストモスでんき',plan:newPlan.PlanName,annualPrice:newAnnual},annualSaving:roundVal(oldAnnual-newAnnual),months,exclusions:'燃料費調整額および再生可能エネルギー発電促進賦課金は計算に含まれていません。',disclaimerTitle:'電気料金シミュレーションのご利用上の注意事項',disclaimer:['※本シミュレーションは、お客様にご入力いただいたデータをもとに独自の計算条件に基づいて算出しております。','※本シミュレーション結果は目安であり、ご利用した時点での電気料金、実際のお支払い額その他を保証するものではありません。','※本シミュレーションの比較元の料金は、ご選択された電力エリアに該当する地域の電力会社の料金単価にて算出しております。なお、料金単価につきましては、各社がウェブサイト等で公開している情報を使用しております。（2026年4月1日時点）','※シミュレーション結果は税込みです。','※地域の電力会社以外との料金比較については、ご自身の請求金額と本シミュレーションの結果を比較してください。','※当社では各地域の電力会社の料金メニュー／サービス等に関するご質問にはお答えできません。各地域の電力会社に直接お問い合わせください。','※各地域の電力会社の最低使用量を下回る使用量を入力された場合は正しく計算できない場合がありますので、ご了承ください。','※電力プランは、以下の条件で試算しております。','北海道電力エリア・東北電力エリア・東京電力エリア・中部電力エリア・北陸電力エリア・九州電力エリア…従量電灯B','関西電力エリア・中国電力エリア・四国電力エリア…従量電灯A'].join('\n'),calculatedAt:new Date().toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}) };
+}
+
+
+let AREA_CONFIG=[];
+let AMPERE_AREAS=[];
+const state={area:'',mode:'',simulation:null};
+const $=id=>document.getElementById(id);
+const yen=v=>Number(v||0).toLocaleString('ja-JP');
+
+
+function displayArea(area){const x=AREA_CONFIG.find(a=>a.internal===area);return x?x.display:area;}
+function areaConfig(area){return AREA_CONFIG.find(a=>a.internal===area);}
+function isAreaActive(area){const x=areaConfig(area);return !!(x&&x.active);}
+
+function renderAreaConfig(){
+  $('areas').innerHTML='';
+  AREA_CONFIG.forEach(a=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='choice'+(a.active?'':' area-disabled'); b.dataset.area=a.internal;
+    b.textContent=a.display; b.disabled=!a.active;
+    b.title=a.active?'':'現在のシミュレーション対象外です';
+    b.addEventListener('mouseenter',()=>setAreaHover(a.internal,true));
+    b.addEventListener('mouseleave',()=>setAreaHover(a.internal,false));
+    b.addEventListener('click',()=>{if(a.active)selectArea(a.internal);});
+    $('areas').appendChild(b);
+  });
+  document.querySelectorAll('.map-region').forEach(el=>{
+    const area=el.dataset.area;
+    const cfg=areaConfig(area);
+    const active=!!(cfg&&cfg.active);
+    el.classList.toggle('area-disabled',!active);
+    el.style.pointerEvents=active?'auto':'none';
+    const label=document.querySelector('.map-label[data-label="'+area+'"]');
+    if(label)label.classList.toggle('area-disabled',!active);
+    el.onmouseenter=()=>{if(active)setAreaHover(area,true);};
+    el.onmouseleave=()=>{if(active)setAreaHover(area,false);};
+    el.onclick=()=>{if(active)selectArea(area);};
+  });
+  const inactive=AREA_CONFIG.filter(a=>!a.active).map(a=>a.display);
+  // Area_Configに存在しない沖縄は現状も対象外として案内に含める
+  if(!areaConfig('沖縄'))inactive.push('沖縄');
+  const unique=[...new Set(inactive)];
+  $('mapHelp').textContent=unique.length?'※ '+unique.join('・')+'は現在のシミュレーション対象外です。':'';
+}
+
+function loadAreaConfig(){
+  AREA_CONFIG=(LOCAL_DATA.Area_Config||[]).filter(r=>String(r.AreaName||'').trim()).map(r=>({internal:String(r.AreaName).trim(),display:String(r.AreaName).trim()==='東京'?'関東':String(r.AreaName).trim(),active:activeVal(r.IsActive)}));
+  AMPERE_AREAS=['北海道','東北','東京','中部','北陸','九州'];
+  renderAreaConfig(); updateAmpereUI();
+}
+
+loadAreaConfig();
+
+function setAreaHover(area,on){
+  if(!isAreaActive(area))return;
+  document.querySelectorAll(`[data-area="${area}"]`).forEach(el=>{
+    if(!el.classList.contains('selected'))el.classList.toggle('hovered',on);
+  });
+}
+function selectArea(area){
+  if(!isAreaActive(area))return;
+  state.area=area;
+  document.querySelectorAll('[data-area]').forEach(el=>{
+    el.classList.toggle('selected',el.dataset.area===area);
+    el.classList.remove('hovered');
+  });
+  document.querySelectorAll('.map-label').forEach(el=>el.classList.toggle('selected',el.dataset.label===area));
+  $('selectedAreaText').textContent=displayArea(area)+'エリア';
+  updateAmpereUI();
+  invalidateResult();
+  hideError();
+}
+
+for(let m=1;m<=12;m++)$('baseMonth').insertAdjacentHTML('beforeend',`<option value="${m}">${m}月</option>`);
+
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('selected',x===b));
+  state.mode=b.dataset.mode;
+  $('simple').classList.toggle('show',state.mode==='simple');
+  $('detail').classList.toggle('show',state.mode==='detail');
+  updateAmpereUI();
+  invalidateResult();
+  hideError();
+});
+
+function updateAmpereUI(){
+  const needs=AMPERE_AREAS.includes(state.area);
+  $('ampereFields').style.display=needs?'inline-flex':'none';
+  $('ampereFields').style.alignItems='center';
+  $('ampereFields').style.gap='12px';
+  $('ampereNotRequired').classList.toggle('show',!!state.area&&!needs);
+  if(!needs)$('capacity').value='';
+}
+
+$('run').onclick=()=>{
+  hideError(); invalidateResult();
+  const input={
+    area:state.area,mode:state.mode,household:$('household').value,
+    baseMonth:$('baseMonth').value,baseUsageKwh:$('baseUsage').value,
+    capacity:$('capacity').value
+  };
+  if(!input.area)return error('地域を選択してください。');
+  if(!isAreaActive(input.area))return error('選択した地域は現在のシミュレーション対象外です。');
+  if(!input.mode)return error('シミュレーション方法を選択してください。');
+  if(input.mode==='simple'&&!input.household)return error('世帯人数を選択してください。');
+  if(input.mode==='detail'&&(!input.baseMonth||Number(input.baseUsageKwh)<=0))return error('対象月と使用量を入力してください。');
+  if(input.mode==='detail'&&AMPERE_AREAS.includes(input.area)&&!input.capacity)return error('契約容量（アンペア数）を選択してください。');
+
+  // Code.gsを使わず、HTML内に埋め込んだ料金データからブラウザ上で計算
+  $('loading').style.display='block'; $('run').disabled=true; setSimulationInputsDisabled(true);
+  try {
+    const result=calculateSimulation(input);
+    showResult(result);
+  } catch(e) {
+    simulationReady(); error(e && e.message ? e.message : String(e));
+  }
+};
+
+function simulationReady(){$('loading').style.display='none';$('run').disabled=false;setSimulationInputsDisabled(false)}
+function setSimulationInputsDisabled(disabled){
+  document.querySelectorAll('#simulationArea .choice,#simulationArea select,#simulationArea input,.map-region').forEach(el=>{
+    if(el.classList.contains('map-region'))el.style.pointerEvents=disabled?'none':'auto';else el.disabled=disabled;
+  });
+}
+function showResult(r){
+  simulationReady();state.simulation=r;$('result').classList.add('show');
+  $('oldLabel').textContent=r.legacy.company+' '+r.legacy.plan;$('oldAnnual').textContent=yen(r.legacy.annualPrice);
+  $('newLabel').textContent=r.astomos.company+' '+r.astomos.plan;$('newAnnual').textContent=yen(r.astomos.annualPrice);
+  const oldLegend=$('oldLegend'); if(oldLegend)oldLegend.textContent=r.legacy.company;
+  const s=$('saving');
+  if(r.annualSaving>0){
+    s.className='saving good';
+    s.textContent='アストモスでんきの方が年間 '+yen(r.annualSaving)+'円おトク';
+  }else if(r.annualSaving<0){
+    s.className='saving bad';
+    s.textContent='現在の電力会社の方が年間 '+yen(Math.abs(r.annualSaving))+'円おトク';
+  }else{
+    s.className='saving neutral';
+    s.textContent='年間料金は同額の試算です';
+  }
+  $('sumArea').textContent=r.displayArea||r.area;
+  $('sumUsage').textContent=yen(r.annualUsageKwh)+' kWh';
+  $('sumCapacity').textContent=r.capacityRequired?r.capacity:'選択不要';
+  $('sumCondition').textContent=r.condition;
+  $('exclude').textContent=r.exclusions?'※ '+r.exclusions:'';
+  $('disclaimerTitle').textContent=r.disclaimerTitle||'電気料金シミュレーションのご利用上の注意事項';
+  $('disclaimer').textContent=r.disclaimer||'';
+  drawMonthlyTable(r.months||[],r.legacy.company);
+  $('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function drawMonthlyTable(months, legacyCompany){
+  const body=$('monthlyTableBody');
+  const foot=$('monthlyTableFoot');
+  $('tableOldLabel').textContent='現在のご契約';
+  if(!months.length){
+    body.innerHTML='<tr><td colspan="5">月別の試算結果を表示できませんでした。</td></tr>';
+    foot.innerHTML='';
+    return;
+  }
+  const fmt=v=>Math.round(Number(v)||0).toLocaleString('ja-JP');
+  const diffText=v=>Number(v)<0?'▲'+fmt(Math.abs(v)):fmt(v);
+  body.innerHTML=months.map(m=>{
+    const diff=(Number(m.astomosPrice)||0)-(Number(m.legacyPrice)||0);
+    return `<tr><th scope="row">${m.month}月</th><td>${fmt(m.usageKwh)}</td><td>${fmt(m.legacyPrice)}</td><td>${fmt(m.astomosPrice)}</td><td>${diffText(diff)}</td></tr>`;
+  }).join('');
+  const totalUsage=months.reduce((sum,m)=>sum+(Number(m.usageKwh)||0),0);
+  const totalLegacy=months.reduce((sum,m)=>sum+(Number(m.legacyPrice)||0),0);
+  const totalAstomos=months.reduce((sum,m)=>sum+(Number(m.astomosPrice)||0),0);
+  const totalDiff=totalAstomos-totalLegacy;
+  foot.innerHTML=`<tr><th scope="row">合計</th><td>${fmt(totalUsage)}</td><td>${fmt(totalLegacy)}</td><td>${fmt(totalAstomos)}</td><td>${diffText(totalDiff)}</td></tr>`;
+}
+function invalidateResult(){state.simulation=null;$('result').classList.remove('show')}
+['household','baseMonth','baseUsage','capacity'].forEach(id=>$(id).addEventListener('change',invalidateResult));
+$('baseUsage').addEventListener('input',invalidateResult);
+function error(t){$('error').textContent=t;$('error').style.display='block'}
+function hideError(){$('error').style.display='none'}
+
+/* 訪問者ID：同じブラウザでは再読み込み・再訪問しても同じIDを使用 */
+function getAnalyticsVisitorId(){
+  const key='astomos_analytics_visitor_id_v1';
+  try {
+    let id=localStorage.getItem(key);
+    if(!id){
+      id=(window.crypto && typeof window.crypto.randomUUID==='function')
+        ? window.crypto.randomUUID()
+        : 'v-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
+      localStorage.setItem(key,id);
+    }
+    return id;
+  } catch(e) {
+    // localStorageが使えない場合は訪問ごとのIDとなり、ユニーク数の精度が下がります
+    return 'session-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2);
+  }
+}
+const analyticsVisitorId=getAnalyticsVisitorId();
+// 単体HTML版ではGoogle Apps Scriptへのアクセス解析記録は行いません。
+
+/* 申込ページへの遷移
+ * 本番の申込ページ完成後、下記URLを差し替えてください。
+ */
+$('goApplication').onclick=()=>{
+  const targetUrl='https://script.google.com/macros/s/AKfycbzYjx6DOM4QVenrN6xDcgPZ9QJoxoj3-jd2OI_V0yHd5B95mAHdCFkJFjdsutACqNW_nQ/exec';
+  // 申込ページへの遷移自体は外部URLで行います（クリック計測は行いません）。
+  window.location.href=targetUrl;
+};
+</script>
+<style>
+/* Q&Aウィジェット：シミュレーション画面とは独立 */
+body{padding-bottom:90px}
+.qa-launch{position:fixed;right:20px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:1000;border:0;border-radius:30px;background:#c65b00;color:#fff;font:inherit;font-weight:800;padding:15px 22px;box-shadow:0 5px 24px #0003;cursor:pointer;min-height:48px}
+.qa-panel{position:fixed;right:20px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:1001;width:380px;max-width:calc(100vw - 24px);height:560px;max-height:calc(100dvh - 110px);background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 48px #0003;display:flex;flex-direction:column;overflow:hidden;font-size:14px}
+.qa-panel[hidden]{display:none}.qa-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--soft);border-bottom:1px solid var(--line);gap:8px}.qa-head h2{margin:0;font-size:17px}.qa-head small{color:var(--muted)}
+.qa-browse{font:inherit;color:#954400;background:#fff;border:0;border-bottom:1px solid var(--line);padding:10px;min-height:44px;cursor:pointer;flex-shrink:0}.qa-catalog{flex-shrink:0}.qa-catalog details{border:1px solid var(--line);border-radius:8px;margin-bottom:8px;background:#fff}.qa-catalog summary{padding:12px;cursor:pointer;font-weight:bold;color:#954400}.qa-question{display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:#fff;font:inherit;padding:12px;cursor:pointer;overflow-wrap:anywhere;min-height:44px}.qa-question:disabled{opacity:.5}.qa-privacy{font-size:11px;color:var(--muted);margin:6px 0 0}
+.qa-close{border:0;background:transparent;min-width:44px;min-height:44px;font-size:26px;cursor:pointer}.qa-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px;display:flex;flex-direction:column;gap:12px}
+.qa-message{padding:12px 14px;background:#f2f3f4;border-radius:12px;max-width:96%;white-space:pre-wrap;overflow-wrap:anywhere;flex-shrink:0}.qa-user{background:var(--soft);align-self:flex-end}.qa-feedback{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.qa-feedback button{border:1px solid #c65b00;border-radius:8px;background:#fff;color:#954400;padding:10px;font:inherit;cursor:pointer;min-height:44px}.qa-feedback button:disabled{opacity:.6;cursor:default}
+.qa-contact{display:block;color:#954400;font-size:20px;font-weight:800;margin-top:8px;min-height:44px}.qa-form{border-top:1px solid var(--line);padding:12px;background:#fff}.qa-form label{display:block;font-size:12px;margin-bottom:7px}.qa-compose{display:flex;gap:8px}.qa-compose input{width:0;flex:1;min-width:0;font:inherit;font-size:16px;border:1px solid #aaa;border-radius:8px;padding:10px}.qa-compose button{border:0;border-radius:8px;background:#c65b00;color:#fff;font:inherit;font-weight:700;padding:10px 14px;cursor:pointer}.qa-compose button:disabled{opacity:.5}.qa-status{min-height:20px;margin-top:5px;color:var(--muted);font-size:12px}
+@media(max-width:630px){.qa-launch{right:12px;padding:12px 18px}.qa-panel{right:12px;bottom:calc(78px + env(safe-area-inset-bottom,0px));width:calc(100vw - 24px);height:520px;max-height:calc(100dvh - 96px)}}
+</style>
+<button type="button" id="qaLaunch" class="qa-launch" aria-expanded="false" aria-controls="qaPanel">Q&A お困りですか？</button>
+<section id="qaPanel" class="qa-panel" role="dialog" aria-labelledby="qaTitle" hidden>
+  <header class="qa-head"><div><h2 id="qaTitle">よくあるご質問</h2><small>登録済みのQ&Aからご案内します</small></div><button type="button" id="qaClose" class="qa-close" aria-label="チャットを閉じる">×</button></header>
+  <button type="button" id="qaBrowse" class="qa-browse">ジャンルから質問を選ぶ</button>
+  <div id="qaLog" class="qa-log" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <form id="qaForm" class="qa-form"><label for="qaInput">キーワード・質問を入力</label><div class="qa-compose"><input id="qaInput" type="text" maxlength="500" placeholder="例：結果を保存したい" autocomplete="off" required><button id="qaSend" type="submit">送信</button></div><p class="qa-privacy">入力内容と日時をQ&A改善のために記録します。氏名・電話番号・契約番号などの個人情報は入力しないでください。</p><div id="qaStatus" class="qa-status" role="status"></div></form>
+</section>
+<script>
+(()=>{
+  const el=id=>document.getElementById(id);
+  let busy=false,initialized=false,contact=null,feedback=null;
+  let catalogLoading=false,catalogNode=null;
+  const scroll=()=>{el('qaLog').scrollTop=el('qaLog').scrollHeight;};
+  function message(text,user=false){
+    const node=document.createElement('div');node.className='qa-message'+(user?' qa-user':'');node.textContent=text;el('qaLog').appendChild(node);scroll();return node;
+  }
+  function showContact(){
+    const node=message('お役に立てず申し訳ありません。'+((contact&&contact.name)||'お客様センター')+'へお問い合わせください。');
+    if(contact&&/^0\d{9,10}$/.test(contact.tel)){
+      const a=document.createElement('a');a.className='qa-contact';a.textContent=contact.phone;a.href='tel:'+contact.tel;a.target='_self';node.appendChild(a);
+      if(contact.hours){const hours=document.createElement('div');hours.textContent='受付時間：'+contact.hours;node.appendChild(hours);}
+    }else{const note=document.createElement('div');note.textContent='電話番号を表示できません。ご契約書類などに記載のお問い合わせ窓口をご確認ください。';node.appendChild(note);}
+    scroll();
+  }
+  function clearFeedback(){if(feedback){feedback.querySelectorAll('button').forEach(b=>b.disabled=true);feedback=null;}}
+  function addFeedback(node){
+    const group=document.createElement('div');group.className='qa-feedback';feedback=group;
+    [['解決した',true],['この回答ではない',false]].forEach(([label,solved])=>{
+      const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=()=>{clearFeedback();message(label,true);if(solved)message('ご確認ありがとうございます。ほかにご質問があれば続けて入力してください。');else showContact();};group.appendChild(b);
+    });node.appendChild(group);scroll();
+  }
+  function setOpen(open){
+    el('qaPanel').hidden=!open;el('qaLaunch').setAttribute('aria-expanded',String(open));
+    if(open){
+      if(!initialized){initialized=true;message('こんにちは。ジャンルから質問を選ぶか、下の欄にキーワードを入力してください。');loadCatalog();}
+      el('qaInput').focus();
+    }else el('qaLaunch').focus();
+  }
+  el('qaLaunch').onclick=()=>setOpen(el('qaPanel').hidden);
+  el('qaClose').onclick=()=>setOpen(false);
+  function loadCatalog(){
+    if(catalogLoading||busy)return;
+    catalogLoading=true;el('qaBrowse').disabled=true;el('qaBrowse').textContent='質問一覧を読み込んでいます…';
+    const ready=()=>{catalogLoading=false;el('qaBrowse').disabled=false;el('qaBrowse').textContent='ジャンルから質問を選ぶ';};
+    ready();
+    if(catalogNode)catalogNode.remove();
+    const root=document.createElement('div');root.className='qa-catalog';catalogNode=root;
+    root.textContent='Q&A機能はサーバー連携が必要なため、このHTML単体版では利用できません。料金シミュレーションはご利用いただけます。';
+    el('qaLog').appendChild(root);scroll();
+  }
+  el('qaBrowse').onclick=loadCatalog;
+  el('qaPanel').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();setOpen(false);}});
+  el('qaForm').addEventListener('submit',e=>{
+    e.preventDefault();if(busy)return;
+    const q=el('qaInput').value.trim();if(!q||q.length>500)return;
+    el('qaInput').value='';send(q);
+  });
+  function send(q,category){
+    if(busy)return;
+    clearFeedback();message(q,true);busy=true;el('qaSend').disabled=true;el('qaBrowse').disabled=true;document.querySelectorAll('.qa-question').forEach(b=>b.disabled=true);el('qaStatus').textContent='回答を探しています…';
+    const done=()=>{busy=false;el('qaSend').disabled=false;el('qaBrowse').disabled=catalogLoading;document.querySelectorAll('.qa-question').forEach(b=>b.disabled=false);el('qaStatus').textContent='';scroll();};
+    done();
+    message('Q&A検索はサーバー連携が必要なため、このHTML単体版では利用できません。料金シミュレーションはそのままご利用いただけます。');
+  }
+})();
+</script>
+
+
+<style>
+/* ブランドトーン統一：参考ページのシンプルな入力フォームに合わせた共通スタイル */
+
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic",Meiryo,sans-serif}
+.header{height:68px;background:#fff;border-bottom:3px solid var(--main);box-shadow:0 2px 8px #00000008}
+.logo{font-size:22px;letter-spacing:.01em;color:#333}
+.logo span{color:var(--main)}
+.hero{background:#fff;text-align:left;padding:27px max(18px,calc((100% - 1000px)/2));border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(24px,4vw,32px);font-weight:800;letter-spacing:.01em}
+.hero h1:before{content:"";display:inline-block;width:5px;height:1em;background:var(--main);margin-right:12px;vertical-align:-.12em;border-radius:2px}
+.hero p{padding-left:17px;font-size:14px}
+.shell{margin-top:24px}
+.card{border:1px solid #e0e0e0;border-radius:8px;box-shadow:0 2px 10px #00000008}
+.head{background:#fff;padding:20px 26px 16px;border-bottom:1px solid var(--line)}
+.step{color:var(--main);font-size:12px;letter-spacing:.08em}
+.head h2{font-size:21px;color:#333}
+.body,.resultBody{background:#fff}
+.choice{border:1px solid #cfd2d5;border-radius:6px;transition:background .15s,border-color .15s,color .15s}
+.choice:hover,.choice.hovered{border-color:var(--main);background:var(--soft);color:var(--dark)}
+.choice.selected{border-color:var(--main);background:var(--main);color:#fff}
+.input{background:#fafafa;border:1px solid #e2e2e2;border-radius:6px}
+.field select,.field input,.qa-compose input{border:1px solid #c9cdd1;border-radius:5px}
+.field select:focus,.field input:focus,.qa-compose input:focus{outline:2px solid var(--focus);outline-offset:1px;border-color:var(--main)}
+.btn{background:var(--main);border-radius:7px;box-shadow:0 3px 0 var(--dark);font-weight:800;letter-spacing:.02em}
+.btn:hover:not(:disabled),.qa-launch:hover,.qa-compose button:hover{filter:brightness(.96)}
+.btn.secondary{border:1px solid var(--main);border-radius:7px;color:var(--dark)}
+.resultTop{background:var(--soft);border-bottom:1px solid var(--line)}
+.result .price{border-radius:8px;box-shadow:none}
+.result .price.new{border:2px solid var(--main);background:var(--surface-soft)}
+.result .saving{border-radius:7px}
+.chart-section{border-radius:8px;box-shadow:none}
+.region-selected{border-radius:6px;background:#fafafa}
+.map-wrap{background:#fff;border:1px solid #eee;border-radius:8px}
+.map-region:hover,.map-region.hovered{fill:var(--map-hover);stroke:var(--main)}
+.map-region.selected{fill:var(--main)}
+.qa-launch,.qa-compose button{background:var(--main);border-radius:7px}
+.qa-head{background:var(--soft)}
+.qa-browse,.qa-catalog summary,.qa-contact{color:var(--dark)}
+.qa-feedback button{border-color:var(--main);color:var(--dark);border-radius:6px}
+.qa-user{background:var(--soft)}
+@media(max-width:630px){
+ .header{height:60px}
+ .hero{padding:21px 16px}
+ .hero h1{font-size:24px}
+ .hero p{padding-left:17px}
+ .head{padding:18px 16px 14px}
+ .btn,.cta-area .btn{border-radius:6px}
+}
+</style>
+
+
+<style>
+/* ロゴ画像・オレンジ系背景の最終調整 */
+
+body{background:var(--bg)}
+.header{background:#fff;border-bottom:3px solid var(--main)}
+.brand-logo{display:block;width:268px;max-width:100%;height:auto;object-fit:contain}
+.hero{background:#fff;border-bottom:1px solid #f1d5bb}
+.card{background:var(--surface);border-color:var(--line)}
+.head{background:var(--surface-soft)}
+.input{background:var(--input-bg);border-color:var(--line)}
+.map-wrap{background:var(--surface-soft);border-color:var(--line)}
+.resultTop{background:var(--soft)}
+.chart-section{background:var(--surface);border-color:var(--line)}
+.region-selected{background:var(--input-bg);border-color:var(--line)}
+@media(max-width:630px){.brand-logo{width:220px}}
+
+/* レスポンシブ表の最終調整：スマホでも横スクロールを発生させない */
+.monthly-table-section,
+.monthly-table-wrap { width:100%; max-width:100%; min-width:0; }
+.monthly-table-wrap { overflow-x:hidden; border:1px solid #f58220; }
+.monthly-table {
+  width:100%; min-width:0; max-width:100%; table-layout:fixed;
+  white-space:normal; border-collapse:collapse;
+}
+.monthly-table .col-month { width:9%; }
+.monthly-table .col-usage { width:21%; }
+.monthly-table .col-current { width:20%; }
+.monthly-table .col-astomos { width:27%; }
+.monthly-table .col-diff { width:23%; }
+.monthly-table th,
+.monthly-table td { min-width:0; overflow-wrap:anywhere; }
+.monthly-table thead th { white-space:normal; word-break:keep-all; }
+.monthly-table tbody th,
+.monthly-table tfoot th { white-space:nowrap; }
+.monthly-table tbody td,
+.monthly-table tfoot td { white-space:nowrap; padding-left:2px; padding-right:2px; }
+@media(max-width:630px) {
+  .monthly-table-section h3 { font-size:13px; line-height:1.4; }
+  .monthly-table { font-size:9px; line-height:1.25; }
+  .monthly-table th,
+  .monthly-table td { padding:4px 2px; letter-spacing:-.03em; }
+  .monthly-table thead th { padding:4px 1px; font-size:9px; }
+  .monthly-table tbody th,
+  .monthly-table tfoot th,
+  .monthly-table tbody td,
+  .monthly-table tfoot td { font-size:9px; }
+  .summary { gap:6px; }
+  .summary > div { min-width:0; padding:8px 6px; }
+  .summary small { font-size:9px; }
+  .summary strong { font-size:11px; overflow-wrap:anywhere; }
+  .condition-note { overflow-wrap:anywhere; }
+  .notes { overflow-wrap:anywhere; }
+}
+
+
+/* 「この内容で申し込む」ボタン専用の色設定
+   色を変更する場合は、上部 :root の --apply-button-bg と --apply-button-shadow を編集してください。 */
+#goApplication {
+  background: var(--apply-button-bg) !important;
+  color: #ffffff !important;
+  box-shadow: 0 3px 0 var(--apply-button-shadow) !important;
+}
+#goApplication:hover:not(:disabled) { filter: brightness(.94); }
+#goApplication:disabled { background: #bbbbbb !important; box-shadow: none !important; }
+</style>
+
+
+
+<script>
+(function(){
+  const lp = document.querySelector('.lp-content');
+  const simulation = document.getElementById('simulationPage');
+  const header = document.querySelector('.site-header-shell');
+  if (!lp || !simulation || !header) return;
+
+  function headerOffset(){ return header.getBoundingClientRect().height + 12; }
+  function showSimulation(){
+    lp.style.display = 'none';
+    simulation.classList.add('is-active');
+    simulation.setAttribute('aria-hidden','false');
+    window.scrollTo({top:0, behavior:'smooth'});
+    history.replaceState(null, '', '#simulationArea');
+  }
+  function showLP(targetId){
+    simulation.classList.remove('is-active');
+    simulation.setAttribute('aria-hidden','true');
+    lp.style.display = '';
+    const target = targetId ? document.getElementById(targetId) : document.getElementById('top');
+    requestAnimationFrame(()=>{
+      if(target){
+        const top = target.getBoundingClientRect().top + window.scrollY - headerOffset();
+        window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+      } else {
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+    });
+    history.replaceState(null, '', targetId ? '#'+targetId : '#top');
+  }
+
+  document.querySelectorAll('.js-open-simulation, a[href="#simulationArea"]').forEach(link=>{
+    link.addEventListener('click',event=>{event.preventDefault();showSimulation();});
+  });
+  document.querySelectorAll('.header .nav a[href^="#"]').forEach(link=>{
+    const targetId = link.getAttribute('href').slice(1);
+    if(targetId === 'simulationArea') return;
+    link.addEventListener('click',event=>{event.preventDefault();showLP(targetId);});
+  });
+  document.querySelectorAll('.brand-link, .js-back-to-lp').forEach(link=>{
+    link.addEventListener('click',event=>{event.preventDefault();showLP('top');});
+  });
+  // LP内のシミュレーションCTAは、同じHTML内の別ビューを開く。
+  document.querySelectorAll('.lp-content a[href="#simulationArea"]').forEach(link=>{
+    link.addEventListener('click',event=>{event.preventDefault();showSimulation();});
+  });
+})();
+</script>
 </body>
 </html>
