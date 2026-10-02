@@ -262,9 +262,9 @@ section { padding: var(--section-padding-y) 0; }
   .price-comparison tbody tr > * { min-width: 0; border: none; }
   /* rowspanの料金区分セルはスマホでは非表示。項目名に内容を表示 */
   .price-comparison tbody td.price-category { display: none; }
-  .price-comparison tbody td.price-item { grid-column: 1 / -1; padding: 11px 13px; background: var(--price-table-label-bg); border-bottom: 1px solid #e7e2dc; font-size: 13px; font-weight: 800; }
+  .price-comparison tbody td.price-item { grid-column: 1 / -1; padding: 11px 13px; background: var(--price-table-label-bg); border-bottom: 1px solid #e7e2dc; font-size: 13px; font-weight: 600; }
   .price-comparison tbody td.price-value { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; min-height: 78px; padding: 11px 5px; text-align: center; white-space: normal; }
-  .price-comparison tbody td.price-value::before { content: attr(data-label); display: block; font-size: 10px; font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+  .price-comparison tbody td.price-value::before { content: attr(data-label); display: block; font-size: 10px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
   .price-comparison tbody td.price-main { background: var(--price-table-astomos-bg); color: var(--price-table-astomos-text); font-size: 15px; font-weight: 800; border-right: 1px solid #f0d8c5; }
   .price-comparison tbody td.price-main::before { color: var(--price-table-astomos-text); }
   .price-comparison tbody td.price-competitor { background: var(--price-table-competitor-bg); color: var(--price-table-competitor-text); font-size: 14px; font-weight: 600; }
@@ -367,11 +367,11 @@ section { padding: var(--section-padding-y) 0; }
 <div class="price-comparison"><div class="price-table-scroll"><table aria-label="アストモスベーシックと東北電力の料金比較"><colgroup><col class="category-col"><col class="item-col"><col class="company-col"><col class="company-col"></colgroup>
 <thead><tr><th colspan="2">単価項目</th><th class="price-main-heading">アストモス<br>ベーシック</th><th class="price-competitor-heading">東北電力<br>従量電灯B（規制）</th></tr></thead>
 <tbody>
-<tr><td class="price-category" rowspan="2">基本料金</td><td class="price-item">30A</td><td class="price-value price-main" data-label="アストモスベーシック">554.40円</td><td class="price-value price-competitor" data-label="東北電力">1,108.80円</td></tr>
-<tr><td class="price-item">40A</td><td class="price-value price-main" data-label="アストモスベーシック">739.20円</td><td class="price-value price-competitor" data-label="東北電力">1,478.40円</td></tr>
-<tr><td class="price-category" rowspan="3">従量料金<br>（円/kWh）</td><td class="price-item">～120kWh</td><td class="price-value price-main" data-label="アストモスベーシック">33.50円</td><td class="price-value price-competitor" data-label="東北電力">29.62円</td></tr>
-<tr><td class="price-item">～300kWh</td><td class="price-value price-main" data-label="アストモスベーシック">36.98円</td><td class="price-value price-competitor" data-label="東北電力">36.37円</td></tr>
-<tr><td class="price-item">300kWh～</td><td class="price-value price-main" data-label="アストモスベーシック">38.35円</td><td class="price-value price-competitor" data-label="東北電力">40.32円</td></tr>
+<tr><td class="price-category" rowspan="2">基本料金</td><td class="price-item">30A</td><td class="price-value price-main" data-label="">554.40円</td><td class="price-value price-competitor" data-label="">1,108.80円</td></tr>
+<tr><td class="price-item">40A</td><td class="price-value price-main" data-label="">739.20円</td><td class="price-value price-competitor" data-label="">1,478.40円</td></tr>
+<tr><td class="price-category" rowspan="3">従量料金<br>（円/kWh）</td><td class="price-item">～120kWh</td><td class="price-value price-main" data-label="">33.50円</td><td class="price-value price-competitor" data-label="">29.62円</td></tr>
+<tr><td class="price-item">～300kWh</td><td class="price-value price-main" data-label="">36.98円</td><td class="price-value price-competitor" data-label="">36.37円</td></tr>
+<tr><td class="price-item">300kWh～</td><td class="price-value price-main" data-label="">38.35円</td><td class="price-value price-competitor" data-label="">40.32円</td></tr>
 </tbody></table></div>
 <div class="price-table-notes"><p>※上記料金単価は掲載用のサンプル値です。公開前に最新の公式料金表と照合してください。</p><p>※電気料金には、燃料費調整額、再生可能エネルギー発電促進賦課金などが別途適用される場合があります。</p><p>※実際の請求額は、ご契約内容や電気の使用状況によって異なります。</p></div>
 </div></div></section>
