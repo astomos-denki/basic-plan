@@ -38,8 +38,8 @@
   --chart-current: #4b91c8;
   --chart-astomos: #f58220;
   --map-hover: #ffe0c6;
-  --apply-button-bg: #f58220; /* 「この内容で申し込む」ボタンの背景色 */
-  --apply-button-shadow: #c95f0b; /* 申込ボタンの影の色 */
+  --apply-button-bg: #e15f56; /* 「この内容で申し込む」ボタンの背景色 */
+  --apply-button-shadow: #ffffff; /* 申込ボタンの影の色 */
 }
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;line-height:1.65}
 .header{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center}.in,.shell{width:min(1000px,calc(100% - 28px));margin:auto}
@@ -78,7 +78,7 @@
   .region-layout{grid-template-columns:1fr}.map-wrap{order:2}.region-buttons{order:1}.japan-map{height:300px}.summary{grid-template-columns:1fr 1fr}
 }
 @media(max-width:630px){
-  .choices{grid-template-columns:1fr 1fr}.choices.two,.prices{grid-template-columns:1fr}.form-item.full{grid-column:auto}.head,.body,.resultBody{padding-left:17px;padding-right:17px}.actions{padding-left:17px;padding-right:17px}.btn,.cta-area .btn{width:100%;min-width:0}.chart{gap:2px}.month{font-size:9px}.region-buttons{grid-template-columns:repeat(3,1fr);gap:7px}.region-buttons .choice{font-size:13px;padding:7px;min-height:48px}.map-wrap{min-height:260px}.japan-map{height:260px}.summary{grid-template-columns:1fr}
+  .choices{grid-template-columns:1fr 1fr}.choices.two{grid-template-columns:repeat(2,minmax(0,1fr))}.prices{grid-template-columns:1fr}.form-item.full{grid-column:auto}.head,.body,.resultBody{padding-left:17px;padding-right:17px}.actions{padding-left:17px;padding-right:17px}.btn,.cta-area .btn{width:100%;min-width:0}.chart{gap:2px}.month{font-size:9px}.region-buttons{grid-template-columns:repeat(3,1fr);gap:7px}.region-buttons .choice{font-size:13px;padding:7px;min-height:48px}.map-wrap{min-height:260px}.japan-map{height:260px}.summary{grid-template-columns:1fr}
 }
 
 /* 申込CTA中央揃え */
@@ -116,7 +116,7 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 }
 @media(max-width:760px) {
   .region-layout { grid-template-columns:minmax(0,1fr); gap:18px; }
-  .choices.two { grid-template-columns:minmax(0,1fr); }
+  .choices.two { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .map-wrap { min-height:0; }
   .japan-map { display:block; height:auto; aspect-ratio:620/360; }
 }
@@ -648,86 +648,101 @@ html{scroll-padding-top:120px}
   .lp-content .price-table-notes{ font-size: 10px !important; line-height: 1.55 !important; padding: 9px 10px !important; }
 }
 
+
+
+/* 2026-10-05 UI adjustments */
+/* Top banner: smaller text aligned to the right */
+.site-header-shell .topbar{font-size:10px;line-height:1.4;padding:5px 0}
+.site-header-shell .topbar-inner{justify-content:flex-end;text-align:right;gap:4px 12px}
+.site-header-shell .topbar-inner span{text-align:right}
+/* Align Simple / Detailed choices consistently, especially on mobile */
+.choices.two{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+.choices.two .choice.method{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;min-width:0;height:100%;min-height:94px;padding:14px 10px}
+.choices.two .choice.method strong{display:block;width:100%;margin:0;line-height:1.4;text-align:center}
+.choices.two .choice.method span{display:block;width:100%;margin:0;line-height:1.5;text-align:center;overflow-wrap:anywhere}
+/* Application CTA directly below annual savings */
+.resultTop .result-cta{border:0;background:transparent;padding:18px 0 0;margin:0;display:flex;align-items:center;justify-content:center;text-align:center}
+.resultTop .result-cta .btn{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:260px;max-width:100%;margin:0;background:var(--main);color:#fff;border:1px solid var(--main);font-size:17px;font-weight:800;padding:14px 28px;border-radius:9px;box-shadow:0 4px 12px #00000012}
+.footer{font-size:10px}
+.footer .footer-inner{font-size:10px;line-height:1.5}
+@media(max-width:630px){
+  .site-header-shell .topbar{font-size:9px;padding:4px 0}
+  .site-header-shell .topbar-inner{justify-content:flex-end;text-align:right}
+  .choices.two .choice.method{min-height:84px;padding:12px 7px;gap:5px}
+  .choices.two .choice.method strong{font-size:15px}
+  .choices.two .choice.method span{font-size:11px;line-height:1.4}
+  .resultTop .result-cta{padding-top:16px}
+  .resultTop .result-cta .btn{width:100%;min-width:0;font-size:16px;padding:13px 16px}
+  .footer,.footer .footer-inner{font-size:9px}
+}
+
 </style>
+
+<style>
+/* 2026-10-05 微調整：選択肢は横方向に中央揃えせず、文字の上下位置のみ揃える */
+.choices.two .choice.method{
+  align-items:stretch !important;
+  justify-content:flex-start !important;
+  text-align:left !important;
+  gap:6px !important;
+}
+.choices.two .choice.method strong{
+  text-align:left !important;
+  margin:0 !important;
+  line-height:1.4 !important;
+  min-height:1.4em;
+}
+.choices.two .choice.method span{
+  text-align:left !important;
+  margin:0 !important;
+  line-height:1.5 !important;
+}
+@media(max-width:630px){
+  .choices.two .choice.method{min-height:84px !important;padding:12px 9px !important;gap:5px !important}
+  .choices.two .choice.method strong{font-size:15px !important}
+  .choices.two .choice.method span{font-size:11px !important;line-height:1.4 !important}
+}
+/* PCトップバナー：小さめの文字を右揃えで表示 */
+.site-header-shell .topbar{
+  display:block !important;
+  font-size:10px !important;
+  line-height:1.4 !important;
+  padding:5px 0 !important;
+}
+.site-header-shell .topbar-inner{
+  display:flex !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  text-align:right !important;
+  gap:4px 12px !important;
+  flex-wrap:nowrap !important;
+}
+.site-header-shell .topbar-inner span{
+  font-size:10px !important;
+  text-align:right !important;
+}
+@media(max-width:630px){
+  .site-header-shell .topbar{font-size:9px !important;padding:4px 0 !important}
+  .site-header-shell .topbar-inner{justify-content:flex-end !important;text-align:right !important;flex-wrap:wrap !important}
+  .site-header-shell .topbar-inner span{font-size:9px !important}
+}
+</style>
+
 </head>
 <body>
 <div class="site-header-shell">
 <div class="topbar"><div class="in topbar-inner"><span>アストモスでんき｜料金プランのご案内</span><span>電気の使い方に合ったプラン選びをサポート</span></div></div>
-<header class="header"><div class="in header-inner"><a class="brand-link" href="#top" aria-label="アストモスでんき トップへ戻る"><img class="brand-logo" src="data:image/png;base64,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" alt="アストモスでんき"></a><nav class="nav" aria-label="メインナビゲーション"><a href="#features">プランの特徴</a><a href="#flow">ご利用までの流れ</a><a href="#faq">よくあるご質問</a><a class="nav-simulation js-open-simulation" href="#simulationArea">料金シミュレーション</a><a class="nav-cta" href="astomos-denki-apply.html"><span class="desktop-apply-label">お申し込みはこちら</span><span class="mobile-apply-label">申し込む</span></a></nav></div></header>
+<header class="header"><div class="in header-inner"><a class="brand-link" data-lp-link href="https://www.yahoo.co.jp/" aria-label="アストモスでんき トップページ"><img class="brand-logo" src="data:image/png;base64,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" alt="アストモスでんき"></a><nav class="nav" aria-label="メインナビゲーション">
+<a data-lp-link href="https://www.yahoo.co.jp/">プランの特徴</a>
+<a data-lp-link href="https://www.yahoo.co.jp/">ご利用までの流れ</a>
+<a data-lp-link href="https://www.yahoo.co.jp/">よくあるご質問</a>
+<a class="nav-simulation" href="#simulationArea">料金シミュレーション</a>
+<a class="nav-cta" data-lp-link href="https://www.yahoo.co.jp/">お申し込みはこちら</a>
+</nav></div></header>
 </div><!-- /.site-header-shell -->
-<div class="lp-content">
-<main id="top">
-<section class="lp-hero"><div class="wrap hero-inner"><div><span class="pill">電気料金プラン</span><div class="eyebrow">ASTOMOS DENKI · PLAN GUIDE</div><h1>新ベーシックプラン</h1><p class="hero-copy">毎日の暮らしに欠かせない電気だからこそ、料金プランの内容を確認して、ご家庭の使い方に合った選択を。新ベーシックプランの詳細をご案内します。</p><div class="btn-row"><a class="lp-btn hero-simulation-btn" href="#simulationArea">料金シミュレーションへ <span>→</span></a></div></div><aside class="hero-card" aria-label="基本料金が半額">
-  <div class="hero-half-rays" aria-hidden="true">✦　✦　✦</div>
-  <div class="hero-half-kicker">基本料金が</div>
-  <div class="hero-half-price">半額<span class="half-mark">！</span></div>
-  <div class="hero-half-note">※対象プラン・エリアの料金条件をご確認ください</div>
-</aside></div></section>
-<section id="features"><div class="wrap"><div class="section-head"><div class="eyebrow">PLAN FEATURES</div><h2>プランの特徴</h2><p>ご家庭に合ったプランか、ぜひご確認ください。</p></div><div class="features">
-<article class="feature">
-  <div class="feature-illustration" aria-hidden="true"><svg viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="75" r="62" fill="#FFE4BD"/><circle cx="110" cy="75" r="43" fill="#FFF9F1" stroke="#EAA527" stroke-width="2.5"/><path d="M94 52h32M94 61h32" stroke="#D97719" stroke-width="3" stroke-linecap="round"/><path d="M110 70c-9 0-15 5-15 12 0 7 6 10 15 10s15 3 15 10-6 12-15 12m0-49v56" stroke="#C65D16" stroke-width="4" stroke-linecap="round"/><path d="M35 42l10 10 17-20M160 111l8 8 15-18" stroke="#EAA527" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M43 99l-8 8m0-8 8 8M174 38l-8 8m0-8 8 8" stroke="#D97719" stroke-width="3" stroke-linecap="round"/></svg></div>
-  <div class="feature-content"><div class="num">01</div><h3>基本料金が旧一電の半額</h3><p>基本料金を削減し、毎月オトクに。※具体的な単価は最新の料金表をご確認ください。</p></div>
-</article>
-<article class="feature">
-  <div class="feature-illustration" aria-hidden="true"><svg viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="75" r="62" fill="#FFE4BD"/><path d="M48 73 110 27l62 46" stroke="#C65D16" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M61 68v53h98V68" fill="#FFF9F1" stroke="#D97719" stroke-width="3.5" stroke-linejoin="round"/><path d="M95 121V88a15 15 0 0 1 30 0v33" fill="#FFE4BD" stroke="#EAA527" stroke-width="3"/><path d="m111 54-12 20h13l-5 16 17-24h-13l5-12Z" fill="#EAA527" stroke="#C65D16" stroke-width="2" stroke-linejoin="round"/><path d="M35 46h16m-8-8v16M169 103h17m-8-8v16" stroke="#D97719" stroke-width="3" stroke-linecap="round"/></svg></div>
-  <div class="feature-content"><div class="num">02</div><h3>切り替えは工事不要・品質そのまま</h3><p>スマートメーターならすぐに切替可能です。送電網は同じで、電気の品質・停電対応は変わりません。</p></div>
-</article>
-<article class="feature">
-  <div class="feature-illustration" aria-hidden="true"><svg viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="110" cy="75" r="62" fill="#FFE4BD"/><rect x="70" y="29" width="80" height="92" rx="10" fill="#FFF9F1" stroke="#D97719" stroke-width="3.5"/><path d="M89 29v-7a21 21 0 0 1 42 0v7" stroke="#C65D16" stroke-width="4" stroke-linecap="round"/><path d="M87 54h45M87 67h29" stroke="#EAA527" stroke-width="3" stroke-linecap="round"/><circle cx="132" cy="100" r="22" fill="#FFE4BD" stroke="#C65D16" stroke-width="3"/><path d="m121 100 7 7 14-15" stroke="#C65D16" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 70h14m-7-7v14M166 42h13m-6-6v12" stroke="#D97719" stroke-width="3" stroke-linecap="round"/></svg></div>
-  <div class="feature-content"><div class="num">03</div><h3>契約期間の縛り、違約金無し</h3><p>契約期間の縛りや途中解約による違約金はございません。※ただし各種キャンペーン適用の場合は諸条件あり</p></div>
-</article>
-</div></div></section>
-<section id="flow"><div class="wrap"><div class="section-head"><h2>新規お申込みの流れ</h2></div><div class="flow">
-  <article class="flow-item" data-step="STEP 1"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13 5h16l8 8v28a2 2 0 0 1-2 2H13a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z"/><path d="M29 5v9h8M17 23h14M17 30h10"/></svg></div><p>電力会社からの<br>検針票or請求書を<br>ご準備</p></article>
-  <article class="flow-item" data-step="STEP 2"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="7" width="38" height="27" rx="2"/><path d="M5 13h38M5 30h38M19 34l-2 7m12-7 2 7M16 41h16"/></svg></div><p>本サイトから<br>お申込み</p></article>
-  <article class="flow-item" data-step="STEP 3"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="38" height="28" rx="3"/><path d="m6 13 18 13 18-13"/></svg></div><p>お申込受付時に<br>メールをお送りします</p></article>
-  <article class="flow-item" data-step="STEP 4"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="38" height="28" rx="3"/><path d="m6 13 18 13 18-13M15 31h18"/></svg></div><p>供給開始予定日を<br>メールでご案内します。<br>（約1週間後）</p></article>
-  <article class="flow-item" data-step="STEP 5"><div class="flow-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4a14 14 0 0 0-8 25.5c2 1.5 3 3.1 3 5.5h10c0-2.4 1-4 3-5.5A14 14 0 0 0 24 4Z"/><path d="M19 35h10m-9 4h8m-6 4h4M18 32h12"/></svg></div><p>ご利用の開始<br>（約1か月半後）</p></article>
-</div><p class="disclaimer">※申込内容に不備がある場合は別途ご連絡させていただきます。</p><div class="flow-apply-action"><a class="lp-btn flow-apply-btn" href="astomos-denki-apply.html"><span class="desktop-apply-label">お申し込みはこちら →</span><span class="mobile-apply-label">申し込む</span></a></div></div></section>
-<section id="price"><div class="wrap"><div class="section-head"><div class="eyebrow">PRICE INFORMATION</div><h2>料金について</h2><p>料金単価・適用条件をご確認いただけます。</p></div>
-<div class="price-comparison"><div class="price-table-scroll"><table aria-label="アストモスベーシックと東北電力の料金比較"><colgroup><col class="category-col"><col class="item-col"><col class="company-col"><col class="company-col"></colgroup>
-<thead><tr><th colspan="2">単価項目</th><th class="price-main-heading">アストモス<br>ベーシック</th><th class="price-competitor-heading">東北電力<br>従量電灯B（規制）</th></tr></thead>
-<tbody>
-<tr><td class="price-category" rowspan="2">基本料金</td><td class="price-item">30A</td><td class="price-value price-main" data-label="">554.40円</td><td class="price-value price-competitor" data-label="">1,108.80円</td></tr>
-<tr><td class="price-item">40A</td><td class="price-value price-main" data-label="">739.20円</td><td class="price-value price-competitor" data-label="">1,478.40円</td></tr>
-<tr><td class="price-category" rowspan="3">従量料金<br>（円/kWh）</td><td class="price-item">～120kWh</td><td class="price-value price-main" data-label="">33.50円</td><td class="price-value price-competitor" data-label="">29.62円</td></tr>
-<tr><td class="price-item">～300kWh</td><td class="price-value price-main" data-label="">36.98円</td><td class="price-value price-competitor" data-label="">36.37円</td></tr>
-<tr><td class="price-item">300kWh～</td><td class="price-value price-main" data-label="">38.35円</td><td class="price-value price-competitor" data-label="">40.32円</td></tr>
-</tbody></table></div>
-<div class="price-table-notes"><p>※上記料金単価は掲載用のサンプル値です。</p><p>※実際に請求される電気料金には、燃料費調整額、再生可能エネルギー発電促進賦課金などが別途適用される場合があります。</p><p>※実際の請求額は、ご契約内容や電気の使用状況によって異なります。</p></div>
-</div></div></section>
-<section id="faq"><div class="wrap"><div class="section-head"><div class="eyebrow">FAQ</div><h2>よくあるご質問</h2><p>プランを検討する際に、事前に確認しておきたいポイントです。</p></div><div class="faq"><details><summary>自分の家庭に合うプランか、どう確認できますか？</summary><p>検針票などで現在の契約アンペアと月間使用量を確認し、料金シミュレーションで条件を入力して比較してください。</p></details><details><summary>シミュレーション結果は実際の請求額と同じですか？</summary><p>シミュレーション結果は入力条件に基づく試算です。実際の請求額は、適用される料金条件や各種調整額などにより異なる場合があります。</p></details><details><summary>申し込み前に何を確認すればよいですか？</summary><p>対象エリア、料金単価、契約条件、適用開始日、注意事項など、最新の公式資料をご確認ください。</p></details></div><p class="disclaimer">※掲載内容は、実際の料金単価、対象エリア、割引、契約条件などの正式情報を確認してから公開する予定です。</p></div></section>
-<section class="cta-band"><div class="wrap"><h2>まずは電気料金を比較してみませんか？</h2><p>現在の使用量をもとに、料金の目安をシミュレーションできます。</p><a class="lp-btn" href="#simulationArea">料金シミュレーションを始める →</a></div></section>
-</main>
-<section id="legal-disclosure" aria-labelledby="legal-disclosure-title">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="legal-disclosure-title">特定商取引法に基づく表記について</h2>
-    </div>
-    <div class="legal-panel">
-      <table class="legal-table" aria-label="特定商取引法に基づく表記">
-        <tbody>
-          <tr><th scope="row">事業者名</th><td>アストモスエネルギー株式会社</td></tr>
-          <tr><th scope="row">代表者</th><td>代表取締役社長　佐藤　利宣</td></tr>
-          <tr><th scope="row">住所</th><td>郵便番号：100-0005<br>所在地：東京都千代田区丸の内1-7-12 サピアタワー24F</td></tr>
-          <tr><th scope="row">問い合わせ先</th><td>アストモスでんき　お客さまセンター<br>電話：<a href="tel:0120068051">0120-068-051</a><br>受付時間：10:00 ～ 17:30（土日祝日、年末年始を除く）</td></tr>
-          <tr><th scope="row">販売価格（税込）</th><td><strong>重要事項説明書 6 項</strong>をご確認ください。</td></tr>
-          <tr><th scope="row">支払方法</th><td><strong>重要事項説明書 7 項</strong>をご確認ください。</td></tr>
-          <tr><th scope="row">支払時期</th><td>料金の支払い義務は原則として検針日に発生するものとし、当月、若しくは翌月のご請求となります。</td></tr>
-          <tr><th scope="row">供給開始時期</th><td>供給開始日が決まりましたら、電子メールにてご連絡します。他の電力会社より切替の場合、原則、定例検針日からの供給開始となり、お申込みから供給開始まで1～1.5か月程度かかります。</td></tr>
-          <tr><th scope="row">電気料金以外にご負担いただく必要のあるもの</th><td><strong>重要事項説明書 8 項、9 項</strong>をご確認ください。</td></tr>
-          <tr><th scope="row">電気の使用方法、器具・機械その他の用品の使用等の制限</th><td><strong>重要事項説明書 18 項</strong>をご確認ください。</td></tr>
-          <tr><th scope="row">返品可否</th><td>電気という商品の性質上、返品はできません。</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-</div>
-
-
-<div id="simulationPage" class="simulation-page" aria-hidden="true">
-<section class="sim-hero"><div class="sim-hero-inner"><div><h1>電気料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div><button type="button" class="back-to-lp js-back-to-lp">← プラン案内に戻る</button></div></section>
+</div><!-- /.site-header-shell -->
+<div id="simulationPage" class="simulation-page is-active" aria-hidden="false">
+<section class="sim-hero"><div class="sim-hero-inner"><div><h1>電気料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div></div></section>
 
 <div class="shell">
 <section id="simulationArea">
@@ -783,8 +798,8 @@ html{scroll-padding-top:120px}
   <div class="head"><div class="step">STEP 2</div><h2>シミュレーション方法</h2></div>
   <div class="body">
     <div class="choices two">
-      <button class="choice method" data-mode="simple"><strong>簡易シミュレーション</strong><span>世帯人数から標準使用量を算出</span></button>
-      <button class="choice method" data-mode="detail"><strong>詳細シミュレーション</strong><span>1か月の使用量・契約容量から年間を推計</span></button>
+      <button class="choice method" data-mode="simple"><strong>簡易版</strong><span>世帯人数から標準使用量を算出</span></button>
+      <button class="choice method" data-mode="detail"><strong>詳細版</strong><span>1か月の使用量・契約容量から年間を推計</span></button>
     </div>
 
     <div id="simple" class="input">
@@ -825,13 +840,9 @@ html{scroll-padding-top:120px}
       </div>
     </div>
     <div id="saving" class="saving" role="status"></div>
+    <div class="cta-area result-cta"><button type="button" id="goApplication" class="btn">お申し込みはこちら</button></div>
   </div>
   <div class="resultBody">
-    <div class="summary">
-      <div><small>年間使用量</small><strong id="sumUsage"></strong></div>
-      <div><small>対象エリア</small><strong id="sumArea"></strong></div>
-      <div><small>契約容量</small><strong id="sumCapacity"></strong></div>
-    </div>
     <section class="monthly-table-section" aria-labelledby="monthlyTableHeading">
       <h3 id="monthlyTableHeading">月別シミュレーション結果</h3>
       <div class="monthly-table-wrap">
@@ -853,17 +864,12 @@ html{scroll-padding-top:120px}
       <p id="disclaimer"></p>
     </div>
 </div>
-  <div class="cta-area"><p>シミュレーション結果をご確認のうえ、お申込みへお進みください。</p><button type="button" id="goApplication" class="btn">この内容で申し込む</button></div>
 </section>
 </section>
 </div>
 
 
-<div class="lp-content">
-
-
-<footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜新ベーシックプラン</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span></div></footer>
-</div>
+<footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜電気料金シミュレーション</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span></div></footer>
 </div><!-- /#simulationPage -->
 <script>
 const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master":[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1848.0},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.62},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.37},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.32},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":184.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":924.0},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
@@ -896,8 +902,10 @@ function calculateSimulation(input){
     if(month<1||month>12||base<=0)throw new Error('対象月と使用量を入力してください。');
     if(AMPERE_AREAS.includes(input.area)){const selected=capVal(input.capacity);if(!AMPERES.includes(selected))throw new Error('契約容量（アンペア数）を選択してください。');capacity=selected;}
     usage=Array.from({length:12},(_,i)=>base*ratios[i+1]/ratios[month]);
-    condition=month+'月 '+Math.round(base).toLocaleString('ja-JP')+'kWhから推計'+(AMPERE_AREAS.includes(input.area)?'／契約容量 '+capacity:'');
+    condition=month+'月 '+Math.round(base).toLocaleString('ja-JP')+'kWhから推計';
   }
+  const areaLabel=(input.area==='東京'?'関東':input.area)+'エリア';
+  condition=[areaLabel, ...(AMPERE_AREAS.includes(input.area)?[capacity]:[]), condition].join('／');
   const plans=LOCAL_DATA.Plan_Master,rates=LOCAL_DATA.Rate_Master;
   const oldPlan=plans.find(p=>String(p.PlanID)===String(area.LegacyPlanID)&&activeVal(p.IsActive));
   const newPlan=plans.find(p=>String(p.PlanID)===String(area.AstomosPlanID)&&activeVal(p.IsActive));
@@ -1057,9 +1065,6 @@ function showResult(r){
     s.className='saving neutral';
     s.textContent='年間料金は同額の試算です';
   }
-  $('sumArea').textContent=r.displayArea||r.area;
-  $('sumUsage').textContent=yen(r.annualUsageKwh)+' kWh';
-  $('sumCapacity').textContent=r.capacityRequired?r.capacity:'選択不要';
   $('sumCondition').textContent=r.condition;
   $('exclude').textContent=r.exclusions?'※ '+r.exclusions:'';
   $('disclaimerTitle').textContent=r.disclaimerTitle||'電気料金シミュレーションのご利用上の注意事項';
@@ -1323,53 +1328,82 @@ body{background:var(--bg)}
 
 
 
+
 <script>
-(function(){
-  const lp = document.querySelector('.lp-content');
-  const simulation = document.getElementById('simulationPage');
-  const header = document.querySelector('.site-header-shell');
-  if (!lp || !simulation || !header) return;
-
-  function headerOffset(){ return header.getBoundingClientRect().height + 12; }
-  function showSimulation(){
-    lp.style.display = 'none';
-    simulation.classList.add('is-active');
-    simulation.setAttribute('aria-hidden','false');
-    window.scrollTo({top:0, behavior:'smooth'});
-    history.replaceState(null, '', '#simulationArea');
-  }
-  function showLP(targetId){
-    simulation.classList.remove('is-active');
-    simulation.setAttribute('aria-hidden','true');
-    lp.style.display = '';
-    const target = targetId ? document.getElementById(targetId) : document.getElementById('top');
-    requestAnimationFrame(()=>{
-      if(target){
-        const top = target.getBoundingClientRect().top + window.scrollY - headerOffset();
-        window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
-      } else {
-        window.scrollTo({top:0,behavior:'smooth'});
-      }
-    });
-    history.replaceState(null, '', targetId ? '#'+targetId : '#top');
-  }
-
-  document.querySelectorAll('.js-open-simulation, a[href="#simulationArea"]').forEach(link=>{
-    link.addEventListener('click',event=>{event.preventDefault();showSimulation();});
-  });
-  document.querySelectorAll('.header .nav a[href^="#"]').forEach(link=>{
-    const targetId = link.getAttribute('href').slice(1);
-    if(targetId === 'simulationArea') return;
-    link.addEventListener('click',event=>{event.preventDefault();showLP(targetId);});
-  });
-  document.querySelectorAll('.brand-link, .js-back-to-lp').forEach(link=>{
-    link.addEventListener('click',event=>{event.preventDefault();showLP('top');});
-  });
-  // LP内のシミュレーションCTAは、同じHTML内の別ビューを開く。
-  document.querySelectorAll('.lp-content a[href="#simulationArea"]').forEach(link=>{
-    link.addEventListener('click',event=>{event.preventDefault();showSimulation();});
-  });
-})();
+/* =========================================================
+   LPへの遷移先URL設定
+   変更するときは、次のURLだけを書き換えてください。
+   現在は仮の遷移先としてYahoo! JAPANを設定しています。
+   ========================================================= */
+const LP_LINK_URL = 'https://www.yahoo.co.jp/';
+document.querySelectorAll('[data-lp-link]').forEach(link => {
+  link.href = LP_LINK_URL;
+});
 </script>
+
+<style>
+/* ヘッダー：ロゴは左、ナビゲーションと申込ボタンは右上にコンパクトに配置 */
+.site-header-shell .topbar{display:none !important}
+.site-header-shell .header{height:76px !important;min-height:76px !important;border-bottom:3px solid #f58220 !important;box-shadow:none !important;box-sizing:border-box !important}
+.site-header-shell .header .header-inner{width:87% !important;max-width:none !important;min-height:72px !important;height:72px !important;margin:0 auto !important;display:flex !important;align-items:flex-start !important;justify-content:space-between !important;gap:18px !important;padding-top:10px !important;box-sizing:border-box !important}
+.site-header-shell .header .brand-link{flex:0 0 auto !important;align-self:center !important}
+.site-header-shell .header .brand-logo{width:250px !important;max-width:100% !important;height:auto !important}
+.site-header-shell .header .nav{margin-left:auto !important;align-self:flex-start !important;display:flex !important;align-items:center !important;justify-content:flex-end !important;gap:18px !important;font-size:11px !important;white-space:nowrap !important}
+.site-header-shell .header .nav a:not(.nav-cta){display:inline-flex !important;font-size:11px !important;line-height:1.2 !important;font-weight:600 !important}
+.site-header-shell .header .nav .nav-cta{display:inline-flex !important;align-items:center !important;justify-content:center !important;min-height:36px !important;height:36px !important;padding:0 16px !important;border-radius:999px !important;background:#e15f56 !important;border:1px solid #e15f56 !important;color:#fff !important;font-size:11px !important;line-height:1.2 !important;font-weight:800 !important;white-space:nowrap !important}
+@media(max-width:900px){
+  .site-header-shell .header{height:70px !important;min-height:70px !important}
+  .site-header-shell .header .header-inner{width:92% !important;min-height:66px !important;height:66px !important;align-items:center !important;gap:8px !important;padding-top:0 !important}
+  .site-header-shell .header .brand-logo{width:clamp(145px,36vw,220px) !important}
+  .site-header-shell .header .nav{align-self:center !important;margin-left:auto !important;gap:8px !important}
+  .site-header-shell .header .nav a:not(.nav-cta){display:none !important}
+  .site-header-shell .header .nav .nav-cta{min-height:36px !important;height:36px !important;padding:0 12px !important;font-size:11px !important}
+}
+</style>
+
+
+<style>
+/* ヘッダー最終調整：右上メニューを拡大し、申込ボタンをブランドオレンジに統一 */
+.site-header-shell .header .nav{gap:20px !important;font-size:20px !important}
+.site-header-shell .header .nav a:not(.nav-cta){font-size:20px !important;line-height:1.3 !important;font-weight:600 !important}
+.site-header-shell .header .nav .nav-cta{background:#f58220 !important;border-color:#f58220 !important;color:#fff !important;font-size:16px !important;padding:0 18px !important}
+@media(max-width:900px){
+  .site-header-shell .header .nav .nav-cta{font-size:13px !important;padding:0 12px !important}
+}
+</style>
+
+
+<style>
+/* ヘッダー最終修正：右半分に収まる文字サイズと、既存のコーラルレッドに統一 */
+@media (min-width: 901px) {
+  .site-header-shell .header .nav {
+    max-width: 52vw !important;
+    gap: clamp(10px, 1vw, 18px) !important;
+    font-size: 14px !important;
+    white-space: nowrap !important;
+    justify-content: flex-end !important;
+  }
+  .site-header-shell .header .nav a:not(.nav-cta) {
+    font-size: 14px !important;
+    line-height: 1.25 !important;
+  }
+  .site-header-shell .header .nav .nav-cta {
+    background: #e15f56 !important;
+    border-color: #e15f56 !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    padding: 0 14px !important;
+    flex-shrink: 0 !important;
+  }
+}
+@media (max-width: 900px) {
+  .site-header-shell .header .nav .nav-cta {
+    background: #e15f56 !important;
+    border-color: #e15f56 !important;
+    color: #fff !important;
+  }
+}
+</style>
+
 </body>
 </html>
