@@ -38,7 +38,7 @@
   --chart-current: #4b91c8;
   --chart-astomos: #f58220;
   --map-hover: #ffe0c6;
-  --apply-button-bg: #f58220; /* 「この内容で申し込む」ボタンの背景色 */
+  --apply-button-bg: #e15f56; /* 「この内容で申し込む」ボタンの背景色 */
   --apply-button-shadow: #c95f0b; /* 申込ボタンの影の色 */
 }
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;line-height:1.65}
@@ -228,7 +228,7 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 .bar-comparison-message{margin:34px auto 0;max-width:600px;padding:11px 14px;border-radius:9px;background:#fff8e8;color:#333;text-align:center;font-size:13px;font-weight:800}
 .monthly-details{border:1px solid #f0d8c2;border-radius:10px;overflow:hidden;background:#fff}.monthly-details summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:13px 15px;background:#fff8ef;color:#c98213;font-size:16px;font-weight:800}.monthly-details summary::-webkit-details-marker{display:none}
 .monthly-details summary::before{content:'＋';display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--main);color:#fff;flex:0 0 auto}.monthly-details[open] summary::before{content:'－'}
-.monthly-toggle{font-size:11px;color:#777;font-weight:600;margin-left:auto}.monthly-details[open] .monthly-toggle{font-size:0}.monthly-details[open] .monthly-toggle::after{content:'閉じる';font-size:11px}
+.monthly-toggle{font-size:11px;color:#777;font-weight:600;margin-left:auto}.monthly-details:not([open]) .monthly-toggle{font-size:0}.monthly-details:not([open]) .monthly-toggle::after{content:'表示する';font-size:11px}.monthly-details[open] .monthly-toggle{font-size:0}.monthly-details[open] .monthly-toggle::after{content:'閉じる';font-size:11px}
 /* 月別シミュレーション結果：ご提示いただいたPC・スマホ画像に合わせた表 */
 .monthly-table-section{margin:0 0 16px;padding:0;background:var(--surface);min-width:0}
 .monthly-table-section h3{margin:0 0 7px;color:#c98213;font-size:16px;font-weight:700;line-height:1.5}
@@ -296,8 +296,6 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 .site-header-shell{position:sticky;top:0;z-index:1000;isolation:isolate}
 .site-header-shell .topbar,.site-header-shell .header{position:relative}
 .brand-link{display:inline-flex;align-items:center;flex:0 1 auto;min-width:0;text-decoration:none;line-height:1}
-.header .nav .nav-simulation{display:inline-flex;align-items:center;justify-content:center;padding:9px 2px;color:#555;text-decoration:none;font-weight:600}
-.header .nav .nav-simulation:hover{color:#E15F56}
 .simulation-page{display:none;min-height:60vh;background:#fff}
 .simulation-page.is-active{display:block}
 .sim-hero-inner{width:min(1100px,92%);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -306,7 +304,6 @@ button:focus-visible, select:focus-visible, input:focus-visible {
 .back-to-lp:hover{background:#fff5f4}
 html{scroll-padding-top:120px}
 #features,#flow,#faq,#price,#top{scroll-margin-top:120px}
-@media(max-width:900px){.header .nav .nav-simulation{display:none}}
 @media(max-width:630px){
   .site-header-shell .topbar{padding:6px 0}
   .site-header-shell .header{height:66px}
@@ -831,12 +828,28 @@ html{scroll-padding-top:120px}
 #applicationPage .application-footer-inner{max-width:900px;margin:0 auto}
 </style>
 <style id="integrated-completion-style">
-#completeScreen{display:none;position:fixed;inset:0;z-index:999999;align-items:center;justify-content:center;background:#fffaf5;color:#333}
-#completeScreen p{margin:0;font-size:clamp(25px,3vw,38px);font-weight:700;line-height:1.5;letter-spacing:.04em;text-align:center}
-body.is-complete> *:not(#completeScreen){display:none!important}
-body.is-complete #completeScreen{display:flex!important}
+#completeScreen{display:none;background:#fffaf5;color:#333;min-height:calc(100vh - 110px);padding:54px 18px 70px}
+body.is-complete #simulationPage,body.is-complete #applicationPage{display:none!important}
+body.is-complete #completeScreen{display:block!important}
 body.is-complete{background:#fffaf5!important}
 #applicationPage[hidden]{display:none!important}
+.complete-shell{max-width:760px;margin:0 auto}
+.complete-card{background:#fff;border:1px solid #f0d8c2;border-radius:18px;padding:34px 30px;box-shadow:0 10px 30px rgba(112,72,35,.07);text-align:center}
+.complete-mark{width:62px;height:62px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff1e5;color:#f58220;font-size:34px;font-weight:900}
+.complete-card h1{margin:0 0 12px;font-size:clamp(25px,3.2vw,36px);line-height:1.4;color:#333}
+.complete-lead{margin:0 auto 24px;max-width:600px;color:#666;font-size:14px;line-height:1.8}
+.complete-receipt{margin:0 auto 26px;max-width:520px;border:1px solid #f0d8c2;border-radius:12px;background:#fffaf5;padding:16px 18px;text-align:left}
+.complete-receipt-row{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;padding:7px 0}
+.complete-receipt-row+.complete-receipt-row{border-top:1px solid #f3e7dc}
+.complete-receipt-label{font-size:12px;color:#777;font-weight:700}
+.complete-receipt-value{font-size:14px;font-weight:800;color:#333;word-break:break-word}
+.complete-note{margin:0 auto 26px;max-width:590px;padding:12px 14px;border-radius:10px;background:#fff8e8;color:#555;font-size:12px;line-height:1.7;text-align:left}
+.complete-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.complete-btn{appearance:none;border:0;border-radius:999px;padding:13px 24px;min-width:210px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.complete-btn.primary{background:#f58220;color:#fff}
+.complete-btn.secondary{background:#fff;color:#f58220;border:1px solid #f58220}
+.complete-footer{margin-top:28px;color:#888;font-size:11px;text-align:center}
+@media(max-width:640px){#completeScreen{padding:30px 12px 50px}.complete-card{padding:26px 16px}.complete-receipt-row{grid-template-columns:1fr;gap:3px}.complete-actions{display:grid}.complete-btn{width:100%;min-width:0}}
 </style>
 
 <style id="integrated-application-mobile-header">
@@ -862,6 +875,103 @@ body.is-complete{background:#fffaf5!important}
 .condition-summary { display:none; }
 </style>
 
+
+<style>
+/* 2026-10-06 年間比較グラフ改善 + 再シミュレーション */
+.annual-saving-summary{max-width:620px;margin:12px auto 6px;padding:12px 16px;border:2px solid #e8a76e;border-radius:12px;background:#fffaf5;text-align:center;font-weight:900;line-height:1.5}
+.annual-saving-summary .saving-rate{font-size:clamp(20px,3vw,28px);color:#1769aa}.annual-saving-summary .saving-yen{font-size:clamp(23px,3.6vw,34px);color:#e45a13;margin-left:8px}
+.annual-bar-chart{height:300px;padding-top:18px}.bar-chart-area{top:24px}.bar-saving-badge{top:auto;right:auto;left:50%;transform:translateX(-50%);bottom:64px;z-index:3;max-width:210px;border-radius:9px;background:#fff;color:#126b36;border:2px solid #80b99a;box-shadow:0 3px 10px #00000012}
+.bar-saving-badge::before{content:'↘';display:block;font-size:28px;line-height:1;color:#3c9a69;margin-bottom:2px}.bar-saving-badge.is-higher::before{content:'↗';color:#a02b1f}.bar-saving-badge.is-neutral::before{content:'↔';color:#555}
+.result-retry-area{display:flex;justify-content:center;padding:20px 0 2px}.result-retry-area .btn{min-width:260px}
+@media(max-width:630px){.annual-saving-summary{padding:9px 7px}.annual-saving-summary .saving-rate,.annual-saving-summary .saving-yen{display:block;margin-left:0}.annual-bar-chart{height:280px}.bar-saving-badge{bottom:55px;max-width:150px;font-size:10px;padding:6px}.bar-saving-badge::before{font-size:22px}.result-retry-area .btn{width:100%;min-width:0}}
+</style>
+
+<style id="annual-bar-axis-zoom-v2">
+/* 参考画像型：縦軸を比較額周辺へ自動ズームし、料金差を視覚的に強調。グラフ内の差額文言・端点マーカーは表示しない。 */
+.annual-bar-chart{height:330px;border-bottom:0;padding-top:0;overflow:visible}
+.bar-axis-title{position:absolute;left:0;top:2px;font-size:10px;color:#777;font-weight:700}
+.bar-y-axis{position:absolute;left:58px;right:8px;top:24px;bottom:38px;z-index:0}
+.bar-grid-line{position:absolute;left:0;right:0;border-top:1px solid #d8dde2}
+.bar-grid-line span{position:absolute;right:calc(100% + 7px);top:-9px;width:52px;text-align:right;color:#777;font-size:9px;white-space:nowrap}
+.bar-chart-area{left:68px;right:12px;top:24px;bottom:38px;height:auto;z-index:1;gap:72px;border-bottom:2px solid #999}
+.bar-column{z-index:2}
+.bar{position:relative;z-index:2;border-radius:8px 8px 0 0;box-shadow:inset 0 1px 0 #ffffff55}
+.bar-value{position:relative;z-index:4;background:#fff;padding:1px 5px;border-radius:5px}
+.bar-label{bottom:-31px}
+.bar-saving-badge{left:50%;right:auto;top:auto;transform:translate(-50%,50%);z-index:6;min-width:150px;max-width:190px;padding:5px 8px;border:0;border-radius:4px;background:#e85a19!important;color:#fff!important;box-shadow:0 2px 7px #0002;line-height:1.15}
+.bar-saving-badge::before{display:none!important}
+.bar-saving-badge .difference-arrow{display:block;font-size:19px;line-height:.8;color:#fff}
+.bar-saving-badge strong{display:block;font-size:15px}
+.bar-saving-badge span:last-child{display:block;margin-top:2px;font-size:10px;font-weight:800}
+.bar-saving-badge.is-higher{background:#b42318!important}.bar-saving-badge.is-neutral{background:#777!important}
+.bar-slope-line{position:absolute;left:0;top:0;width:100%;height:100%;z-index:5;pointer-events:none;overflow:visible}
+.bar-slope-line line{stroke:#8b8b8b;stroke-width:1.6;stroke-dasharray:5 5;vector-effect:non-scaling-stroke}
+@media(max-width:630px){.annual-bar-chart{height:310px}.bar-y-axis{left:48px;right:2px}.bar-chart-area{left:56px;right:4px;gap:34px}.bar-grid-line span{width:43px;font-size:8px}.bar-saving-badge{min-width:112px;max-width:130px;padding:4px 5px}.bar-saving-badge strong{font-size:12px}.bar-saving-badge span:last-child{font-size:8px}.bar-value{font-size:11px}.bar-label{width:120px}}
+</style>
+
+<style id="annual-bar-zero-break-v3">
+/* 2026-10-06: 縦軸は0円を表示し、中間を「～」で省略。棒の上端同士は内側の端から点線で接続。 */
+.annual-bar-chart{height:350px}
+.bar-y-axis{overflow:visible}
+.bar-grid-line.axis-zero{border-top:2px solid #999}
+.bar-axis-break{position:absolute;left:-50px;right:0;z-index:7;height:18px;transform:translateY(50%);pointer-events:none}
+.bar-axis-break::before{content:'～';position:absolute;left:-3px;top:-9px;width:45px;text-align:right;padding-right:7px;background:#fff;color:#666;font-size:20px;font-weight:900;line-height:18px}
+.bar-axis-break::after{content:'';position:absolute;left:50px;right:0;top:8px;border-top:3px double #fff}
+.bar-break-mark{position:absolute;left:-5%;right:-5%;height:20px;z-index:8;pointer-events:none;transform:translateY(50%);overflow:visible}
+.bar-break-mark svg{display:block;width:100%;height:20px;overflow:visible}
+.bar-break-mark .wave-cut{fill:none;stroke:#fff;stroke-width:10;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.bar-break-mark .wave-edge{fill:none;stroke:#d9d9d9;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.bar-slope-line{z-index:6}
+.bar-slope-line line{stroke:#777;stroke-width:1.7;stroke-dasharray:6 5}
+@media(max-width:630px){.annual-bar-chart{height:325px}.bar-axis-break{left:-43px}.bar-axis-break::before{width:39px;font-size:18px}.bar-axis-break::after{left:43px}}
+</style>
+
+<style id="annual-bar-compact-collapsible-v7">
+/* 年間比較：初期表示は開く／任意で折りたたみ可能。縦軸側の省略記号は表示しない。 */
+.annual-comparison-details{border:1px solid #f0d8c2;border-radius:10px;overflow:hidden;background:#fff;margin:0 0 16px}
+.annual-comparison-details>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:13px 15px;background:#fff8ef;color:#c98213;font-size:16px;font-weight:800}
+.annual-comparison-details>summary::-webkit-details-marker{display:none}
+.annual-comparison-details>summary::before{content:'＋';display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--main);color:#fff;flex:0 0 auto}
+.annual-comparison-details[open]>summary::before{content:'－'}
+.annual-comparison-toggle{font-size:11px;color:#777;font-weight:600;margin-left:auto}
+.annual-comparison-details:not([open]) .annual-comparison-toggle{font-size:0}
+.annual-comparison-details:not([open]) .annual-comparison-toggle::after{content:'表示する';font-size:11px}
+.annual-comparison-details[open] .annual-comparison-toggle{font-size:0}
+.annual-comparison-details[open] .annual-comparison-toggle::after{content:'閉じる';font-size:11px}
+.annual-comparison-details .bar-comparison-section{margin:0;border:0;border-top:1px solid #f0d8c2;border-radius:0;padding:14px 16px 12px}
+.annual-bar-chart{height:255px!important;margin-top:6px!important}
+.bar-y-axis{top:18px!important;bottom:34px!important}
+.bar-chart-area{top:18px!important;bottom:34px!important}
+.bar-axis-break::before{display:none!important;content:none!important}
+.bar-axis-break::after{left:50px!important}
+@media(max-width:630px){
+ .annual-comparison-details>summary{padding:11px 10px;font-size:14px}
+ .annual-comparison-details>summary::before{width:21px;height:21px;font-size:14px}
+ .annual-comparison-details .bar-comparison-section{padding:10px 8px 9px}
+ .annual-bar-chart{height:225px!important}
+ .bar-y-axis{top:14px!important;bottom:31px!important}
+ .bar-chart-area{top:14px!important;bottom:31px!important}
+}
+</style>
+
+<style id="result-layout-v10">
+/* シミュレーション結果：年額カードは非表示。年間グラフは結果枠内に常時表示する。 */
+#result .result-eyebrow:first-child{display:none}
+#result .prices{display:none!important}
+#result .resultTop{padding-bottom:22px}
+#result .resultTop>.saving{margin:4px auto 16px}
+#result .resultTop>.bar-comparison-section{max-width:760px;margin:0 auto 18px;padding:10px 10px 0;border:0;background:transparent}
+#result .resultTop>.bar-comparison-section .bar-comparison-title{display:none}
+#result .resultTop>.bar-comparison-section .annual-saving-summary{display:none}
+#result .resultTop>.bar-comparison-section .annual-bar-chart{background:#fff;border-radius:10px;padding-top:4px}
+#result .resultTop>.bar-comparison-section .bar-comparison-message{margin-top:30px;background:#fff8e8}
+#result .resultTop>.result-cta{border-top:0;background:transparent;padding:6px 0 4px}
+#result .resultBody{padding-top:18px}
+@media(max-width:630px){
+ #result .resultTop>.bar-comparison-section{padding:8px 0 0;margin-bottom:14px}
+ #result .resultTop>.bar-comparison-section .bar-comparison-message{margin-top:28px}
+}
+</style>
 </head>
 <body>
 <div class="site-header-shell">
@@ -870,7 +980,6 @@ body.is-complete{background:#fffaf5!important}
 <a data-lp-link href="https://www.yahoo.co.jp/">プランの特徴</a>
 <a data-lp-link href="https://www.yahoo.co.jp/">ご利用までの流れ</a>
 <a data-lp-link href="https://www.yahoo.co.jp/">よくあるご質問</a>
-<a class="nav-simulation" href="#simulationArea">料金シミュレーション</a>
 <a class="nav-cta" data-lp-link href="https://www.yahoo.co.jp/">お申し込みはこちら</a>
 </nav></div></header>
 </div><!-- /.site-header-shell -->
@@ -976,17 +1085,16 @@ body.is-complete{background:#fffaf5!important}
       </div>
     </div>
     <div id="saving" class="saving" role="status"></div>
-    <div class="cta-area result-cta"><button type="button" id="goApplication" class="btn">お申し込みはこちら</button></div>
-  </div>
-  <div class="resultBody">
     <section class="bar-comparison-section" aria-labelledby="barComparisonHeading">
       <div class="bar-comparison-title">
         <span class="result-eyebrow">年間の料金比較</span>
         <h3 id="barComparisonHeading">現在の価格とアストモスでんきを比較</h3>
         <p>年間の電気料金を縦棒で比較し、どれくらい削減できるかを表示します。</p>
       </div>
+      <div class="annual-saving-summary" id="annualSavingSummary" aria-live="polite"></div>
       <div class="annual-bar-chart" role="img" aria-label="年間電気料金の比較">
-        <div class="bar-axis">料金（円）</div>
+        <div class="bar-axis-title">年間料金（円）</div>
+        <div class="bar-y-axis" id="barYAxis"></div>
         <div class="bar-chart-area">
           <div class="bar-column">
             <div class="bar-value" id="barCurrentValue"></div>
@@ -998,15 +1106,21 @@ body.is-complete{background:#fffaf5!important}
             <div class="bar astomos-bar" id="barAstomos"></div>
             <div class="bar-label">アストモスでんき</div>
           </div>
-          <div class="bar-saving-badge" id="barSavingBadge"></div>
+          <svg class="bar-slope-line" id="barSlopeLine" aria-hidden="true" preserveAspectRatio="none">
+            <line id="barSlopeSegment" x1="0" y1="0" x2="0" y2="0"></line>
+          </svg>
         </div>
       </div>
       <div class="bar-comparison-message" id="barComparisonMessage"></div>
     </section>
+    <div class="cta-area result-cta"><button type="button" id="goApplication" class="btn">お申し込みはこちら</button></div>
+  </div>
+  <div class="resultBody">
+
 
     <section class="monthly-table-section" aria-labelledby="monthlyTableHeading">
       <details class="monthly-details">
-        <summary id="monthlyTableHeading"><span>月別シミュレーション結果</span><span class="monthly-toggle">▼ 詳細を見る</span></summary>
+        <summary id="monthlyTableHeading"><span>月別シミュレーション結果</span><span class="monthly-toggle">表示する</span></summary>
         <div class="monthly-table-wrap">
         <table id="monthlyTable" class="monthly-table" aria-label="月別の使用量と電気料金の比較">
           <colgroup><col class="col-month"><col class="col-usage"><col class="col-current"><col class="col-astomos"><col class="col-diff"></colgroup>
@@ -1026,6 +1140,7 @@ body.is-complete{background:#fffaf5!important}
       <div id="disclaimerTitle" class="disclaimer-title">電気料金シミュレーションのご利用上の注意事項</div>
       <p id="disclaimer"></p>
     </div>
+    <div class="result-retry-area"><button type="button" id="retrySimulation" class="btn secondary">もう一度シミュレーションする</button></div>
 </div>
 </section>
 </section>
@@ -1035,7 +1150,7 @@ body.is-complete{background:#fffaf5!important}
 <footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜電気料金シミュレーション</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span></div></footer>
 </div><!-- /#simulationPage -->
 <script>
-const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master":[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1848.0},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.62},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.37},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.32},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":184.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":924.0},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
+const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master":[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1478.4},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1848.0},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.62},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.37},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.32},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":184.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":924.0},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
 const HOUSEHOLDS=['1人世帯','2人世帯','3～4人世帯','5人以上世帯'];
 const AMPERES=['10A','15A','20A','30A','40A','50A','60A'];
 const activeVal=v=>v===true||v===1||['TRUE','1','有効','公開','○','〇'].includes(String(v==null?'':v).trim().toUpperCase());
@@ -1214,24 +1329,90 @@ function setSimulationInputsDisabled(disabled){
 }
 function renderAnnualBarComparison(r){
   const current=Number(r.legacy?.annualPrice||0), astomos=Number(r.astomos?.annualPrice||0);
-  const max=Math.max(current,astomos,1);
-  $('barCurrent').style.height=Math.max(4,current/max*100)+'%';
-  $('barAstomos').style.height=Math.max(4,astomos/max*100)+'%';
+  const saving=Number(r.annualSaving||0);
+  const rate=current>0 ? Math.round(Math.abs(saving)/current*1000)/10 : 0;
+
+  const high=Math.max(current,astomos,1);
+  const low=Math.min(current,astomos);
+  const diff=Math.abs(current-astomos);
+
+  // 上側の拡大表示に使う「きれいな」目盛間隔を決める。
+  const rawStep=Math.max(diff/3,high*0.02,1000);
+  const pow=Math.pow(10,Math.floor(Math.log10(rawStep)));
+  const norm=rawStep/pow;
+  const nice=(norm<=1?1:norm<=2?2:norm<=5?5:10)*pow;
+
+  // 0円は必ず表示する。一方、料金比較部分は省略記号より上で拡大する。
+  // breakValue～axisMax が上側82%、0円～breakValue は下側18%に圧縮して描画する。
+  let breakValue=Math.max(nice,Math.floor((low-nice*1.25)/nice)*nice);
+  if(breakValue<=0 || breakValue>=low) breakValue=Math.max(nice,Math.floor(low*0.65/nice)*nice);
+  if(breakValue>=low) breakValue=Math.max(nice,low-nice);
+  const axisMax=Math.ceil((high+nice*.65)/nice)*nice;
+  const upperSpan=Math.max(axisMax-breakValue,1);
+  const BREAK_PCT=18;
+  const pct=v=>{
+    if(v<=0) return 0;
+    if(v<=breakValue) return Math.max(2,(v/breakValue)*BREAK_PCT);
+    return BREAK_PCT+(v-breakValue)/upperSpan*(100-BREAK_PCT);
+  };
+
+  const currentPct=Math.min(100,pct(current));
+  const astomosPct=Math.min(100,pct(astomos));
+  $('barCurrent').style.height=currentPct+'%';
+  $('barAstomos').style.height=astomosPct+'%';
   $('barCurrentValue').textContent=yen(current)+'円';
   $('barAstomosValue').textContent=yen(astomos)+'円';
   $('barCurrentLabel').textContent=r.legacy?.company||'現在のご契約';
-  const saving=Number(r.annualSaving||0);
-  const rate=current>0 ? Math.round(Math.abs(saving)/current*1000)/10 : 0;
-  const badge=$('barSavingBadge');
+
+  // 各棒にも「～」を入れて、途中の金額帯を省略していることを明示する。
+  [$('barCurrent'),$('barAstomos')].forEach(bar=>{
+    let mark=bar.querySelector('.bar-break-mark');
+    if(!mark){
+      mark=document.createElement('span');
+      mark.className='bar-break-mark';
+      mark.innerHTML='<svg viewBox="0 0 120 20" preserveAspectRatio="none" aria-hidden="true"><path class="wave-cut" d="M0 10 C8 2 16 18 24 10 S40 2 48 10 S64 18 72 10 S88 2 96 10 S112 18 120 10"></path><path class="wave-edge" d="M0 10 C8 2 16 18 24 10 S40 2 48 10 S64 18 72 10 S88 2 96 10 S112 18 120 10"></path></svg>';
+      bar.appendChild(mark);
+    }
+    mark.style.bottom=(BREAK_PCT/currentPct*100)+'%';
+  });
+
+  // 縦軸：最下部は必ず0円。省略記号より上だけ比較金額周辺の目盛を表示。
+  const yAxis=$('barYAxis');
+  const ticks=[];
+  for(let v=breakValue;v<=axisMax+nice*.1;v+=nice) ticks.push(v);
+  const upperTicks=ticks.map(v=>{
+    const bottom=BREAK_PCT+(v-breakValue)/upperSpan*(100-BREAK_PCT);
+    return '<div class="bar-grid-line" style="bottom:'+bottom+'%"><span>'+yen(v)+'</span></div>';
+  }).join('');
+  yAxis.innerHTML=
+    '<div class="bar-grid-line axis-zero" style="bottom:0%"><span>0</span></div>'+upperTicks;
+
+  // 棒の「中心」ではなく、左側の棒の右上端 → 右側の棒の左上端を点線で結ぶ。
+  const slopeSvg=$('barSlopeLine');
+  const slopeLine=$('barSlopeSegment');
+  const area=$('barSlopeLine').parentElement;
+  requestAnimationFrame(()=>{
+    const ar=area.getBoundingClientRect();
+    const c=$('barCurrent').getBoundingClientRect();
+    const a=$('barAstomos').getBoundingClientRect();
+    const w=Math.max(ar.width,1), h=Math.max(ar.height,1);
+    slopeSvg.setAttribute('viewBox','0 0 '+w+' '+h);
+    slopeLine.setAttribute('x1',c.right-ar.left);
+    slopeLine.setAttribute('y1',c.top-ar.top);
+    slopeLine.setAttribute('x2',a.left-ar.left);
+    slopeLine.setAttribute('y2',a.top-ar.top);
+  });
+
+  // 節約額はグラフの外側にだけ表示する。
+  const summary=$('annualSavingSummary');
   if(saving>0){
-    badge.textContent='年間 '+yen(saving)+'円おトク';
-    $('barComparisonMessage').textContent='アストモスでんきなら、年間で約'+rate+'％削減できます。';
+    summary.innerHTML='<span class="saving-yen">年間 '+yen(saving)+'円 節約</span>';
+    $('barComparisonMessage').textContent='現在のご契約からアストモスでんきへ切り替えた場合の年間削減イメージです。';
   }else if(saving<0){
-    badge.textContent='年間 '+yen(Math.abs(saving))+'円高い';
-    badge.style.background='#fff0ed'; badge.style.color='#a02b1f';
+    summary.innerHTML='<span class="saving-yen">年間 '+yen(Math.abs(saving))+'円 高い試算</span>';
     $('barComparisonMessage').textContent='今回の条件では、アストモスでんきの方が年間で約'+rate+'％高い試算です。';
   }else{
-    badge.textContent='年間差額 0円'; badge.style.background='#f1f1f1'; badge.style.color='#555';
+    summary.innerHTML='<span class="saving-yen">年間差額 0円</span>';
     $('barComparisonMessage').textContent='今回の条件では、年間の試算額は同額です。';
   }
 }
@@ -1283,6 +1464,14 @@ function drawMonthlyTable(months, legacyCompany){
   foot.innerHTML=`<tr><th scope="row">合計</th><td>${fmt(totalUsage)}</td><td>${fmt(totalLegacy)}</td><td>${fmt(totalAstomos)}</td><td>${diffText(totalDiff)}</td></tr>`;
 }
 function invalidateResult(){state.simulation=null;$('result').classList.remove('show')}
+$('retrySimulation').onclick=()=>{
+  invalidateResult();
+  // 結果表示後に付与されるロック用クラスを解除し、条件入力欄を再表示する
+  $('simulationArea').classList.remove('post-simulation');
+  setSimulationInputsDisabled(false);
+  hideError();
+  $('simulationArea').scrollIntoView({behavior:'smooth',block:'start'});
+};
 ['household','baseMonth','baseUsage','capacity'].forEach(id=>$(id).addEventListener('change',invalidateResult));
 $('baseUsage').addEventListener('input',invalidateResult);
 function error(t){$('error').textContent=t;$('error').style.display='block'}
@@ -1793,7 +1982,25 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
 </main>
 <div class="application-footer">© アストモスエネルギー株式会社</div>
 </div>
-<div id="completeScreen" aria-hidden="true"><p>お申込みを受け付けました</p></div>
+<div id="completeScreen" aria-hidden="true">
+  <div class="complete-shell">
+    <div class="complete-card">
+      <div class="complete-mark" aria-hidden="true">✓</div>
+      <h1>お申込みを受け付けました</h1>
+      <p class="complete-lead">アストモスでんきへお申込みいただき、ありがとうございます。受付内容を確認のうえ、必要に応じてご連絡いたします。</p>
+      <div class="complete-receipt" aria-label="受付情報">
+        <div class="complete-receipt-row"><div class="complete-receipt-label">受付日時</div><div class="complete-receipt-value" id="completeReceivedAt">－</div></div>
+        <div class="complete-receipt-row"><div class="complete-receipt-label">お申込者</div><div class="complete-receipt-value" id="completeApplicantName">－</div></div>
+      </div>
+      <div class="complete-note">ご入力いただいたメールアドレス宛に、お申込み内容の控えをご案内します。メールが届かない場合は、迷惑メールフォルダ等もご確認ください。</div>
+      <div class="complete-actions">
+        <button type="button" class="complete-btn primary" id="completeBackSimulation">料金シミュレーションへ戻る</button>
+        <a class="complete-btn secondary" data-lp-link href="https://www.yahoo.co.jp/">アストモスでんきトップへ戻る</a>
+      </div>
+    </div>
+    <div class="complete-footer">© アストモスエネルギー株式会社</div>
+  </div>
+</div>
 
 
 <script>
@@ -1804,7 +2011,6 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   const appForm=document.getElementById('formmailerForm');
   const targetFrame=document.getElementById('formmailerTarget');
   const appNavButton=document.querySelector('.site-header-shell .nav .nav-cta');
-  const simNavButton=document.querySelector('.site-header-shell .nav .nav-simulation');
   const qaLaunch=document.getElementById('qaLaunch');
   let sending=false;
 
@@ -1928,9 +2134,21 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   function showComplete(){
     if(!sending)return;
     sending=false;
+    const now=new Date();
+    const receivedAt=new Intl.DateTimeFormat('ja-JP',{
+      timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',
+      hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false
+    }).format(now);
+    const sei=val('field_6423901_sei');
+    const mei=val('field_6423901_mei');
+    const receivedEl=document.getElementById('completeReceivedAt');
+    const applicantEl=document.getElementById('completeApplicantName');
+    if(receivedEl)receivedEl.textContent=receivedAt;
+    if(applicantEl)applicantEl.textContent=((sei+' '+mei).trim()||'－');
     document.body.classList.remove('app-mode');
     document.body.classList.add('is-complete');
     completeScreen.setAttribute('aria-hidden','false');
+    window.scrollTo({top:0,behavior:'smooth'});
   }
 
   if(targetFrame){
@@ -1977,6 +2195,21 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
     });
   }
 
+  const completeBackSimulation=document.getElementById('completeBackSimulation');
+  if(completeBackSimulation){
+    completeBackSimulation.addEventListener('click',()=>{
+      document.body.classList.remove('is-complete');
+      completeScreen.setAttribute('aria-hidden','true');
+      setAppMode(false);
+      if(simPage){
+        simPage.hidden=false;
+        simPage.setAttribute('aria-hidden','false');
+        simPage.style.display='';
+      }
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  }
+
   /* ページ再表示時は通常のシミュレーション画面に戻す */
   window.addEventListener('pageshow',()=>{
     if(document.body.classList.contains('is-complete')){
@@ -2006,7 +2239,7 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
     const b=e.target.closest('button,a,input[type=button],input[type=submit]'); if(!b)return;
     const t=(b.textContent||b.value||'').replace(/\s+/g,'');
     if(/シミュレーションする|シミュレーション実行/.test(t)){ setTimeout(closeOtherConditions,100); setTimeout(closeOtherConditions,500); }
-    if((t==='この内容で申し込む'||t==='お申し込みはこちら') && !b.matches('.site-header-shell .nav .nav-cta')){ e.preventDefault(); e.stopImmediatePropagation(); goApplication(); }
+    if(t==='お申し込みはこちら' && !b.matches('.site-header-shell .nav .nav-cta')){ e.preventDefault(); e.stopImmediatePropagation(); goApplication(); }
   },true);
   const mo=new MutationObserver(function(){
     const r=document.querySelector('#simulationResult,#resultArea,#result-section,.simulation-result');
@@ -2033,8 +2266,14 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   document.addEventListener('click',function(e){
     var b=e.target.closest('#run');
     if(!b) return;
-    setTimeout(updatePostSimulationConditions,200);
-    setTimeout(updatePostSimulationConditions,600);
+    function applyOnlyAfterSuccess(){
+      var result=document.getElementById('result');
+      if(result && result.classList.contains('show')){
+        updatePostSimulationConditions();
+      }
+    }
+    setTimeout(applyOnlyAfterSuccess,200);
+    setTimeout(applyOnlyAfterSuccess,600);
   },true);
   window.addEventListener('load',function(){
     var result=document.getElementById('result');
@@ -2042,6 +2281,18 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   });
 })();
 </script>
+
+<style id="final-header-cta-color-fix">
+/* 最終優先：通常は申込=#e15f56、申込画面ではシミュレーション=#f58220 */
+.site-header-shell .header .nav .nav-cta {
+  background:#e15f56 !important;
+  border-color:#e15f56 !important;
+}
+body.app-mode .site-header-shell .header .nav .nav-cta {
+  background:#f58220 !important;
+  border-color:#f58220 !important;
+}
+</style>
 
 </body>
 </html>
