@@ -7,6 +7,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>アストモスでんき 電気料金シミュレーション</title>
 
+<!-- =========================================================
+     Microsoft Clarity 設定
+     下記 YOUR_CLARITY_PROJECT_ID を Clarity のプロジェクトIDへ置き換えてください。
+     例: const CLARITY_PROJECT_ID = 'ytcjr5u028';
+     ID未設定のままでもサイト本体は通常どおり動作します。
+     ========================================================= -->
+<script id="astomos-clarity-loader">
+(function(){
+  const CLARITY_PROJECT_ID='YOUR_CLARITY_PROJECT_ID';
+  const isValidId=CLARITY_PROJECT_ID && !/^YOUR_/i.test(CLARITY_PROJECT_ID);
+  window.ASTOMOS_CLARITY_ENABLED=!!isValidId;
+
+  if(isValidId){
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,'clarity','script',CLARITY_PROJECT_ID);
+  }
+
+  window.astomosTrack=function(eventName){
+    if(!window.ASTOMOS_CLARITY_ENABLED || !eventName) return;
+    try{ window.clarity('event',String(eventName)); }catch(e){}
+  };
+})();
+</script>
+
+
 
 <!-- Noto Sans JP: 全画面共通フォント -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1852,53 +1880,7 @@ h1,h2,h3,
 <footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜電気料金シミュレーション</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span></div></footer>
 </div><!-- /#simulationPage -->
 <script>
-const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master"
-
-
-
-:[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":410.71},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":821.42},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1232.13},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1642.84},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":2053.55},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2464.26},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":31.01},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":37.76},
-{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":41.71},
-
-
-
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":205.36},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":410.71},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":616.07},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":821.42},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1026.78},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1232.13},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":35.13},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":38.43},
-{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":39.98},
-
-
-
-
-{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},
-{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},
-{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
+const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master":[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1478.4},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1848.0},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.62},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.37},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.32},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":184.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":924.0},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
 const HOUSEHOLDS=['1人世帯','2人世帯','3～4人世帯','5人以上世帯'];
 const AMPERES=['10A','15A','20A','30A','40A','50A','60A'];
 const activeVal=v=>v===true||v===1||['TRUE','1','有効','公開','○','〇'].includes(String(v==null?'':v).trim().toUpperCase());
@@ -3326,6 +3308,146 @@ body.is-complete #qaLaunch,body.is-complete #qaPanel{display:none !important}
   #simulationPage .sim-hero p{font-size:13px !important}
 }
 </style>
+
+
+<script id="astomos-clarity-events-v1">
+(function(){
+  const track=(name)=>{ if(typeof window.astomosTrack==='function') window.astomosTrack(name); };
+  const onceFlags=new Set();
+  const trackOnce=(name)=>{ if(onceFlags.has(name)) return; onceFlags.add(name); track(name); };
+
+  function simulationInputsAreValid(){
+    try{
+      const selectedArea=document.querySelector('#areas .choice.selected');
+      const mode=document.querySelector('#methodConditionStep [data-mode].selected');
+      if(!selectedArea || !mode) return false;
+      const modeName=mode.dataset.mode;
+      if(modeName==='simple'){
+        const household=document.getElementById('household');
+        return !!(household && household.value);
+      }
+      if(modeName==='detail'){
+        const month=document.getElementById('baseMonth');
+        const usage=document.getElementById('baseUsage');
+        if(!month || !month.value || !usage || Number(usage.value)<=0) return false;
+        const capWrap=document.getElementById('ampereFields');
+        const cap=document.getElementById('capacity');
+        if(capWrap && getComputedStyle(capWrap).display!=='none' && (!cap || !cap.value)) return false;
+        return true;
+      }
+      return false;
+    }catch(e){ return false; }
+  }
+
+  function isVisible(el){
+    return !!(el && !el.hidden && getComputedStyle(el).display!=='none');
+  }
+
+  window.addEventListener('DOMContentLoaded',function(){
+    // Clarity自体がPVを自動取得します。以下は画面・操作単位の追加イベントです。
+    const simPage=document.getElementById('simulationPage');
+    if(isVisible(simPage)) track('simulation_open');
+
+    let resultWasVisible=false;
+    const result=document.getElementById('result');
+    if(result){
+      const resultObserver=new MutationObserver(function(){
+        const now=result.classList.contains('show') && isVisible(result);
+        if(now && !resultWasVisible) track('simulation_complete');
+        resultWasVisible=now;
+      });
+      resultObserver.observe(result,{attributes:true,attributeFilter:['class','style','hidden']});
+    }
+
+    const body=document.body;
+    let appModeWas=body.classList.contains('app-mode');
+    let completeWas=body.classList.contains('is-complete');
+    const bodyObserver=new MutationObserver(function(){
+      const appNow=body.classList.contains('app-mode');
+      const completeNow=body.classList.contains('is-complete');
+      if(appNow && !appModeWas) track('application_open');
+      if(!appNow && appModeWas && !completeNow) track('simulation_open');
+      if(completeNow && !completeWas) track('application_complete');
+      appModeWas=appNow;
+      completeWas=completeNow;
+    });
+    bodyObserver.observe(body,{attributes:true,attributeFilter:['class']});
+
+    // 申込STEPの遷移を、実際にactiveになったタイミングで計測。
+    const panels=[...document.querySelectorAll('#applicationPage .fm-step-panel')];
+    let lastStep=Number((panels.find(p=>p.classList.contains('active'))||{}).dataset?.step||1);
+    if(panels.length){
+      const stepObserver=new MutationObserver(function(){
+        const active=panels.find(p=>p.classList.contains('active'));
+        if(!active) return;
+        const step=Number(active.dataset.step||0);
+        if(step===lastStep) return;
+        if(lastStep===1 && step===2) trackOnce('application_step1_complete');
+        if(lastStep===2 && step===3){
+          trackOnce('application_step2_complete');
+          trackOnce('application_confirm');
+        }
+        lastStep=step;
+      });
+      panels.forEach(p=>stepObserver.observe(p,{attributes:true,attributeFilter:['class']}));
+    }
+
+    // Q&Aパネル開閉
+    const qaPanel=document.getElementById('qaPanel');
+    let qaWasOpen=qaPanel ? !qaPanel.hidden : false;
+    if(qaPanel){
+      const qaObserver=new MutationObserver(function(){
+        const open=!qaPanel.hidden;
+        if(open && !qaWasOpen) track('qa_open');
+        qaWasOpen=open;
+      });
+      qaObserver.observe(qaPanel,{attributes:true,attributeFilter:['hidden']});
+    }
+
+    document.addEventListener('click',function(e){
+      const target=e.target;
+      if(!(target instanceof Element)) return;
+
+      if(target.closest('#run')){
+        if(simulationInputsAreValid()) track('simulation_start');
+        return;
+      }
+
+      if(target.closest('#goApplication')){
+        track('result_application_click');
+        return;
+      }
+
+      const navCta=target.closest('.site-header-shell .nav .nav-cta');
+      if(navCta){
+        if(document.body.classList.contains('app-mode')) track('header_simulation_click');
+        else track('header_application_click');
+        return;
+      }
+
+      if(target.closest('.qa-question')){
+        track('qa_answer_view');
+        return;
+      }
+      if(target.closest('#qaSolved')){
+        track('qa_solved');
+        return;
+      }
+      if(target.closest('#qaUnsolved')){
+        track('qa_unsolved');
+        return;
+      }
+
+      const monthly=target.closest('.monthly-details > summary');
+      if(monthly){
+        const details=monthly.parentElement;
+        // click前の状態なので、閉じていれば今回「表示する」操作
+        if(details && !details.open) track('monthly_result_open');
+      }
+    },true);
+  });
+})();
+</script>
 
 </body>
 </html>
