@@ -7,6 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>アストモスでんき 電気料金シミュレーション</title>
 
+
+<!-- Noto Sans JP: 全画面共通フォント -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* =========================================================
    色設定（色を変更するときは、まずこのブロックだけ編集してください）
@@ -1046,6 +1051,585 @@ body.is-complete{background:#fffaf5!important}
  #simulationPage .condition-edit-btn{padding:6px 13px;font-size:11px}
 }
 </style>
+
+<style id="post-simulation-compact-condition-cards-v2">
+/* 結果表示後のSTEP1・STEP2をコンパクト化。
+   STEPラベルと見出しを横並びにし、カードの縦幅を抑える。 */
+#simulationArea.post-simulation > section.condition-step{
+  margin-bottom:14px !important;
+}
+#simulationArea.post-simulation > section.condition-step .head{
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  align-items:center !important;
+  column-gap:12px !important;
+  row-gap:7px !important;
+  padding:15px 28px !important;
+  border-bottom:0 !important;
+}
+#simulationArea.post-simulation > section.condition-step .head > .step{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  margin:0 !important;
+  align-self:center !important;
+}
+#simulationArea.post-simulation > section.condition-step .head > h2{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  margin:0 !important;
+  font-size:20px !important;
+  line-height:1.35 !important;
+}
+#simulationArea.post-simulation > section.condition-step .head > .condition-summary{
+  grid-column:1 / -1 !important;
+  grid-row:2 !important;
+  margin:2px 0 0 !important;
+  font-size:14px !important;
+}
+#simulationArea.post-simulation > section.condition-step .head > p{
+  display:none !important;
+}
+#simulationArea.post-simulation .condition-summary-row{
+  min-height:36px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:14px !important;
+  flex-wrap:nowrap !important;
+}
+#simulationArea.post-simulation .condition-summary-row > div{
+  min-width:0 !important;
+  margin:0 !important;
+  line-height:1.45 !important;
+}
+#simulationArea.post-simulation .condition-edit-btn{
+  flex:0 0 auto !important;
+  padding:6px 15px !important;
+  min-height:34px !important;
+}
+@media(max-width:630px){
+  #simulationArea.post-simulation > section.condition-step{
+    margin-bottom:10px !important;
+  }
+  #simulationArea.post-simulation > section.condition-step .head{
+    column-gap:8px !important;
+    row-gap:6px !important;
+    padding:12px 14px !important;
+  }
+  #simulationArea.post-simulation > section.condition-step .head > h2{
+    font-size:17px !important;
+  }
+  #simulationArea.post-simulation > section.condition-step .head > .condition-summary{
+    font-size:12px !important;
+  }
+  #simulationArea.post-simulation .condition-summary-row{
+    gap:8px !important;
+  }
+  #simulationArea.post-simulation .condition-edit-btn{
+    padding:5px 11px !important;
+    min-height:31px !important;
+    font-size:11px !important;
+  }
+}
+</style>
+
+
+<style id="application-compact-step-cards-v1">
+/* 申込画面もシミュレーション結果後のSTEPカードと同じ密度に統一 */
+#applicationPage .progress{
+  margin-top:10px !important;
+  margin-bottom:20px !important;
+}
+#applicationPage .form-note{
+  margin-bottom:6px !important;
+}
+#applicationPage .fm-step-panel{
+  border-radius:16px !important;
+}
+#applicationPage .card-head{
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  align-items:center !important;
+  column-gap:12px !important;
+  row-gap:6px !important;
+  padding:15px 22px 13px !important;
+  background:#fff !important;
+}
+#applicationPage .card-head > .step{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  margin:0 !important;
+  align-self:center !important;
+  padding:4px 10px !important;
+}
+#applicationPage .card-head > h2{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  margin:0 !important;
+  font-size:20px !important;
+  line-height:1.35 !important;
+}
+#applicationPage .card-head > p{
+  grid-column:1 / -1 !important;
+  grid-row:2 !important;
+  margin:1px 0 0 !important;
+  font-size:12px !important;
+  line-height:1.55 !important;
+}
+#applicationPage .card-body{
+  padding:20px 22px 24px !important;
+}
+#applicationPage .form-item{
+  margin-bottom:18px !important;
+}
+#applicationPage .form-item > label{
+  margin-bottom:6px !important;
+}
+#applicationPage .sub-label{
+  margin-top:9px !important;
+  margin-bottom:4px !important;
+}
+#applicationPage .help{
+  margin-top:5px !important;
+}
+#applicationPage .step-actions{
+  margin-top:22px !important;
+}
+#applicationPage .review-box{
+  margin-bottom:16px !important;
+}
+#applicationPage .review-group{
+  padding:14px 18px !important;
+}
+#applicationPage .review-group h3{
+  margin-bottom:7px !important;
+}
+#applicationPage .review-group dl > div{
+  padding:7px 0 !important;
+}
+#applicationPage .agreement-box{
+  padding:13px 15px !important;
+  margin-bottom:14px !important;
+}
+#applicationPage .agreement-check{
+  padding:12px 14px !important;
+}
+@media(max-width:640px){
+  #applicationPage .progress{
+    margin-top:8px !important;
+    margin-bottom:14px !important;
+  }
+  #applicationPage .card-head{
+    column-gap:8px !important;
+    row-gap:5px !important;
+    padding:12px 14px 11px !important;
+  }
+  #applicationPage .card-head > .step{
+    padding:3px 8px !important;
+    font-size:10px !important;
+  }
+  #applicationPage .card-head > h2{
+    font-size:17px !important;
+  }
+  #applicationPage .card-head > p{
+    font-size:11px !important;
+  }
+  #applicationPage .card-body{
+    padding:16px 14px 19px !important;
+  }
+  #applicationPage .form-item{
+    margin-bottom:15px !important;
+  }
+  #applicationPage .step-actions{
+    margin-top:18px !important;
+  }
+  #applicationPage .review-group{
+    padding:12px 14px !important;
+  }
+}
+</style>
+
+
+
+<style id="simulation-condition-cards-compact-from-start-v1">
+/* シミュレーション入力時からSTEPカードをコンパクト表示。
+   STEPラベルと見出しを同一行にし、結果表示後も同じ位置関係を維持する。 */
+#simulationArea > section.condition-step{
+  margin-bottom:14px !important;
+}
+#simulationArea > section.condition-step .head{
+  display:grid !important;
+  grid-template-columns:auto minmax(0,1fr) !important;
+  align-items:center !important;
+  column-gap:12px !important;
+  row-gap:6px !important;
+  padding:14px 28px 12px !important;
+}
+#simulationArea > section.condition-step .head > .step{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  margin:0 !important;
+  align-self:center !important;
+  line-height:1 !important;
+}
+#simulationArea > section.condition-step .head > h2{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  margin:0 !important;
+  font-size:20px !important;
+  line-height:1.35 !important;
+}
+#simulationArea > section.condition-step .head > p{
+  grid-column:1 / -1 !important;
+  grid-row:2 !important;
+  margin:1px 0 0 !important;
+  font-size:12px !important;
+  line-height:1.55 !important;
+}
+#simulationArea > section.condition-step .head > .condition-summary{
+  grid-column:1 / -1 !important;
+  grid-row:2 !important;
+  margin:2px 0 0 !important;
+}
+/* 入力部分も上側の余白を少し詰める */
+#simulationArea > section.condition-step > .body{
+  padding:16px 28px 20px !important;
+}
+#simulationArea #methodConditionStep > .body{
+  padding-top:14px !important;
+}
+#simulationArea #methodConditionStep .actions{
+  padding:0 28px 20px !important;
+}
+/* 結果表示後は説明文を隠し、サマリーを同じ2段目に表示 */
+#simulationArea.post-simulation > section.condition-step .head > p{
+  display:none !important;
+}
+#simulationArea.post-simulation > section.condition-step .head{
+  padding-top:14px !important;
+  padding-bottom:14px !important;
+}
+@media(max-width:630px){
+  #simulationArea > section.condition-step{
+    margin-bottom:10px !important;
+  }
+  #simulationArea > section.condition-step .head{
+    column-gap:8px !important;
+    row-gap:5px !important;
+    padding:11px 14px 10px !important;
+  }
+  #simulationArea > section.condition-step .head > h2{
+    font-size:17px !important;
+  }
+  #simulationArea > section.condition-step .head > p{
+    font-size:11px !important;
+    margin-top:0 !important;
+  }
+  #simulationArea > section.condition-step > .body{
+    padding:13px 14px 16px !important;
+  }
+  #simulationArea #methodConditionStep > .body{
+    padding-top:12px !important;
+  }
+  #simulationArea #methodConditionStep .actions{
+    padding:0 14px 16px !important;
+  }
+  #simulationArea.post-simulation > section.condition-step .head{
+    padding-top:11px !important;
+    padding-bottom:11px !important;
+  }
+}
+</style>
+
+
+<style id="region-selected-map-placement-v1">
+/* 地域選択：選択中エリアを沖縄の右側の空きスペースへ移動 */
+#simulationPage .region-layout{
+  grid-template-columns:330px minmax(0,1fr);
+  gap:26px;
+  align-items:start;
+}
+#simulationPage .map-wrap{
+  position:relative;
+  min-height:0;
+  overflow:visible;
+}
+#simulationPage .japan-map{
+  display:block;
+  width:100%;
+  height:300px;
+}
+#simulationPage .map-selected-overlay{
+  position:absolute;
+  left:25%;
+  bottom:32px;
+  z-index:5;
+  margin:0;
+  padding:8px 12px;
+  min-width:205px;
+  background:rgba(255,248,240,.96);
+  border:1px solid var(--line);
+  border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+  font-size:13px;
+  line-height:1.4;
+  white-space:nowrap;
+}
+#simulationPage .map-selected-overlay strong{
+  display:inline;
+  margin-left:5px;
+  font-size:16px;
+  color:var(--main);
+}
+#simulationPage .map-help{
+  margin-top:2px;
+}
+@media(max-width:760px){
+  #simulationPage .region-layout{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  #simulationPage .japan-map{
+    height:270px;
+    aspect-ratio:auto;
+  }
+  #simulationPage .map-selected-overlay{
+    left:24%;
+    bottom:29px;
+    min-width:0;
+    max-width:72%;
+    padding:7px 10px;
+    font-size:12px;
+  }
+  #simulationPage .map-selected-overlay strong{font-size:15px;}
+}
+@media(max-width:630px){
+  #simulationPage .japan-map{height:245px;}
+  #simulationPage .map-selected-overlay{
+    left:25%;
+    bottom:27px;
+    padding:6px 8px;
+    font-size:11px;
+    border-radius:7px;
+  }
+  #simulationPage .map-selected-overlay strong{font-size:14px;margin-left:3px;}
+}
+@media(max-width:390px){
+  #simulationPage .japan-map{height:225px;}
+  #simulationPage .map-selected-overlay{
+    left:24%;
+    bottom:25px;
+    max-width:74%;
+    font-size:10px;
+    padding:5px 7px;
+  }
+  #simulationPage .map-selected-overlay strong{font-size:13px;}
+}
+</style>
+
+<style id="region-selected-grid-span2-v2">
+/* 地域選択：4段目を「沖縄｜選択中のエリア（2マス分）」にする */
+#simulationPage .region-buttons{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:12px !important;
+  align-items:stretch;
+}
+#simulationPage .region-buttons .choice{
+  width:100%;
+  min-width:0;
+  margin:0;
+}
+#simulationPage .region-selected-grid{
+  grid-column:span 2;
+  min-width:0;
+  min-height:60px;
+  margin:0 !important;
+  padding:10px 14px !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  text-align:center;
+  background:#fff8f0;
+  border:1px solid var(--line);
+  border-radius:9px;
+  font-size:13px;
+  line-height:1.45;
+  font-weight:700;
+  color:#555;
+  box-shadow:none;
+}
+#simulationPage .region-selected-grid strong{
+  display:inline;
+  margin:0;
+  color:var(--main);
+  font-size:16px;
+  font-weight:900;
+  white-space:nowrap;
+}
+/* 以前の地図内オーバーレイ指定は使用しない */
+#simulationPage .map-selected-overlay{display:none !important;}
+@media(max-width:630px){
+  #simulationPage .region-buttons{gap:8px !important;}
+  #simulationPage .region-buttons .choice{min-height:52px !important;padding:8px 3px !important;font-size:14px !important;}
+  #simulationPage .region-selected-grid{min-height:52px;padding:7px 8px !important;font-size:11px;}
+  #simulationPage .region-selected-grid strong{font-size:14px;}
+}
+@media(max-width:360px){
+  #simulationPage .region-buttons{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:6px !important;}
+  #simulationPage .region-buttons .choice{font-size:12px !important;min-height:48px !important;}
+  #simulationPage .region-selected-grid{min-height:48px;padding:5px 5px !important;font-size:10px;}
+  #simulationPage .region-selected-grid strong{font-size:12px;}
+}
+</style>
+
+<style id="region-layout-aligned-v3">
+/* 地域選択：PCでは選択肢4段と地図の下端を揃え、対象外注記は2列横断で表示 */
+#simulationPage .region-layout{
+  display:grid !important;
+  grid-template-columns:330px minmax(0,1fr) !important;
+  grid-template-areas:
+    "choices map"
+    "help help";
+  column-gap:26px !important;
+  row-gap:8px !important;
+  align-items:stretch !important;
+}
+#simulationPage .region-layout > .region-choice-pane{
+  grid-area:choices;
+  min-width:0;
+  display:flex;
+}
+#simulationPage .region-layout > .region-choice-pane .region-buttons{
+  flex:1;
+  grid-auto-rows:60px;
+  align-content:stretch;
+}
+#simulationPage .region-layout > .map-wrap{
+  grid-area:map;
+  min-width:0;
+  height:276px !important; /* 60px×4段 + 12px×3間隔 */
+  min-height:276px !important;
+  margin:0 !important;
+  display:flex;
+  align-items:stretch;
+  overflow:hidden;
+}
+#simulationPage .region-layout > .map-wrap .japan-map{
+  width:100% !important;
+  height:100% !important;
+  display:block;
+}
+#simulationPage .region-layout > .region-help-wide{
+  grid-area:help;
+  width:100%;
+  margin:0 !important;
+  padding-top:2px;
+  text-align:left;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+@media(max-width:760px){
+  #simulationPage .region-layout{
+    grid-template-columns:1fr !important;
+    grid-template-areas:
+      "choices"
+      "map"
+      "help";
+    row-gap:10px !important;
+  }
+  #simulationPage .region-layout > .region-choice-pane .region-buttons{
+    grid-auto-rows:52px;
+  }
+  #simulationPage .region-layout > .map-wrap{
+    height:245px !important;
+    min-height:245px !important;
+  }
+  #simulationPage .region-layout > .region-help-wide{
+    font-size:11px;
+    line-height:1.55;
+    padding:0 2px;
+  }
+}
+@media(max-width:390px){
+  #simulationPage .region-layout > .region-choice-pane .region-buttons{
+    grid-auto-rows:48px;
+  }
+  #simulationPage .region-layout > .map-wrap{
+    height:225px !important;
+    min-height:225px !important;
+  }
+  #simulationPage .region-layout > .region-help-wide{font-size:10px;}
+}
+</style>
+
+
+<style id="noto-sans-jp-unified-v1">
+/* =========================================================
+   全画面フォント統一
+   通常文 400 / 入力 500 / ラベル・ボタン 700 / 大見出し 800
+   ========================================================= */
+html,body,button,input,select,textarea,option{
+  font-family:"Noto Sans JP",sans-serif !important;
+}
+body{font-weight:400;}
+
+/* 各画面・モーダル・LPでも同じフォントを継承 */
+#simulationPage,#simulationPage *,
+#applicationPage,#applicationPage *,
+.lp-content,.lp-content *,
+.qa-panel,.qa-panel *,
+.site-header-shell,.site-header-shell *{
+  font-family:"Noto Sans JP",sans-serif !important;
+}
+
+/* 通常文 */
+p,.head p,.sim-hero p,.app-card p,.application-page p,
+.condition-note,.notes,.map-help,.bar-comparison-title p,
+.qa-intro,.qa-answer,.qa-result-note,.qa-contact-hours{
+  font-weight:400 !important;
+}
+
+/* 入力値・選択値 */
+input,select,textarea,.field input,.field select,
+#applicationPage input,#applicationPage select,#applicationPage textarea{
+  font-weight:500 !important;
+}
+
+/* ラベル・操作要素 */
+label,.field label,.required,.step,.choice,.method strong,
+.region-selected,.monthly-details summary,.annual-comparison-toggle,
+button,.btn,.lp-btn,.nav-cta,.nav-simulation,.back-to-lp,
+.qa-launch,.qa-category summary,.qa-question,.qa-back,.qa-feedback button,.qa-contact-form{
+  font-weight:700 !important;
+}
+
+/* 大見出し */
+h1,h2,h3,
+.sim-hero h1,.head h2,.resultTop h2,.bar-comparison-title h3,
+.lp-content .section-head h2,.application-page h1,.application-page h2,
+#applicationPage .app-title,#applicationPage .card-title{
+  font-weight:800 !important;
+}
+
+/* 英字アイブロウとSTEPラベル */
+.sim-eyebrow,.result-eyebrow,.eyebrow,[class*="step-label"],.step-pill{
+  font-weight:700 !important;
+  letter-spacing:.10em;
+}
+
+/* ヘッダーナビの太さも統一 */
+.site-header-shell .nav a{font-weight:600 !important;}
+.site-header-shell .nav .nav-cta,
+.site-header-shell .nav .nav-simulation{font-weight:700 !important;}
+
+/* 数字・金額は読みやすさを保つ */
+.annual-price strong,.saving,.bar-value,.annual-saving-summary,
+.qa-contact-phone{font-weight:800 !important;}
+</style>
 </head>
 <body>
 <div class="site-header-shell">
@@ -1099,7 +1683,7 @@ body.is-complete{background:#fffaf5!important}
 }
 </style>
 <div id="simulationPage" class="simulation-page is-active" aria-hidden="false">
-<section class="sim-hero"><div class="sim-hero-inner"><div class="sim-eyebrow">ASTOMOS DENKI · SIMULATION</div><h1>電気料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div></section>
+<section class="sim-hero"><div class="sim-hero-inner"><div class="sim-eyebrow">ASTOMOS DENKI · SIMULATION</div><h1>電気料金シミュレーション</h1><p>かんたん３ＳＴＥＰで年間の電気料金を試算します。</p></div></section>
 
 <div class="sim-progress" aria-label="シミュレーション進捗">
   <div class="sim-progress-item active" data-sim-progress="1"><div class="sim-progress-dot">1</div>お住まいの地域</div>
@@ -1114,9 +1698,8 @@ body.is-complete{background:#fffaf5!important}
     <div class="condition-summary" id="areaConditionSummary"><div class="condition-summary-row"><div>選択中のエリア：<strong id="postAreaText"></strong></div><button type="button" class="condition-edit-btn" data-edit-step="area">変更する</button></div></div><p>電気を使用する地域を選択してください。</p></div>
   <div class="body">
     <div class="region-layout">
-      <div>
+      <div class="region-choice-pane">
         <div id="areas" class="region-buttons"></div>
-        <div class="region-selected">選択中のエリア：<strong id="selectedAreaText">未選択</strong></div>
       </div>
       <div class="map-wrap">
         <svg class="japan-map" viewBox="0 0 620 360" role="img" aria-label="日本地図から地域を選択">
@@ -1152,8 +1735,8 @@ body.is-complete{background:#fffaf5!important}
           <path class="map-region area-disabled" data-area="沖縄" d="M101 315 L115 310 L121 322 L111 336 L98 332 Z"/>
           <text class="map-label area-disabled" data-label="沖縄" x="83" y="338" text-anchor="middle">沖縄</text>
         </svg>
-        <div id="mapHelp" class="map-help"></div>
       </div>
+      <div id="mapHelp" class="map-help region-help-wide"></div>
     </div>
   </div>
 </section>
@@ -1269,7 +1852,53 @@ body.is-complete{background:#fffaf5!important}
 <footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜電気料金シミュレーション</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span></div></footer>
 </div><!-- /#simulationPage -->
 <script>
-const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master":[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1478.4},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1848.0},{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.62},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.37},{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.32},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":184.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":369.6},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":924.0},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1108.8},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
+const LOCAL_DATA = {"Area_Config":[{"AreaName":"北海道","LegacyCompanyName":"北海道電力","LegacyPlanID":"HOKKAIDO_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKKAIDO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"東北","LegacyCompanyName":"東北電力","LegacyPlanID":"TOHOKU_LEGACY_B","AstomosPlanID":"ASTOMOS_TOHOKU_01","DetailedCapacity":null,"IsActive":true},{"AreaName":"東京","LegacyCompanyName":"東京電力","LegacyPlanID":"TOKYO_LEGACY_B","AstomosPlanID":"ASTOMOS_TOKYO_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中部","LegacyCompanyName":"中部電力","LegacyPlanID":"CHUBU_LEGACY_B","AstomosPlanID":"ASTOMOS_CHUBU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"北陸","LegacyCompanyName":"北陸電力","LegacyPlanID":"HOKURIKU_LEGACY_B","AstomosPlanID":"ASTOMOS_HOKURIKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"関西","LegacyCompanyName":"関西電力","LegacyPlanID":"KANSAI_LEGACY_A","AstomosPlanID":"ASTOMOS_KANSAI_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"中国","LegacyCompanyName":"中国電力","LegacyPlanID":"CHUGOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_CHUGOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"四国","LegacyCompanyName":"四国電力","LegacyPlanID":"SHIKOKU_LEGACY_A","AstomosPlanID":"ASTOMOS_SHIKOKU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"九州","LegacyCompanyName":"九州電力","LegacyPlanID":"KYUSHU_LEGACY_B","AstomosPlanID":"ASTOMOS_KYUSHU_01","DetailedCapacity":null,"IsActive":false},{"AreaName":"沖縄","LegacyCompanyName":"沖縄電力","LegacyPlanID":"KYUSHU_OKINAWA_B","AstomosPlanID":"ASTOMOS_OKINAWA_01","DetailedCapacity":null,"IsActive":false}],"Standard_Usage":[{"AreaName":"北海道","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北海道","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北海道","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東北","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東北","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東北","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"東京","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"東京","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"東京","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中部","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中部","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中部","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"北陸","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"北陸","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"北陸","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"関西","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"関西","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"関西","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"中国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"中国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"中国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"四国","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"四国","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"四国","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"九州","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"九州","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"九州","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"1人世帯","AnnualUsageKwh":2400.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"2人世帯","AnnualUsageKwh":3600.0,"Capacity":"30A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"3～4人世帯","AnnualUsageKwh":4800.0,"Capacity":"40A","IsActive":true},{"AreaName":"沖縄","HouseholdType":"5人以上世帯","AnnualUsageKwh":6000.0,"Capacity":"50A","IsActive":true}],"Monthly_Ratio":[{"Month":1.0,"Ratio":1.2,"IsActive":true},{"Month":2.0,"Ratio":1.15,"IsActive":true},{"Month":3.0,"Ratio":1.0,"IsActive":true},{"Month":4.0,"Ratio":0.8,"IsActive":true},{"Month":5.0,"Ratio":0.75,"IsActive":true},{"Month":6.0,"Ratio":0.8,"IsActive":true},{"Month":7.0,"Ratio":1.05,"IsActive":true},{"Month":8.0,"Ratio":1.2,"IsActive":true},{"Month":9.0,"Ratio":0.9,"IsActive":true},{"Month":10.0,"Ratio":0.75,"IsActive":true},{"Month":11.0,"Ratio":0.8,"IsActive":true},{"Month":12.0,"Ratio":1.1,"IsActive":true}],"Plan_Master":[{"PlanID":"TOHOKU_LEGACY_B","CompanyID":"TOHOKU","CompanyName":"東北電力","PlanName":"従量電灯B","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOHOKU_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東北プラン","AreaName":"東北","DisplayOrder":1.0,"IsActive":true},{"PlanID":"TOKYO_LEGACY_B","CompanyID":"TOKYO","CompanyName":"東京電力","PlanName":"従量電灯B","AreaName":"東京","DisplayOrder":1.0,"IsActive":true},{"PlanID":"ASTOMOS_TOKYO_01","CompanyID":"ASTOMOS","CompanyName":"アストモスでんき","PlanName":"東京プラン","AreaName":"東京","DisplayOrder":1.0,"IsActive":true}],"Rate_Master"
+
+
+
+:[{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":410.71},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":821.42},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1232.13},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1642.84},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":2053.55},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2464.26},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":31.01},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":37.76},
+{"PlanID":"TOHOKU_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":41.71},
+
+
+
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":205.36},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":410.71},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":616.07},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":821.42},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1026.78},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":1232.13},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":35.13},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":38.43},
+{"PlanID":"ASTOMOS_TOHOKU_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":39.98},
+
+
+
+
+{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":311.75},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":935.25},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":1247.0},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":1558.75},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":1870.5},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":2217.6},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":29.8},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.4},
+{"PlanID":"TOKYO_LEGACY_B","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":40.49},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"10A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"20A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"30A","MinKwh":null,"MaxKwh":null,"UnitPrice":554.4},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"40A","MinKwh":null,"MaxKwh":null,"UnitPrice":739.2},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"50A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"基本料金","Capacity":"60A","MinKwh":null,"MaxKwh":null,"UnitPrice":null},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":0.0,"MaxKwh":120.0,"UnitPrice":33.5},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":120.0,"MaxKwh":300.0,"UnitPrice":36.98},
+{"PlanID":"ASTOMOS_TOKYO_01","RateType":"電力量料金","Capacity":null,"MinKwh":300.0,"MaxKwh":99999.0,"UnitPrice":38.35}]};
 const HOUSEHOLDS=['1人世帯','2人世帯','3～4人世帯','5人以上世帯'];
 const AMPERES=['10A','15A','20A','30A','40A','50A','60A'];
 const activeVal=v=>v===true||v===1||['TRUE','1','有効','公開','○','〇'].includes(String(v==null?'':v).trim().toUpperCase());
@@ -1348,6 +1977,12 @@ function renderAreaConfig(){
     b.addEventListener('click',()=>{if(a.active)selectArea(a.internal);});
     $('areas').appendChild(b);
   });
+  // 4段目は「沖縄｜選択中のエリア（2マス分）」として表示する。
+  const selectedPanel=document.createElement('div');
+  selectedPanel.className='region-selected region-selected-grid';
+  selectedPanel.innerHTML='選択中のエリア：<strong id="selectedAreaText">未選択</strong>';
+  $('areas').appendChild(selectedPanel);
+
   document.querySelectorAll('.map-region').forEach(el=>{
     const area=el.dataset.area;
     const cfg=areaConfig(area);
@@ -1619,82 +2254,124 @@ $('goApplication').onclick=()=>{
   window.location.href=targetUrl;
 };
 </script>
-<style>
-/* Q&Aウィジェット：シミュレーション画面とは独立 */
+<style id="qa-static-selector-v2">
+/* Q&A：自由入力を廃止し、登録済み質問から選択する方式 */
 body{padding-bottom:90px}
-.qa-launch{position:fixed;right:20px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:1000;border:0;border-radius:30px;background:#c65b00;color:#fff;font:inherit;font-weight:800;padding:15px 22px;box-shadow:0 5px 24px #0003;cursor:pointer;min-height:48px}
-.qa-panel{position:fixed;right:20px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:1001;width:380px;max-width:calc(100vw - 24px);height:560px;max-height:calc(100dvh - 110px);background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 48px #0003;display:flex;flex-direction:column;overflow:hidden;font-size:14px}
-.qa-panel[hidden]{display:none}.qa-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--soft);border-bottom:1px solid var(--line);gap:8px}.qa-head h2{margin:0;font-size:17px}.qa-head small{color:var(--muted)}
-.qa-browse{font:inherit;color:#954400;background:#fff;border:0;border-bottom:1px solid var(--line);padding:10px;min-height:44px;cursor:pointer;flex-shrink:0}.qa-catalog{flex-shrink:0}.qa-catalog details{border:1px solid var(--line);border-radius:8px;margin-bottom:8px;background:#fff}.qa-catalog summary{padding:12px;cursor:pointer;font-weight:bold;color:#954400}.qa-question{display:block;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:#fff;font:inherit;padding:12px;cursor:pointer;overflow-wrap:anywhere;min-height:44px}.qa-question:disabled{opacity:.5}.qa-privacy{font-size:11px;color:var(--muted);margin:6px 0 0}
-.qa-close{border:0;background:transparent;min-width:44px;min-height:44px;font-size:26px;cursor:pointer}.qa-log{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px;display:flex;flex-direction:column;gap:12px}
-.qa-message{padding:12px 14px;background:#f2f3f4;border-radius:12px;max-width:96%;white-space:pre-wrap;overflow-wrap:anywhere;flex-shrink:0}.qa-user{background:var(--soft);align-self:flex-end}.qa-feedback{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.qa-feedback button{border:1px solid #c65b00;border-radius:8px;background:#fff;color:#954400;padding:10px;font:inherit;cursor:pointer;min-height:44px}.qa-feedback button:disabled{opacity:.6;cursor:default}
-.qa-contact{display:block;color:#954400;font-size:20px;font-weight:800;margin-top:8px;min-height:44px}.qa-form{border-top:1px solid var(--line);padding:12px;background:#fff}.qa-form label{display:block;font-size:12px;margin-bottom:7px}.qa-compose{display:flex;gap:8px}.qa-compose input{width:0;flex:1;min-width:0;font:inherit;font-size:16px;border:1px solid #aaa;border-radius:8px;padding:10px}.qa-compose button{border:0;border-radius:8px;background:#c65b00;color:#fff;font:inherit;font-weight:700;padding:10px 14px;cursor:pointer}.qa-compose button:disabled{opacity:.5}.qa-status{min-height:20px;margin-top:5px;color:var(--muted);font-size:12px}
-@media(max-width:630px){.qa-launch{right:12px;padding:12px 18px}.qa-panel{right:12px;bottom:calc(78px + env(safe-area-inset-bottom,0px));width:calc(100vw - 24px);height:520px;max-height:calc(100dvh - 96px)}}
+.qa-launch{position:fixed;right:20px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:1100;border:0;border-radius:30px;background:#f58220;color:#fff;font:inherit;font-weight:800;padding:15px 22px;box-shadow:0 5px 24px #0003;cursor:pointer;min-height:48px}
+.qa-panel{position:fixed;right:20px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:1101;width:410px;max-width:calc(100vw - 24px);height:610px;max-height:calc(100dvh - 110px);background:#fff;border:1px solid #eadfd4;border-radius:18px;box-shadow:0 12px 48px #0003;display:flex;flex-direction:column;overflow:hidden;font-size:14px}
+.qa-panel[hidden]{display:none!important}
+.qa-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff0df;border-bottom:1px solid #eadfd4;gap:8px;flex:0 0 auto}
+.qa-head h2{margin:0;font-size:17px}.qa-head small{display:block;color:#777;margin-top:2px}
+.qa-close{border:0;background:transparent;min-width:44px;min-height:44px;font-size:26px;cursor:pointer}
+.qa-main{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px}
+.qa-intro{margin:0 0 12px;padding:11px 12px;background:#fffaf5;border-radius:10px;color:#555;font-size:12px}
+.qa-category{border:1px solid #eadfd4;border-radius:10px;margin-bottom:9px;background:#fff;overflow:hidden}
+.qa-category summary{list-style:none;cursor:pointer;padding:12px 13px;font-weight:800;color:#c65d16;background:#fffaf5}
+.qa-category summary::-webkit-details-marker{display:none}
+.qa-category summary::after{content:'＋';float:right;color:#f58220}.qa-category[open] summary::after{content:'－'}
+.qa-question{display:block;width:100%;text-align:left;border:0;border-top:1px solid #f1e8df;background:#fff;color:#333;font:inherit;padding:12px 13px;cursor:pointer;line-height:1.55}
+.qa-question:hover{background:#fff8f0}
+.qa-answer-view{display:none}.qa-answer-view.show{display:block}
+.qa-back{border:0;background:#fff;color:#c65d16;font:inherit;font-weight:800;padding:4px 0 10px;cursor:pointer}
+.qa-selected-q{margin:0 0 10px;padding:12px 13px;border-radius:10px;background:#fff0df;font-weight:800;color:#333}
+.qa-answer{margin:0;padding:13px 14px;border:1px solid #eadfd4;border-radius:10px;background:#fff;white-space:pre-wrap;line-height:1.8}
+.qa-feedback-title{margin:16px 0 8px;font-weight:800;text-align:center}
+.qa-feedback{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qa-feedback button{border:1px solid #f58220;border-radius:999px;background:#fff;color:#c65d16;padding:10px 8px;font:inherit;font-weight:800;cursor:pointer}
+.qa-feedback button:first-child{background:#f58220;color:#fff}
+.qa-feedback button:disabled{opacity:.6;cursor:default}
+.qa-result-note{margin-top:12px;padding:12px;border-radius:10px;background:#f7f7f7;color:#555}
+.qa-contact-card{margin-top:12px;padding:14px;border:1px solid #f0d8c2;border-radius:12px;background:#fffaf5;text-align:center}
+.qa-contact-card strong{display:block;color:#333;margin-bottom:6px}
+.qa-contact-phone{display:block;margin:5px 0;color:#c65d16;font-size:20px;font-weight:900;text-decoration:none}
+.qa-contact-hours{font-size:12px;color:#666}
+.qa-contact-form{display:inline-flex;margin-top:10px;padding:9px 14px;border-radius:999px;background:#fff;color:#c65d16;border:1px solid #f58220;font-weight:800;text-decoration:none}
+.qa-contact-unset{margin:7px 0;color:#777;font-size:12px}
+@media(max-width:630px){.qa-launch{right:12px;padding:12px 18px}.qa-panel{right:12px;bottom:calc(78px + env(safe-area-inset-bottom,0px));width:calc(100vw - 24px);height:560px;max-height:calc(100dvh - 96px)}}
 </style>
 <button type="button" id="qaLaunch" class="qa-launch" aria-expanded="false" aria-controls="qaPanel">Q&A お困りですか？</button>
 <section id="qaPanel" class="qa-panel" role="dialog" aria-labelledby="qaTitle" hidden>
-  <header class="qa-head"><div><h2 id="qaTitle">よくあるご質問</h2><small>登録済みのQ&Aからご案内します</small></div><button type="button" id="qaClose" class="qa-close" aria-label="チャットを閉じる">×</button></header>
-  <button type="button" id="qaBrowse" class="qa-browse">ジャンルから質問を選ぶ</button>
-  <div id="qaLog" class="qa-log" role="log" aria-live="polite" aria-relevant="additions"></div>
-  <form id="qaForm" class="qa-form"><label for="qaInput">キーワード・質問を入力</label><div class="qa-compose"><input id="qaInput" type="text" maxlength="500" placeholder="例：結果を保存したい" autocomplete="off" required><button id="qaSend" type="submit">送信</button></div><p class="qa-privacy">入力内容と日時をQ&A改善のために記録します。氏名・電話番号・契約番号などの個人情報は入力しないでください。</p><div id="qaStatus" class="qa-status" role="status"></div></form>
+  <header class="qa-head"><div><h2 id="qaTitle">よくあるご質問</h2><small>質問を選択すると回答を表示します</small></div><button type="button" id="qaClose" class="qa-close" aria-label="Q&Aを閉じる">×</button></header>
+  <div class="qa-main">
+    <div id="qaCatalogView">
+      <p class="qa-intro">知りたい内容に近い質問を選択してください。回答の最後に「解決した／解決していない」を選べます。</p>
+      <div id="qaCatalog"></div>
+    </div>
+    <div id="qaAnswerView" class="qa-answer-view">
+      <button type="button" id="qaBack" class="qa-back">← 質問一覧に戻る</button>
+      <div id="qaSelectedQuestion" class="qa-selected-q"></div>
+      <div id="qaAnswer" class="qa-answer"></div>
+      <div id="qaFeedbackArea">
+        <p class="qa-feedback-title">この回答で解決しましたか？</p>
+        <div class="qa-feedback"><button type="button" id="qaSolved">解決した</button><button type="button" id="qaUnsolved">解決していない</button></div>
+      </div>
+      <div id="qaAfterFeedback"></div>
+    </div>
+  </div>
 </section>
-<script>
+<script id="qa-static-selector-script-v2">
 (()=>{
-  const el=id=>document.getElementById(id);
-  let busy=false,initialized=false,contact=null,feedback=null;
-  let catalogLoading=false,catalogNode=null;
-  const scroll=()=>{el('qaLog').scrollTop=el('qaLog').scrollHeight;};
-  function message(text,user=false){
-    const node=document.createElement('div');node.className='qa-message'+(user?' qa-user':'');node.textContent=text;el('qaLog').appendChild(node);scroll();return node;
-  }
-  function showContact(){
-    const node=message('お役に立てず申し訳ありません。'+((contact&&contact.name)||'お客様センター')+'へお問い合わせください。');
-    if(contact&&/^0\d{9,10}$/.test(contact.tel)){
-      const a=document.createElement('a');a.className='qa-contact';a.textContent=contact.phone;a.href='tel:'+contact.tel;a.target='_self';node.appendChild(a);
-      if(contact.hours){const hours=document.createElement('div');hours.textContent='受付時間：'+contact.hours;node.appendChild(hours);}
-    }else{const note=document.createElement('div');note.textContent='電話番号を表示できません。ご契約書類などに記載のお問い合わせ窓口をご確認ください。';node.appendChild(note);}
-    scroll();
-  }
-  function clearFeedback(){if(feedback){feedback.querySelectorAll('button').forEach(b=>b.disabled=true);feedback=null;}}
-  function addFeedback(node){
-    const group=document.createElement('div');group.className='qa-feedback';feedback=group;
-    [['解決した',true],['この回答ではない',false]].forEach(([label,solved])=>{
-      const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=()=>{clearFeedback();message(label,true);if(solved)message('ご確認ありがとうございます。ほかにご質問があれば続けて入力してください。');else showContact();};group.appendChild(b);
-    });node.appendChild(group);scroll();
-  }
+  const FAQS=[{"category":"シミュレーション","q":"電気料金シミュレーションでは何が分かりますか？","a":"入力いただいた条件から、現在のご契約を想定した年間電気料金とアストモスでんきの年間電気料金を試算し、年間の差額を表示します。結果はあくまで目安です。"},{"category":"シミュレーション","q":"現在シミュレーションできる地域はどこですか？","a":"現在、このページでは東北エリアをシミュレーション対象としています。対象外の地域は選択できない表示になっています。"},{"category":"シミュレーション","q":"関東など他の地域を選べないのはなぜですか？","a":"現在の公開対象外としているためです。対象地域を追加する場合は、料金設定などの準備後に選択できるようになります。"},{"category":"シミュレーション","q":"かんたんシミュレーションと詳細シミュレーションの違いは何ですか？","a":"かんたんシミュレーションは世帯人数などの標準条件から年間使用量を推計します。詳細シミュレーションは、1か月分の実際の使用量などをもとに年間の使用量を推計します。"},{"category":"シミュレーション","q":"かんたんシミュレーションの使用量はどのように決まりますか？","a":"選択した世帯人数に対応する標準使用量を使って年間使用量を試算します。実際の使用量とは異なる場合があります。"},{"category":"シミュレーション","q":"詳細シミュレーションの年間使用量はどう計算しますか？","a":"入力した対象月の使用量を基準に、コード内に設定した月別使用量比率を使って他の月の使用量を推計します。"},{"category":"シミュレーション","q":"シミュレーション後に条件を変更できますか？","a":"はい。STEP1またはSTEP2の「変更する」ボタンから条件を変更し、再度「シミュレーションする」を押してください。"},{"category":"シミュレーション","q":"月ごとの試算結果も確認できますか？","a":"はい。「月別シミュレーション結果」の「表示する」を押すと、各月の使用量・料金・差額を確認できます。"},{"category":"シミュレーション","q":"年間料金比較の棒グラフは何を表していますか？","a":"左側が現在のご契約を想定した年間料金、右側がアストモスでんきの年間料金です。2本の差が年間の料金差のイメージです。"},{"category":"シミュレーション","q":"スマートフォンでも利用できますか？","a":"はい。スマートフォンでも地域選択、条件入力、結果確認、申込画面への移動ができるようにしています。"},{"category":"入力方法","q":"使用量は何の単位で入力しますか？","a":"電気の使用量はkWh（キロワットアワー）で入力してください。"},{"category":"入力方法","q":"電気の使用量はどこで確認できますか？","a":"現在ご契約中の電力会社の請求書、検針票、会員ページなどでご確認ください。"},{"category":"入力方法","q":"詳細シミュレーションでは何月を選べばよいですか？","a":"実際の使用量を確認できる月を選択してください。季節による使用量の差があるため、入力する月によって年間推計結果が変わります。"},{"category":"入力方法","q":"契約容量（アンペア）はどこで確認できますか？","a":"現在ご契約中の電力会社の請求書、検針票、契約内容のお知らせ、会員ページなどでご確認ください。"},{"category":"入力方法","q":"契約容量の入力は必須ですか？","a":"契約容量を使って基本料金を計算する地域・料金プランでは必要です。画面に表示される項目を選択してください。"},{"category":"入力方法","q":"必要な条件を入力していない場合でもシミュレーションできますか？","a":"できません。必要な条件が不足している場合は結果画面へ進まず、入力画面で不足内容を確認できるようにしています。"},{"category":"入力方法","q":"使用量に0を入力できますか？","a":"年間料金の試算に必要なため、詳細シミュレーションでは0より大きい使用量を入力してください。"},{"category":"入力方法","q":"入力した条件を最初からやり直したいです。","a":"STEP1・STEP2の「変更する」から修正できます。ページを再読み込みすると入力状態が初期化される場合があります。"},{"category":"料金・結果","q":"燃料費調整額はシミュレーションに含まれていますか？","a":"いいえ。現在のシミュレーションでは燃料費調整額を計算に含めていません。"},{"category":"料金・結果","q":"再生可能エネルギー発電促進賦課金は含まれていますか？","a":"いいえ。現在のシミュレーションでは再生可能エネルギー発電促進賦課金を計算に含めていません。"},{"category":"料金・結果","q":"シミュレーション結果は税込みですか？","a":"はい。現在の画面上の注意事項では、シミュレーション結果は税込みとして案内しています。"},{"category":"料金・結果","q":"表示された金額が実際の請求額になりますか？","a":"いいえ。シミュレーション結果は目安です。実際の使用量、燃料費調整額、再エネ賦課金その他の条件により実際の請求額とは異なります。"},{"category":"料金・結果","q":"東北電力の何の料金プランと比較していますか？","a":"現在の東北エリアの比較元は、コード上で東北電力の従量電灯Bとして設定しています。"},{"category":"料金・結果","q":"比較に使っている料金単価はいつ時点ですか？","a":"現在のシミュレーション注意事項では、比較元の料金単価は2026年4月1日時点の公開情報を使用する設定です。"},{"category":"料金・結果","q":"「年間○円節約」とは何ですか？","a":"現在のご契約を想定した年間料金から、アストモスでんきの年間試算額を差し引いた金額です。プラスの場合は年間で安くなる試算です。"},{"category":"料金・結果","q":"実際の請求額とシミュレーション結果が違うのはなぜですか？","a":"実際の使用量の変動や、シミュレーションに含めていない燃料費調整額・再エネ賦課金などにより差が生じることがあります。"},{"category":"お申込み","q":"シミュレーション結果から申し込むにはどうすればよいですか？","a":"結果画面の「お申し込みはこちら」を押すと、同じページ内のWeb申込画面へ進みます。"},{"category":"お申込み","q":"シミュレーションをしなくても申し込めますか？","a":"はい。ヘッダーの「お申し込みはこちら」から申込画面へ進めます。"},{"category":"お申込み","q":"申込み前に何を準備すればよいですか？","a":"現在の電気契約内容が確認できる請求書、検針票、契約内容のお知らせなどをご用意いただくと入力がスムーズです。"},{"category":"お申込み","q":"お客様番号とは何ですか？","a":"現在ご契約中の電力会社がお客様ごとに付与している番号です。請求書や検針票、会員ページなどでご確認ください。"},{"category":"お申込み","q":"供給地点特定番号とは何ですか？","a":"電気を使用している地点を識別するための番号です。現在ご契約中の電力会社の請求書や会員ページなどでご確認ください。"},{"category":"お申込み","q":"現在契約中の電力会社名は何を入力すればよいですか？","a":"現在、電気料金をお支払いしている電力会社・小売電気事業者の名称を入力してください。"},{"category":"お申込み","q":"住所はどこまで入力する必要がありますか？","a":"申込画面で必須表示されている郵便番号、都道府県、市区町村、番地などを入力してください。建物名・部屋番号は画面上の必須・任意表示に従ってください。"},{"category":"お申込み","q":"マンション・ビル名は必須ですか？","a":"現在の申込画面ではマンション・ビル名は任意項目として表示しています。該当する場合は入力をおすすめします。"},{"category":"お申込み","q":"電話番号はなぜ必要ですか？","a":"申込内容の確認などで連絡が必要となる場合に使用します。入力画面の案内に従って正しい番号をご入力ください。"},{"category":"お申込み","q":"メールアドレスは正しく入力する必要がありますか？","a":"はい。申込受付の控えなどの案内に使用するため、受信可能なメールアドレスを正しく入力してください。"},{"category":"お申込み","q":"申込内容を送信する前に確認できますか？","a":"はい。申込フローの確認・同意ステップで、入力内容を確認してから送信できる構成です。"},{"category":"お申込み","q":"入力内容を修正したい場合はどうすればよいですか？","a":"確認画面の「戻る」などから前のSTEPへ戻り、該当項目を修正してください。"},{"category":"お申込み","q":"申込完了後は何が表示されますか？","a":"申込受付完了画面に受付メッセージや受付日時などを表示する構成です。"},{"category":"お申込み","q":"申込ボタンを何度も押してしまいました。","a":"重複申込が心配な場合は、受付メールや完了画面をご確認ください。不明な場合はQ&Aの未解決案内からお問い合わせください。"},{"category":"切替・手続き","q":"現在の電力会社への解約手続きは必要ですか？","a":"切替方法は現在の契約状況によって異なる場合があります。申込画面の案内に従い、不明な場合はお問い合わせ窓口へご確認ください。"},{"category":"切替・手続き","q":"切替時に停電しますか？","a":"一般的な電力会社の切替では、切替そのものによる停電は通常想定されません。ただし設備工事など個別事情がある場合は異なることがあります。"},{"category":"切替・手続き","q":"スマートメーターへの交換が必要ですか？","a":"設備状況によって交換等が必要となる場合があります。必要な場合は一般送配電事業者側の手続きとなります。"},{"category":"切替・手続き","q":"電気の品質は変わりますか？","a":"小売電気事業者を切り替えても、地域の送配電網を通じて電気が届けられる仕組み自体は変わりません。"},{"category":"切替・手続き","q":"いつからアストモスでんきに切り替わりますか？","a":"申込内容や切替手続きの状況により異なります。具体的な供給開始時期は手続き状況に応じてご案内します。"},{"category":"切替・手続き","q":"引っ越し先で新しく電気を使いたい場合もこの申込フォームでよいですか？","a":"お申込みの種類や供給開始状況によって必要な手続きが異なる場合があります。画面の案内で判断できない場合はお問い合わせ窓口へご確認ください。"},{"category":"トラブル・その他","q":"「シミュレーションする」を押しても結果が表示されません。","a":"STEP1・STEP2の必須条件がすべて選択・入力されているか確認してください。エラー表示がある場合はその内容を修正してから再度お試しください。"},{"category":"トラブル・その他","q":"申込画面からシミュレーション画面へ戻りたいです。","a":"ヘッダー右上の「料金シミュレーションはこちら」を押してください。スマートフォンでも表示されるようにしています。"},{"category":"トラブル・その他","q":"画面が正しく表示されません。","a":"ページを再読み込みし、最新のChrome、Edge、Safariなど一般的なブラウザで再度お試しください。"},{"category":"トラブル・その他","q":"スマートフォンでボタンが見つかりません。","a":"ページ上部のヘッダーと各STEP下部をご確認ください。申込画面では右上にシミュレーションへ戻るボタンを表示します。"},{"category":"トラブル・その他","q":"入力途中でページを閉じた場合、内容は保存されますか？","a":"入力内容の自動保存は保証していません。ページを閉じたり再読み込みした場合は、再入力が必要になることがあります。"},{"category":"トラブル・その他","q":"申込受付メールが届きません。","a":"迷惑メールフォルダや入力したメールアドレスをご確認ください。しばらくしても確認できない場合はお問い合わせ窓口へご確認ください。"},{"category":"トラブル・その他","q":"Q&Aに知りたい質問がありません。","a":"近い内容の質問を選んでも解決しない場合は、回答下部の「解決していない」を押してください。お問い合わせ窓口をご案内します。"},{"category":"トラブル・その他","q":"Q&Aで解決しなかった場合はどうすればよいですか？","a":"各回答の下にある「解決していない」を押してください。コールセンターの設定済み連絡先、またはお問い合わせフォームをご案内します。"}];
+  /* コールセンター情報はここだけ設定してください。元コードに電話番号がないため、架空の番号は入れていません。 */
+  const QA_CONTACT={
+    name:'アストモスでんき コールセンター',
+    phone:'',       // 例：0120-000-000
+    tel:'',         // ハイフンなし。例：0120000000
+    hours:'',       // 例：平日 9:00～17:00
+    formUrl:'https://www.astomos.jp/form/'
+  };
+  const $=id=>document.getElementById(id);
+  const catalogView=$('qaCatalogView'), answerView=$('qaAnswerView'), after=$('qaAfterFeedback');
+  let selected=null;
   function setOpen(open){
-    el('qaPanel').hidden=!open;el('qaLaunch').setAttribute('aria-expanded',String(open));
-    if(open){
-      if(!initialized){initialized=true;message('こんにちは。ジャンルから質問を選ぶか、下の欄にキーワードを入力してください。');loadCatalog();}
-      el('qaInput').focus();
-    }else el('qaLaunch').focus();
+    $('qaPanel').hidden=!open;
+    $('qaLaunch').setAttribute('aria-expanded',String(open));
   }
-  el('qaLaunch').onclick=()=>setOpen(el('qaPanel').hidden);
-  el('qaClose').onclick=()=>setOpen(false);
-  function loadCatalog(){
-    if(catalogLoading||busy)return;
-    catalogLoading=true;el('qaBrowse').disabled=true;el('qaBrowse').textContent='質問一覧を読み込んでいます…';
-    const ready=()=>{catalogLoading=false;el('qaBrowse').disabled=false;el('qaBrowse').textContent='ジャンルから質問を選ぶ';};
-    ready();
-    if(catalogNode)catalogNode.remove();
-    const root=document.createElement('div');root.className='qa-catalog';catalogNode=root;
-    root.textContent='Q&A機能はサーバー連携が必要なため、このHTML単体版では利用できません。料金シミュレーションはご利用いただけます。';
-    el('qaLog').appendChild(root);scroll();
+  function renderCatalog(){
+    const root=$('qaCatalog');root.innerHTML='';
+    const groups=[...new Set(FAQS.map(x=>x.category))];
+    groups.forEach((cat,index)=>{
+      const d=document.createElement('details');d.className='qa-category';if(index===0)d.open=true;
+      const s=document.createElement('summary');s.textContent=cat;d.appendChild(s);
+      FAQS.filter(x=>x.category===cat).forEach(item=>{
+        const b=document.createElement('button');b.type='button';b.className='qa-question';b.textContent=item.q;
+        b.onclick=()=>showAnswer(item);d.appendChild(b);
+      });
+      root.appendChild(d);
+    });
   }
-  el('qaBrowse').onclick=loadCatalog;
-  el('qaPanel').addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();setOpen(false);}});
-  el('qaForm').addEventListener('submit',e=>{
-    e.preventDefault();if(busy)return;
-    const q=el('qaInput').value.trim();if(!q||q.length>500)return;
-    el('qaInput').value='';send(q);
-  });
-  function send(q,category){
-    if(busy)return;
-    clearFeedback();message(q,true);busy=true;el('qaSend').disabled=true;el('qaBrowse').disabled=true;document.querySelectorAll('.qa-question').forEach(b=>b.disabled=true);el('qaStatus').textContent='回答を探しています…';
-    const done=()=>{busy=false;el('qaSend').disabled=false;el('qaBrowse').disabled=catalogLoading;document.querySelectorAll('.qa-question').forEach(b=>b.disabled=false);el('qaStatus').textContent='';scroll();};
-    done();
-    message('Q&A検索はサーバー連携が必要なため、このHTML単体版では利用できません。料金シミュレーションはそのままご利用いただけます。');
+  function resetFeedback(){
+    after.innerHTML='';$('qaSolved').disabled=false;$('qaUnsolved').disabled=false;$('qaFeedbackArea').style.display='block';
   }
+  function showAnswer(item){
+    selected=item;resetFeedback();
+    $('qaSelectedQuestion').textContent=item.q;$('qaAnswer').textContent=item.a;
+    catalogView.style.display='none';answerView.classList.add('show');
+    document.querySelector('.qa-main').scrollTop=0;
+  }
+  function backToCatalog(){answerView.classList.remove('show');catalogView.style.display='block';selected=null;document.querySelector('.qa-main').scrollTop=0;}
+  function disableFeedback(){$('qaSolved').disabled=true;$('qaUnsolved').disabled=true;}
+  function solved(){
+    disableFeedback();
+    after.innerHTML='<div class="qa-result-note">解決したと回答いただきありがとうございます。ほかのご質問がある場合は「質問一覧に戻る」から続けて確認できます。</div>';
+  }
+  function unsolved(){
+    disableFeedback();
+    const card=document.createElement('div');card.className='qa-contact-card';
+    const title=document.createElement('strong');title.textContent='お問い合わせ先';card.appendChild(title);
+    const name=document.createElement('div');name.textContent=QA_CONTACT.name;card.appendChild(name);
+    if(QA_CONTACT.phone && QA_CONTACT.tel){
+      const phone=document.createElement('a');phone.className='qa-contact-phone';phone.href='tel:'+QA_CONTACT.tel;phone.textContent=QA_CONTACT.phone;card.appendChild(phone);
+      if(QA_CONTACT.hours){const h=document.createElement('div');h.className='qa-contact-hours';h.textContent='受付時間：'+QA_CONTACT.hours;card.appendChild(h);}
+    }else{
+      const unset=document.createElement('div');unset.className='qa-contact-unset';unset.textContent='コールセンター電話番号は現在このページに未設定です。';card.appendChild(unset);
+    }
+    if(QA_CONTACT.formUrl){const link=document.createElement('a');link.className='qa-contact-form';link.href=QA_CONTACT.formUrl;link.target='_blank';link.rel='noopener';link.textContent='お問い合わせフォーム';card.appendChild(link);}
+    after.innerHTML='';after.appendChild(card);
+  }
+  $('qaLaunch').onclick=()=>setOpen($('qaPanel').hidden);$('qaClose').onclick=()=>setOpen(false);$('qaBack').onclick=backToCatalog;$('qaSolved').onclick=solved;$('qaUnsolved').onclick=unsolved;
+  $('qaPanel').addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false);});
+  renderCatalog();
 })();
 </script>
 
@@ -2144,8 +2821,7 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
         appNavButton.style.borderColor='#f58220';
         appNavButton.href='#simulationArea';
       }
-      if(simNavButton) simNavButton.style.display='none';
-      if(qaLaunch) qaLaunch.style.display='none';
+      if(qaLaunch) qaLaunch.style.display='';
 
       window.scrollTo({top:0,behavior:'smooth'});
     }else{
@@ -2162,7 +2838,6 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
         appNavButton.style.borderColor='';
         appNavButton.href='#simulationArea';
       }
-      if(simNavButton) simNavButton.style.display='';
       if(qaLaunch) qaLaunch.style.display='';
 
       window.scrollTo({top:0,behavior:'smooth'});
@@ -2564,10 +3239,22 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
   if(simArea) observer.observe(simArea,{attributes:true,attributeFilter:['class'],subtree:true});
 })();
 </script>
-</body>
-</html>
-<style id="final-simulation-hero-position-v5">
-/* 申込ページのheroと同じ基準で、タイトルブロックそのものを画面中央へ配置 */
+
+<style id="final-mobile-header-hero-qa-fix-v8">
+/* 申込画面でも、スマホ右上のシミュレーション導線を残す */
+@media(max-width:900px){
+  body.app-mode .site-header-shell .header .nav .nav-cta{
+    display:inline-flex !important;
+    background:#f58220 !important;
+    border-color:#f58220 !important;
+    color:#fff !important;
+  }
+}
+/* Q&Aはシミュレーション画面・申込画面のどちらでも表示 */
+#qaLaunch{display:block !important}
+body.is-complete #qaLaunch,body.is-complete #qaPanel{display:none !important}
+
+/* シミュレーションのタイトル帯を申込ページと同じ基準に固定 */
 #simulationPage .sim-hero{
   width:100% !important;
   max-width:none !important;
@@ -2575,43 +3262,70 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
   padding:42px 0 28px !important;
   background:#fff !important;
   border:0 !important;
+  border-bottom:1px solid #efd8c4 !important;
   border-radius:0 !important;
   box-shadow:none !important;
   text-align:center !important;
+  overflow:visible !important;
 }
 #simulationPage .sim-hero-inner{
   width:min(900px,calc(100% - 28px)) !important;
   max-width:900px !important;
-  margin-left:auto !important;
-  margin-right:auto !important;
+  margin:0 auto !important;
   padding:0 !important;
   display:block !important;
   text-align:center !important;
 }
-#simulationPage .sim-hero-inner > div{
-  width:100% !important;
-  margin:0 auto !important;
-  text-align:center !important;
-}
-#simulationPage .sim-hero-inner > div::before{
+#simulationPage .sim-eyebrow{
   display:block !important;
-  width:100% !important;
+  margin:0 0 8px !important;
+  color:#c65d16 !important;
+  font-size:12px !important;
+  font-weight:700 !important;
+  letter-spacing:.12em !important;
   text-align:center !important;
 }
+/* 旧疑似要素で英字見出しを重複表示しない */
+#simulationPage .sim-hero-inner>div::before{display:none !important;content:none !important}
 #simulationPage .sim-hero h1{
+  position:relative !important;
   display:inline-block !important;
-  margin:8px auto 8px !important;
-  padding-left:18px !important;
+  margin:0 auto 8px !important;
+  padding:0 0 0 18px !important;
+  color:#222 !important;
+  font-size:34px !important;
+  font-weight:800 !important;
+  line-height:1.3 !important;
   text-align:center !important;
+}
+#simulationPage .sim-hero h1::before{
+  content:"" !important;
+  display:block !important;
+  position:absolute !important;
+  left:0 !important;
+  top:4% !important;
+  width:5px !important;
+  height:92% !important;
+  border-radius:4px !important;
+  background:#f58220 !important;
 }
 #simulationPage .sim-hero p{
   width:100% !important;
   margin:0 auto !important;
+  color:#666 !important;
+  font-size:14px !important;
+  font-weight:400 !important;
   text-align:center !important;
 }
 @media(max-width:630px){
-  #simulationPage .sim-hero{padding:30px 0 22px !important;}
-  #simulationPage .sim-hero-inner{width:calc(100% - 28px) !important;}
-  #simulationPage .sim-hero h1{font-size:27px !important;padding-left:14px !important;}
+  #simulationPage .sim-hero{padding:30px 0 22px !important}
+  #simulationPage .sim-hero-inner{width:calc(100% - 28px) !important}
+  #simulationPage .sim-eyebrow{font-size:10px !important}
+  #simulationPage .sim-hero h1{font-size:27px !important;padding-left:14px !important}
+  #simulationPage .sim-hero h1::before{width:4px !important}
+  #simulationPage .sim-hero p{font-size:13px !important}
 }
 </style>
+
+</body>
+</html>
