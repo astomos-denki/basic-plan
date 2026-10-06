@@ -1007,6 +1007,45 @@ body.is-complete{background:#fffaf5!important}
  #result .resultTop>.bar-comparison-section .bar-comparison-message{margin-top:28px}
 }
 </style>
+
+<style id="final-simulation-application-perfect-unify">
+/* 申込ページとシミュレーションページのタイトル・カード・文字組みを完全統一 */
+#simulationPage{background:#fffaf5;color:#333;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7}
+#simulationPage .sim-hero{width:100%;margin:0;padding:42px 0 28px;text-align:center;background:transparent;border:0;border-radius:0;box-shadow:none}
+#simulationPage .sim-hero::before,#simulationPage .sim-hero h1::before,#simulationPage .sim-hero-inner>div::before{display:none!important;content:none!important}
+#simulationPage .sim-hero-inner{display:block;width:min(900px,calc(100% - 28px));margin:auto}
+#simulationPage .sim-eyebrow{color:#c65d16;font-weight:700;font-size:12px;letter-spacing:.12em;line-height:1.7}
+#simulationPage .sim-hero h1{display:block;margin:8px 0 8px;padding:0;font-size:34px;font-weight:700;line-height:1.3;color:#222}
+#simulationPage .sim-hero p{margin:0;color:#666;font-size:16px;font-weight:400;line-height:1.7}
+#simulationPage .shell{width:min(900px,calc(100% - 28px));margin:0 auto 60px}
+#simulationPage .card{background:#fff;border:1px solid #eadfd4;border-radius:18px;box-shadow:0 8px 28px rgba(120,80,30,.08);overflow:hidden;margin-bottom:22px}
+#simulationPage .head{padding:25px 28px 20px;background:linear-gradient(180deg,#fffaf5,#fff);border-bottom:0}
+#simulationPage .head .step{display:inline-block;background:#fff0df;color:#c65d16;border-radius:999px;padding:4px 11px;font-size:12px;font-weight:700;line-height:1.7}
+#simulationPage .head h2{margin:10px 0 3px;font-size:23px;font-weight:700;line-height:1.4;color:#333}
+#simulationPage .head p{margin:0;color:#777;font-size:13px;font-weight:400}
+#simulationPage .body{padding:25px 28px 30px;border-top:1px solid #f4ebe3}
+#simulationPage .actions{padding:0 28px 30px;background:#fff}
+#simulationPage .btn{min-height:50px;border-radius:999px;background:#f58220!important;border-color:#f58220!important;color:#fff!important;font-weight:700;box-shadow:none}
+#simulationPage .condition-summary{margin-top:12px!important}
+#simulationPage .condition-summary-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+#simulationPage .condition-edit-btn{display:none;flex:0 0 auto;border:1px solid #f58220;border-radius:999px;background:#fff;color:#f58220;padding:7px 16px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+#simulationArea.post-simulation .condition-edit-btn{display:inline-flex;align-items:center;justify-content:center}
+/* 結果表示後もSTEP2直下の再シミュレーションボタンだけは表示 */
+#simulationArea.post-simulation #methodConditionStep .actions{display:block!important;padding-top:0}
+#simulationArea.post-simulation #methodConditionStep #run{display:inline-flex!important;align-items:center;justify-content:center}
+@media(max-width:640px){
+ #simulationPage .sim-hero{padding:28px 0 18px}
+ #simulationPage .sim-hero h1{font-size:27px}
+ #simulationPage .sim-eyebrow{font-size:12px}
+ #simulationPage .sim-hero p{font-size:16px}
+ #simulationPage .head{padding:20px 18px 16px}
+ #simulationPage .head h2{font-size:20px}
+ #simulationPage .body{padding:20px 18px 24px}
+ #simulationPage .actions{padding:0 18px 24px}
+ #simulationPage .condition-summary-row{align-items:flex-start;gap:10px}
+ #simulationPage .condition-edit-btn{padding:6px 13px;font-size:11px}
+}
+</style>
 </head>
 <body>
 <div class="site-header-shell">
@@ -1060,13 +1099,19 @@ body.is-complete{background:#fffaf5!important}
 }
 </style>
 <div id="simulationPage" class="simulation-page is-active" aria-hidden="false">
-<section class="sim-hero"><div class="sim-hero-inner"><div><h1>電気料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div></div></section>
+<section class="sim-hero"><div class="sim-hero-inner"><div class="sim-eyebrow">ASTOMOS DENKI · SIMULATION</div><h1>電気料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div></section>
+
+<div class="sim-progress" aria-label="シミュレーション進捗">
+  <div class="sim-progress-item active" data-sim-progress="1"><div class="sim-progress-dot">1</div>お住まいの地域</div>
+  <div class="sim-progress-item" data-sim-progress="2"><div class="sim-progress-dot">2</div>電気のご使用状況</div>
+  <div class="sim-progress-item" data-sim-progress="3"><div class="sim-progress-dot">3</div>シミュレーション結果確認</div>
+</div>
 
 <div class="shell">
 <section id="simulationArea">
 <section class="card condition-step" id="areaConditionStep">
   <div class="head"><div class="step">STEP 1</div><h2>お住まいの地域</h2>
-    <div class="condition-summary" id="areaConditionSummary"><div>選択中のエリア：<strong id="postAreaText"></strong></div></div><p>電気を使用する地域を選択してください。</p></div>
+    <div class="condition-summary" id="areaConditionSummary"><div class="condition-summary-row"><div>選択中のエリア：<strong id="postAreaText"></strong></div><button type="button" class="condition-edit-btn" data-edit-step="area">変更する</button></div></div><p>電気を使用する地域を選択してください。</p></div>
   <div class="body">
     <div class="region-layout">
       <div>
@@ -1115,7 +1160,7 @@ body.is-complete{background:#fffaf5!important}
 
 <section class="card condition-step" id="methodConditionStep">
   <div class="head"><div class="step">STEP 2</div><h2>シミュレーション方法</h2>
-    <div class="condition-summary" id="methodConditionSummary"><div id="postHouseholdRow">世帯人数：<strong id="postHouseholdText"></strong></div></div></div>
+    <div class="condition-summary" id="methodConditionSummary"><div class="condition-summary-row"><div id="postHouseholdRow">世帯人数：<strong id="postHouseholdText"></strong></div><button type="button" class="condition-edit-btn" data-edit-step="method">変更する</button></div></div></div>
   <div class="body">
     <div class="choices two">
       <button class="choice method" data-mode="simple"><strong>簡易版</strong><span>世帯人数から標準使用量を算出</span></button>
@@ -1215,7 +1260,6 @@ body.is-complete{background:#fffaf5!important}
       <div id="disclaimerTitle" class="disclaimer-title">電気料金シミュレーションのご利用上の注意事項</div>
       <p id="disclaimer"></p>
     </div>
-    <div class="result-retry-area"><button type="button" id="retrySimulation" class="btn secondary">もう一度シミュレーションする</button></div>
 </div>
 </section>
 </section>
@@ -1539,14 +1583,8 @@ function drawMonthlyTable(months, legacyCompany){
   foot.innerHTML=`<tr><th scope="row">合計</th><td>${fmt(totalUsage)}</td><td>${fmt(totalLegacy)}</td><td>${fmt(totalAstomos)}</td><td>${diffText(totalDiff)}</td></tr>`;
 }
 function invalidateResult(){state.simulation=null;$('result').classList.remove('show')}
-$('retrySimulation').onclick=()=>{
-  invalidateResult();
-  // 結果表示後に付与されるロック用クラスを解除し、条件入力欄を再表示する
-  $('simulationArea').classList.remove('post-simulation');
-  setSimulationInputsDisabled(false);
-  hideError();
-  $('simulationArea').scrollIntoView({behavior:'smooth',block:'start'});
-};
+const retrySimulationButton=$('retrySimulation');
+if(retrySimulationButton){retrySimulationButton.onclick=()=>{invalidateResult();$('simulationArea').classList.remove('post-simulation');setSimulationInputsDisabled(false);hideError();$('simulationArea').scrollIntoView({behavior:'smooth',block:'start'});};}
 ['household','baseMonth','baseUsage','capacity'].forEach(id=>$(id).addEventListener('change',invalidateResult));
 $('baseUsage').addEventListener('input',invalidateResult);
 function error(t){$('error').textContent=t;$('error').style.display='block'}
@@ -2386,8 +2424,8 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
 /* 「もう一度シミュレーションする」はオレンジ背景＋白文字に統一 */
 #simulationPage #retrySimulation.btn.secondary,
 #simulationPage .result-retry-area #retrySimulation {
-  background:#f58220 !important;
-  border-color:#f58220 !important;
+  background:#AAAAAA !important;
+  border-color:#AAAAAA !important;
   color:#ffffff !important;
   box-shadow:none !important;
 }
@@ -2399,6 +2437,133 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
 }
 </style>
 
+
+<script id="condition-edit-and-rerun-controls">
+(function(){
+  const simArea=document.getElementById('simulationArea');
+  const result=document.getElementById('result');
+  const run=document.getElementById('run');
+  if(!simArea||!run) return;
+
+  function setRunLabel(){
+    run.textContent='シミュレーションする';
+  }
+  setRunLabel();
+
+  document.addEventListener('click',function(e){
+    const edit=e.target.closest('.condition-edit-btn');
+    if(!edit) return;
+    e.preventDefault();
+    const step=edit.dataset.editStep;
+    simArea.classList.remove('post-simulation');
+    if(result) result.classList.remove('show');
+    if(typeof setSimulationInputsDisabled==='function') setSimulationInputsDisabled(false);
+    if(typeof hideError==='function') hideError();
+    setRunLabel();
+    const target=document.getElementById(step==='area'?'areaConditionStep':'methodConditionStep');
+    if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
+</script>
+
+<style id="final-simulation-step-illustration-v7">
+/* 申込ページと同じ3STEP進捗表示 */
+#simulationPage .sim-progress{
+  width:min(760px,calc(100% - 28px));
+  margin:12px auto 30px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+#simulationPage .sim-progress-item{
+  position:relative;
+  text-align:center;
+  color:#aaa;
+  font-size:12px;
+  font-weight:400;
+}
+#simulationPage .sim-progress-item:after{
+  content:"";
+  position:absolute;
+  top:15px;
+  left:calc(50% + 18px);
+  right:calc(-50% + 18px);
+  height:2px;
+  background:#e9e0d8;
+}
+#simulationPage .sim-progress-item:last-child:after{display:none}
+#simulationPage .sim-progress-dot{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  margin:0 auto 6px;
+  background:#eee;
+  border:2px solid #eee;
+  display:grid;
+  place-items:center;
+  font-weight:700;
+  line-height:1;
+}
+#simulationPage .sim-progress-item.active{color:#c65d16;font-weight:700}
+#simulationPage .sim-progress-item.active .sim-progress-dot{background:#eaa527;border-color:#eaa527;color:#fff}
+#simulationPage .sim-progress-item.done{color:#8b6d46}
+#simulationPage .sim-progress-item.done .sim-progress-dot{background:#fff;border-color:#eaa527;color:#eaa527}
+/* 白いタイトル領域と薄オレンジ背景の境界線 */
+#simulationPage .sim-hero{border-bottom:1px solid #efd8c4 !important}
+/* 結果表示中は実行ボタンを隠す。条件変更時に通常の「シミュレーションする」が戻る */
+#simulationArea.post-simulation #methodConditionStep .actions{display:none!important}
+#simulationPage #run{background:#f58220!important;border-color:#f58220!important;color:#fff!important}
+/* 旧「もう一度シミュレーションする」は使用しない */
+#simulationPage #retrySimulation,
+#simulationPage .result-retry-area{display:none!important}
+@media(max-width:630px){
+  #simulationPage .sim-progress{width:calc(100% - 28px);margin:10px auto 22px;gap:4px}
+  #simulationPage .sim-progress-item{font-size:10px;line-height:1.45}
+  #simulationPage .sim-progress-item:after{top:13px;left:calc(50% + 16px);right:calc(-50% + 16px)}
+  #simulationPage .sim-progress-dot{width:27px;height:27px;margin-bottom:5px;font-size:11px}
+}
+</style>
+
+
+<script id="simulation-progress-sync-v7">
+(function(){
+  const items=[...document.querySelectorAll('#simulationPage .sim-progress-item')];
+  const simArea=document.getElementById('simulationArea');
+  const result=document.getElementById('result');
+  function setProgress(n){
+    items.forEach((item,i)=>{
+      const step=i+1;
+      item.classList.toggle('active',step===n);
+      item.classList.toggle('done',step<n);
+    });
+  }
+  setProgress(1);
+  document.addEventListener('click',function(e){
+    const edit=e.target.closest('.condition-edit-btn');
+    if(edit){
+      setProgress(edit.dataset.editStep==='area'?1:2);
+      return;
+    }
+    if(e.target.closest('#methodConditionStep .method, #methodConditionStep select, #methodConditionStep input')){
+      setProgress(2);
+    }
+    if(e.target.closest('#areaConditionStep .choice, #areaConditionStep .region-buttons button, #areaConditionStep .map-region, #areaConditionStep .map-label')){
+      setProgress(1);
+    }
+    if(e.target.closest('#run')){
+      const check=function(){
+        if(result && result.classList.contains('show')) setProgress(3);
+      };
+      setTimeout(check,200);
+      setTimeout(check,600);
+    }
+  },true);
+  const observer=new MutationObserver(function(){
+    if(simArea && simArea.classList.contains('post-simulation') && result && result.classList.contains('show')) setProgress(3);
+  });
+  if(simArea) observer.observe(simArea,{attributes:true,attributeFilter:['class'],subtree:true});
+})();
+</script>
 </body>
 </html>
 <style id="final-simulation-hero-position-v5">
