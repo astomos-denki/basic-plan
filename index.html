@@ -43,8 +43,33 @@
 }
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic","Meiryo",sans-serif;line-height:1.65}
 .header{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center}.in,.shell{width:min(1000px,calc(100% - 28px));margin:auto}
-.logo{font-size:22px;font-weight:900}.logo span{color:var(--main)}.sim-hero{text-align:center;padding:32px 15px;background:linear-gradient(120deg,#fff 0 58%,var(--soft) 58%)}
-.sim-hero h1{margin:3px 0;font-size:clamp(25px,5vw,37px)}.sim-hero p{margin:0;color:var(--muted);font-size:14px}.shell{margin-top:28px;margin-bottom:60px}
+.logo{font-size:22px;font-weight:900}.logo span{color:var(--main)}
+/* シミュレーションページのタイトル帯を申込ページと同じトンマナに統一 */
+.sim-hero{
+  width:min(1000px,calc(100% - 28px));
+  margin:28px auto 0;
+  padding:28px 32px 25px;
+  text-align:left;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:0 7px 25px #0000000d;
+  position:relative;
+  overflow:hidden;
+}
+.sim-hero::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:26px;
+  width:5px;
+  height:38px;
+  border-radius:0 4px 4px 0;
+  background:var(--main);
+}
+.sim-hero h1{margin:0 0 4px;font-size:clamp(25px,5vw,34px);line-height:1.45;color:#20242a}
+.sim-hero p{margin:0;color:var(--muted);font-size:14px}
+.shell{margin-top:18px;margin-bottom:60px}
 .card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 7px 25px #0000000d;margin-bottom:22px;overflow:hidden}
 .head{padding:23px 28px 17px;border-bottom:1px solid var(--line)}.step{color:var(--main);font-weight:900;font-size:13px}.head h2{margin:2px 0;font-size:22px}.head p{margin:0;color:var(--muted);font-size:13px}.body{padding:25px 28px}
 .choices{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.choices.two{grid-template-columns:1fr 1fr}.choice{min-height:60px;padding:12px;border:2px solid var(--line);border-radius:9px;background:#fff;font:inherit;font-weight:800;cursor:pointer}
@@ -124,8 +149,9 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   .header { height:60px; }
   .in,.shell { width:calc(100% - 24px); }
   .shell { margin-top:18px; margin-bottom:32px; }
-  .sim-hero { padding:24px 16px; }
-  .sim-hero h1 { font-size:26px; line-height:1.45; overflow-wrap:anywhere; }
+  .sim-hero { width:calc(100% - 24px); margin-top:18px; padding:22px 18px 20px; border-radius:12px; }
+  .sim-hero::before { top:22px; height:34px; }
+  .sim-hero h1 { font-size:25px; line-height:1.45; overflow-wrap:anywhere; }
   .sim-hero p { font-size:14px; margin-top:8px; }
   .head,.body,.resultBody,.resultTop { padding:20px 16px; }
   .head h2 { font-size:21px; }
@@ -263,6 +289,15 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   .mobile-apply-label{display:inline !important}
 }
 
+
+/* ===== 2026-10-06 UI統一：申込ページ基準 ===== */
+#simulationPage{background:#fff7ef;min-height:100vh;padding-bottom:1px;}
+#simulationPage .header{background:#fff;}
+#simulationPage .sim-hero{background:#fff;}
+#simulationPage .shell>.card{background:#fff;}
+@media(max-width:630px){
+  #simulationPage .sim-hero{width:calc(100% - 24px);}
+}
 </style>
 
 <style>
@@ -984,6 +1019,46 @@ body.is-complete{background:#fffaf5!important}
 </nav></div></header>
 </div><!-- /.site-header-shell -->
 </div><!-- /.site-header-shell -->
+
+<style id="simulation-application-tone-final">
+/* シミュレーションページを申込ページと同一デザインシステムへ統一 */
+#simulationPage{--brand:#eaa527;--brand-dark:#c65d16;--brand-light:#fff0df;--coral:#f58220;--bg:#fffaf5;--card:#fff;--text:#333;--muted:#777;--border:#eadfd4;--focus:#eaa527;--shadow:0 8px 28px rgba(120,80,30,.08);background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7;min-height:calc(100vh - 80px)}
+#simulationPage .sim-hero{width:100%;margin:0;padding:42px 0 28px;text-align:center;background:#fff;border:0;border-radius:0;box-shadow:none;overflow:visible}
+#simulationPage .sim-hero::before{display:none}
+#simulationPage .sim-hero-inner{width:min(900px,calc(100% - 28px));margin:auto}
+#simulationPage .sim-hero-inner>div::before{content:"ASTOMOS DENKI · SIMULATION";display:block;color:var(--brand-dark);font-weight:700;font-size:12px;letter-spacing:.12em;margin-bottom:8px}
+#simulationPage .sim-hero h1{position:relative;display:inline-block;margin:0 0 8px;padding-left:18px;font-size:34px;line-height:1.3;color:#222}
+#simulationPage .sim-hero h1::before{content:"";position:absolute;left:0;top:5%;width:5px;height:90%;border-radius:4px;background:#f58220}
+#simulationPage .sim-hero p{margin:0;color:#666;font-size:14px}
+#simulationPage .shell{width:min(900px,calc(100% - 28px));margin:30px auto 60px}
+#simulationPage .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);margin-bottom:22px;overflow:hidden}
+#simulationPage .head{padding:25px 28px 20px;background:linear-gradient(180deg,#fffaf5,#fff);border-bottom:0}
+#simulationPage .head .step{display:inline-block;background:var(--brand-light);color:var(--brand-dark);border-radius:999px;padding:4px 11px;font-size:12px;font-weight:700;line-height:1.7}
+#simulationPage .head h2{margin:10px 0 3px;font-size:23px;color:#222}
+#simulationPage .head p{margin:0;color:#777;font-size:13px}
+#simulationPage .body{padding:25px 28px 30px}
+#simulationPage .choice{border:1px solid #d8cec5;border-radius:10px;background:#fff}
+#simulationPage .choice:hover,#simulationPage .choice.hovered{border-color:var(--focus);background:#fffaf5;color:var(--brand-dark)}
+#simulationPage .choice.selected{border-color:var(--brand);background:var(--brand);color:#fff}
+#simulationPage .input{background:#fffaf5;border:1px solid var(--border);border-radius:12px}
+#simulationPage select,#simulationPage input{border:1px solid #d8cec5;border-radius:10px;background:#fff;outline:none}
+#simulationPage select:focus,#simulationPage input:focus{border-color:var(--focus);box-shadow:0 0 0 3px rgba(234,165,39,.13)}
+#simulationPage .btn{background:#f58220;border-color:#f58220;box-shadow:none}
+#simulationPage .resultTop{padding-top:28px}
+#simulationPage .result-eyebrow{color:var(--brand-dark)}
+#simulationPage .result h2{color:#222}
+#simulationPage .monthly-details{border-color:var(--border)}
+#simulationPage .monthly-details summary{background:#fffaf5}
+#simulationPage.post-simulation{}
+@media(max-width:630px){
+ #simulationPage .sim-hero{padding:30px 0 22px}
+ #simulationPage .sim-hero h1{font-size:27px;padding-left:14px}
+ #simulationPage .sim-hero-inner>div::before{font-size:10px}
+ #simulationPage .shell{margin-top:20px}
+ #simulationPage .head{padding:20px 18px 16px}
+ #simulationPage .body{padding:20px 18px 24px}
+}
+</style>
 <div id="simulationPage" class="simulation-page is-active" aria-hidden="false">
 <section class="sim-hero"><div class="sim-hero-inner"><div><h1>電気料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div></div></section>
 
@@ -2294,5 +2369,84 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
 }
 </style>
 
+<style id="final-simulation-ui-fix">
+/* 最終優先：シミュレーションタイトルを申込ページ同様に中央揃え */
+#simulationPage .sim-hero {
+  text-align:center !important;
+}
+#simulationPage .sim-hero h1,
+#simulationPage .sim-hero p {
+  text-align:center !important;
+}
+/* 左端アクセントは中央タイトルでは不要 */
+#simulationPage .sim-hero::before {
+  display:none !important;
+}
+
+/* 「もう一度シミュレーションする」はオレンジ背景＋白文字に統一 */
+#simulationPage #retrySimulation.btn.secondary,
+#simulationPage .result-retry-area #retrySimulation {
+  background:#f58220 !important;
+  border-color:#f58220 !important;
+  color:#ffffff !important;
+  box-shadow:none !important;
+}
+#simulationPage #retrySimulation.btn.secondary:hover,
+#simulationPage .result-retry-area #retrySimulation:hover {
+  background:#df7418 !important;
+  border-color:#df7418 !important;
+  color:#ffffff !important;
+}
+</style>
+
 </body>
 </html>
+<style id="final-simulation-hero-position-v5">
+/* 申込ページのheroと同じ基準で、タイトルブロックそのものを画面中央へ配置 */
+#simulationPage .sim-hero{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:42px 0 28px !important;
+  background:#fff !important;
+  border:0 !important;
+  border-radius:0 !important;
+  box-shadow:none !important;
+  text-align:center !important;
+}
+#simulationPage .sim-hero-inner{
+  width:min(900px,calc(100% - 28px)) !important;
+  max-width:900px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  padding:0 !important;
+  display:block !important;
+  text-align:center !important;
+}
+#simulationPage .sim-hero-inner > div{
+  width:100% !important;
+  margin:0 auto !important;
+  text-align:center !important;
+}
+#simulationPage .sim-hero-inner > div::before{
+  display:block !important;
+  width:100% !important;
+  text-align:center !important;
+}
+#simulationPage .sim-hero h1{
+  display:inline-block !important;
+  margin:8px auto 8px !important;
+  padding-left:18px !important;
+  text-align:center !important;
+}
+#simulationPage .sim-hero p{
+  width:100% !important;
+  margin:0 auto !important;
+  text-align:center !important;
+}
+@media(max-width:630px){
+  #simulationPage .sim-hero{padding:30px 0 22px !important;}
+  #simulationPage .sim-hero-inner{width:calc(100% - 28px) !important;}
+  #simulationPage .sim-hero h1{font-size:27px !important;padding-left:14px !important;}
+}
+</style>
