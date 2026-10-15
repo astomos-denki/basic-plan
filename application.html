@@ -1919,7 +1919,7 @@ body{background:var(--bg)}
  function open(){if(!overlay)return;priorOverflow=document.body.style.overflow;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';next.focus();}
  function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=priorOverflow;}
  window.openApplicationPrecheck=open;
- back.addEventListener('click',function(){close();window.location.href='https://astomos-denki.github.io/basic-plan/sim.html';});
+ back.addEventListener('click',function(){close();window.location.href='https://astomos-denki.github.io/basic-plan/simulation.html';});
  next.addEventListener('click',close);
  document.addEventListener('keydown',function(e){if(overlay.classList.contains('open')&&e.key==='Tab'){const buttons=[back,next];if(e.shiftKey&&document.activeElement===back){e.preventDefault();next.focus();}else if(!e.shiftKey&&document.activeElement===next){e.preventDefault();back.focus();}}});
 })();
@@ -2126,10 +2126,10 @@ body{background:var(--bg)}
   const qaLaunch=document.getElementById('qaLaunch');
   let sending=false;
 
-  function setAppMode(on){ if(!on){window.location.href='https://astomos-denki.github.io/basic-plan/sim.html';return;} document.body.classList.add('app-mode'); if(appPage){appPage.hidden=false;appPage.setAttribute('aria-hidden','false');} if(typeof window.openApplicationPrecheck==='function')window.openApplicationPrecheck(); }
+  function setAppMode(on){ if(!on){window.location.href='https://astomos-denki.github.io/basic-plan/simulation.html';return;} document.body.classList.add('app-mode'); if(appPage){appPage.hidden=false;appPage.setAttribute('aria-hidden','false');} if(typeof window.openApplicationPrecheck==='function')window.openApplicationPrecheck(); }
   window.showIntegratedApplication=function(){setAppMode(true);};
-  window.showIntegratedSimulation=function(){window.location.href='https://astomos-denki.github.io/basic-plan/sim.html';};
-  document.addEventListener('click',function(e){const a=e.target.closest('.site-header-shell .nav .nav-cta');if(a){e.preventDefault();window.location.href='https://astomos-denki.github.io/basic-plan/sim.html';}},true);
+  window.showIntegratedSimulation=function(){window.location.href='https://astomos-denki.github.io/basic-plan/simulation.html';};
+  document.addEventListener('click',function(e){const a=e.target.closest('.site-header-shell .nav .nav-cta');if(a){e.preventDefault();window.location.href='https://astomos-denki.github.io/basic-plan/simulation.html';}},true);
 
   function val(name){
     const el=appForm && appForm.elements[name];
@@ -2255,7 +2255,7 @@ body{background:var(--bg)}
     completeBackSimulation.addEventListener('click',()=>{
       document.body.classList.remove('is-complete');
       completeScreen.setAttribute('aria-hidden','true');
-      window.location.href='https://astomos-denki.github.io/basic-plan/sim.html';
+      window.location.href='https://astomos-denki.github.io/basic-plan/simulation.html';
       if(simPage){
         simPage.hidden=false;
         simPage.setAttribute('aria-hidden','false');
@@ -2269,7 +2269,7 @@ body{background:var(--bg)}
   window.addEventListener('pageshow',()=>{
     if(document.body.classList.contains('is-complete')){
       document.body.classList.remove('is-complete');
-      window.location.href='https://astomos-denki.github.io/basic-plan/sim.html';
+      window.location.href='https://astomos-denki.github.io/basic-plan/simulation.html';
     }
   });
 })();
