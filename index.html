@@ -2555,6 +2555,38 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
 </style>
 
 
+<style id="precheck-modal-style">
+.precheck-overlay{position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:8px;font-family:"Noto Sans JP",sans-serif}
+.precheck-overlay.open{display:flex}.precheck-dialog{width:min(576px,100%);max-height:calc(100dvh - 16px);overflow-y:auto;background:white;border-radius:9px;box-shadow:0 12px 50px #0004}
+.precheck-heading{background:#eda21a;color:#fff;font-size:18px;font-weight:800;text-align:center;padding:32px 12px}
+.precheck-content{padding:20px}.precheck-needed{background:#f8ebda;border-radius:8px;padding:15px 17px;font-size:13px}.precheck-needed strong{display:block;margin-bottom:12px}.precheck-needed ol{margin:0;padding-left:33px;line-height:1.8}
+.precheck-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.precheck-card{border:1px solid #e0d2c0;border-radius:8px;padding:15px;font-size:13px;line-height:1.8}.precheck-card strong{display:block;margin-bottom:12px}.precheck-card p{margin:0}.precheck-sample{margin-top:14px;padding:16px 12px;background:#fafafa;border:1px dashed #ccc;border-radius:8px;text-align:center}.precheck-paper{margin:auto;width:168px;max-width:100%;background:white;padding:10px 12px;text-align:left;box-shadow:0 1px 6px #0003;font-size:10px}.precheck-line{height:6px;background:#ddd;border-radius:4px;margin:8px 0}.precheck-paper small{font-size:8px}.precheck-sample>small{display:block;color:#888;margin-top:5px}.precheck-actions{display:grid;grid-template-columns:1fr 1fr;gap:38px;padding:0 53px 20px}.precheck-actions button{border:0;border-radius:30px;background:#f2a31b;color:white;min-height:40px;font-weight:800;cursor:pointer}.precheck-actions button:focus-visible{outline:3px solid #444;outline-offset:2px}
+@media(max-width:480px){.precheck-heading{font-size:16px;padding:19px 8px}.precheck-content{padding:13px}.precheck-needed{padding:12px;font-size:12px}.precheck-cards{gap:8px}.precheck-card{padding:10px;font-size:11px}.precheck-sample{padding:10px 5px}.precheck-actions{gap:10px;padding:0 13px 14px}.precheck-actions button{font-size:12px}}
+</style>
+<div class="precheck-overlay" id="precheckOverlay" aria-hidden="true">
+ <div class="precheck-dialog" role="dialog" aria-modal="true" aria-labelledby="precheckTitle">
+  <div class="precheck-heading" id="precheckTitle">お申し込み前にご確認ください</div>
+  <div class="precheck-content"><div class="precheck-needed"><strong>お手元にご用意ください。</strong><ol><li>お客さま番号</li><li>供給地点特定番号</li><li>契約名義</li><li>現在ご契約されている電力会社の正式名称</li></ol></div>
+   <div class="precheck-cards"><div class="precheck-card"><strong>検針票をお持ちの方</strong><p>検針票に記載されている情報をご確認ください。</p><div class="precheck-sample"><div class="precheck-paper"><b>電気ご使用量のお知らせ</b><div class="precheck-line"></div><div class="precheck-line" style="width:65%"></div><div class="precheck-line"></div><small>お客さま番号　XXXXXXXXXX</small><div class="precheck-line"></div><small>供給地点特定番号　22桁</small></div><small>検針票イメージ</small></div></div>
+   <div class="precheck-card"><strong>検針票をお持ちでない方</strong><p>現在ご契約中の電力会社にお問い合わせいただくか、WEB会員ページなどをご確認ください。</p></div></div>
+  </div><div class="precheck-actions"><button type="button" id="precheckBack">戻る</button><button type="button" id="precheckContinue">準備完了・入力に進む</button></div>
+ </div>
+</div>
+<script id="precheck-modal-script">
+(function(){
+ const overlay=document.getElementById('precheckOverlay');
+ const back=document.getElementById('precheckBack');
+ const next=document.getElementById('precheckContinue');
+ let priorOverflow='';
+ function open(){if(!overlay)return;priorOverflow=document.body.style.overflow;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';next.focus();}
+ function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=priorOverflow;}
+ window.openApplicationPrecheck=open;
+ back.addEventListener('click',function(){close();if(typeof window.showIntegratedSimulation==='function')window.showIntegratedSimulation();});
+ next.addEventListener('click',close);
+ document.addEventListener('keydown',function(e){if(overlay.classList.contains('open')&&e.key==='Tab'){const buttons=[back,next];if(e.shiftKey&&document.activeElement===back){e.preventDefault();next.focus();}else if(!e.shiftKey&&document.activeElement===next){e.preventDefault();back.focus();}}});
+})();
+</script>
+
 <div id="applicationPage" class="application-page" aria-hidden="true" hidden>
 <section class="hero">
   <div class="hero-inner">
@@ -2806,6 +2838,7 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
       if(qaLaunch) qaLaunch.style.display='';
 
       window.scrollTo({top:0,behavior:'smooth'});
+      if(typeof window.openApplicationPrecheck==='function')window.openApplicationPrecheck();
     }else{
       document.body.classList.remove('app-mode');
       appPage.hidden=true;
