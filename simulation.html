@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-<base target="_top">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>アストモスでんき 電気料金シミュレーション</title>
-
+<meta charset="utf-8"/>
+<base target="_top"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>アストモスでんき 電気料金シミュレーション</title>
 <!-- =========================================================
      Microsoft Clarity 設定
      下記 YOUR_CLARITY_PROJECT_ID を Clarity のプロジェクトIDへ置き換えてください。
@@ -33,13 +33,10 @@
   };
 })();
 </script>
-
-
-
 <!-- Noto Sans JP: 全画面共通フォント -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <style>
 /* =========================================================
    色設定（色を変更するときは、まずこのブロックだけ編集してください）
@@ -332,7 +329,6 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   #simulationPage .sim-hero{width:calc(100% - 24px);}
 }
 </style>
-
 <style>
 /* LPとヘッダーのサイズ・位置・色を統一 */
 .topbar{padding:8px 0;background:#eaa527;color:#fff;font-size:13px;line-height:1.6}
@@ -358,7 +354,6 @@ button:focus-visible, select:focus-visible, input:focus-visible {
   .header .nav .nav-cta{padding:9px 11px;font-size:11px;white-space:nowrap}
 }
 </style>
-
 <style>
 /* 共通ヘッダーを常時上部に固定し、LPとシミュレーションを切り替える */
 .site-header-shell{position:sticky;top:0;z-index:1000;isolation:isolate}
@@ -383,7 +378,6 @@ html{scroll-padding-top:120px}
   #features,#flow,#faq,#price,#top{scroll-margin-top:100px}
 }
 </style>
-
 <style>
 /* LP section styles scoped to .lp-content; header is shared with simulation page */
 
@@ -762,7 +756,6 @@ html{scroll-padding-top:120px}
 }
 
 </style>
-
 <style>
 /* 2026-10-05 微調整：選択肢は横方向に中央揃えせず、文字の上下位置のみ揃える */
 .choices.two .choice.method{
@@ -812,7 +805,6 @@ html{scroll-padding-top:120px}
   .site-header-shell .topbar-inner span{font-size:9px !important}
 }
 </style>
-
 <style id="application-integrated-style">
 #applicationPage{--brand:#eaa527;--brand-dark:#c65d16;--brand-light:#fff0df;--coral:#f58220;--bg:#fffaf5;--card:#fff;--text:#333;--muted:#777;--border:#eadfd4;--focus:#eaa527;--shadow:0 8px 28px rgba(120,80,30,.08);background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7;min-height:calc(100vh - 80px)}
 #applicationPage *,#applicationPage *::before,#applicationPage *::after{box-sizing:border-box}
@@ -919,7 +911,6 @@ body.is-complete{background:#fffaf5!important}
 .complete-footer{margin-top:28px;color:#888;font-size:11px;text-align:center}
 @media(max-width:640px){#completeScreen{padding:30px 12px 50px}.complete-card{padding:26px 16px}.complete-receipt-row{grid-template-columns:1fr;gap:3px}.complete-actions{display:grid}.complete-btn{width:100%;min-width:0}}
 </style>
-
 <style id="integrated-application-mobile-header">
 @media (max-width: 900px) {
   body.app-mode .site-header-shell .header .nav .nav-cta {
@@ -927,8 +918,6 @@ body.is-complete{background:#fffaf5!important}
   }
 }
 </style>
-
-
 <style id="post-simulation-condition-style">
 /* シミュレーション実施後は、条件入力部分を閉じ、選択中の条件だけ表示 */
 #simulationArea.post-simulation > section.condition-step .body,
@@ -942,8 +931,6 @@ body.is-complete{background:#fffaf5!important}
 #simulationArea.post-simulation > section.condition-step .step { margin-bottom:2px; }
 .condition-summary { display:none; }
 </style>
-
-
 <style>
 /* 2026-10-06 年間比較グラフ改善 + 再シミュレーション */
 .annual-saving-summary{max-width:620px;margin:12px auto 6px;padding:12px 16px;border:2px solid #e8a76e;border-radius:12px;background:#fffaf5;text-align:center;font-weight:900;line-height:1.5}
@@ -953,7 +940,6 @@ body.is-complete{background:#fffaf5!important}
 .result-retry-area{display:flex;justify-content:center;padding:20px 0 2px}.result-retry-area .btn{min-width:260px}
 @media(max-width:630px){.annual-saving-summary{padding:9px 7px}.annual-saving-summary .saving-rate,.annual-saving-summary .saving-yen{display:block;margin-left:0}.annual-bar-chart{height:280px}.bar-saving-badge{bottom:55px;max-width:150px;font-size:10px;padding:6px}.bar-saving-badge::before{font-size:22px}.result-retry-area .btn{width:100%;min-width:0}}
 </style>
-
 <style id="annual-bar-axis-zoom-v2">
 /* 参考画像型：縦軸を比較額周辺へ自動ズームし、料金差を視覚的に強調。グラフ内の差額文言・端点マーカーは表示しない。 */
 .annual-bar-chart{height:330px;border-bottom:0;padding-top:0;overflow:visible}
@@ -976,7 +962,6 @@ body.is-complete{background:#fffaf5!important}
 .bar-slope-line line{stroke:#8b8b8b;stroke-width:1.6;stroke-dasharray:5 5;vector-effect:non-scaling-stroke}
 @media(max-width:630px){.annual-bar-chart{height:310px}.bar-y-axis{left:48px;right:2px}.bar-chart-area{left:56px;right:4px;gap:34px}.bar-grid-line span{width:43px;font-size:8px}.bar-saving-badge{min-width:112px;max-width:130px;padding:4px 5px}.bar-saving-badge strong{font-size:12px}.bar-saving-badge span:last-child{font-size:8px}.bar-value{font-size:11px}.bar-label{width:120px}}
 </style>
-
 <style id="annual-bar-zero-break-v3">
 /* 2026-10-06: 縦軸は0円を表示し、中間を「～」で省略。棒の上端同士は内側の端から点線で接続。 */
 .annual-bar-chart{height:350px}
@@ -993,7 +978,6 @@ body.is-complete{background:#fffaf5!important}
 .bar-slope-line line{stroke:#777;stroke-width:1.7;stroke-dasharray:6 5}
 @media(max-width:630px){.annual-bar-chart{height:325px}.bar-axis-break{left:-43px}.bar-axis-break::before{width:39px;font-size:18px}.bar-axis-break::after{left:43px}}
 </style>
-
 <style id="annual-bar-compact-collapsible-v7">
 /* 年間比較：初期表示は開く／任意で折りたたみ可能。縦軸側の省略記号は表示しない。 */
 .annual-comparison-details{border:1px solid #f0d8c2;border-radius:10px;overflow:hidden;background:#fff;margin:0 0 16px}
@@ -1021,7 +1005,6 @@ body.is-complete{background:#fffaf5!important}
  .bar-chart-area{top:14px!important;bottom:31px!important}
 }
 </style>
-
 <style id="result-layout-v10">
 /* シミュレーション結果：年額カードは非表示。年間グラフは結果枠内に常時表示する。 */
 #result .result-eyebrow:first-child{display:none}
@@ -1040,7 +1023,6 @@ body.is-complete{background:#fffaf5!important}
  #result .resultTop>.bar-comparison-section .bar-comparison-message{margin-top:28px}
 }
 </style>
-
 <style id="final-simulation-application-perfect-unify">
 /* 申込ページとシミュレーションページのタイトル・カード・文字組みを完全統一 */
 #simulationPage{background:#fffaf5;color:#333;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7}
@@ -1079,7 +1061,6 @@ body.is-complete{background:#fffaf5!important}
  #simulationPage .condition-edit-btn{padding:6px 13px;font-size:11px}
 }
 </style>
-
 <style id="post-simulation-compact-condition-cards-v2">
 /* 結果表示後のSTEP1・STEP2をコンパクト化。
    STEPラベルと見出しを横並びにし、カードの縦幅を抑える。 */
@@ -1160,8 +1141,6 @@ body.is-complete{background:#fffaf5!important}
   }
 }
 </style>
-
-
 <style id="application-compact-step-cards-v1">
 /* 申込画面もシミュレーション結果後のSTEPカードと同じ密度に統一 */
 #applicationPage .progress{
@@ -1276,9 +1255,6 @@ body.is-complete{background:#fffaf5!important}
   }
 }
 </style>
-
-
-
 <style id="simulation-condition-cards-compact-from-start-v1">
 /* シミュレーション入力時からSTEPカードをコンパクト表示。
    STEPラベルと見出しを同一行にし、結果表示後も同じ位置関係を維持する。 */
@@ -1368,8 +1344,6 @@ body.is-complete{background:#fffaf5!important}
   }
 }
 </style>
-
-
 <style id="region-selected-map-placement-v1">
 /* 地域選択：選択中エリアを沖縄の右側の空きスペースへ移動 */
 #simulationPage .region-layout{
@@ -1454,7 +1428,6 @@ body.is-complete{background:#fffaf5!important}
   #simulationPage .map-selected-overlay strong{font-size:13px;}
 }
 </style>
-
 <style id="region-selected-grid-span2-v2">
 /* 地域選択：4段目を「沖縄｜選択中のエリア（2マス分）」にする */
 #simulationPage .region-buttons{
@@ -1511,7 +1484,6 @@ body.is-complete{background:#fffaf5!important}
   #simulationPage .region-selected-grid strong{font-size:12px;}
 }
 </style>
-
 <style id="region-layout-aligned-v3">
 /* 地域選択：PCでは選択肢4段と地図の下端を揃え、対象外注記は2列横断で表示 */
 #simulationPage .region-layout{
@@ -1593,8 +1565,6 @@ body.is-complete{background:#fffaf5!important}
   #simulationPage .region-layout > .region-help-wide{font-size:10px;}
 }
 </style>
-
-
 <style id="noto-sans-jp-unified-v1">
 /* =========================================================
    全画面フォント統一
@@ -1662,15 +1632,14 @@ h1,h2,h3,
 <body>
 <div class="site-header-shell">
 <div class="topbar"><div class="in topbar-inner"><span>アストモスでんき｜料金プランのご案内</span><span>電気の使い方に合ったプラン選びをサポート</span></div></div>
-<header class="header"><div class="in header-inner"><a class="brand-link" data-lp-link href="https://astomos-denki.github.io/basic-plan/" aria-label="アストモスでんき トップページ"><img class="brand-logo" src="data:image/png;base64,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" alt="アストモスでんき"></a><nav class="nav" aria-label="メインナビゲーション">
-<a data-lp-link href="https://astomos-denki.github.io/basic-plan/#features">プランの特徴</a>
-<a data-lp-link href="https://astomos-denki.github.io/basic-plan/#flow">ご利用までの流れ</a>
-<a data-lp-link href="https://astomos-denki.github.io/basic-plan/#faq">よくあるご質問</a>
-<a class="nav-cta" data-lp-link href="https://www.yahoo.co.jp/">お申し込みはこちら</a>
+<header class="header"><div class="in header-inner"><a aria-label="アストモスでんき トップページ" class="brand-link" href="https://astomos-denki.github.io/basic-plan/"><img alt="アストモスでんき" class="brand-logo" src="data:image/png;base64,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"/></a><nav aria-label="メインナビゲーション" class="nav">
+<a href="https://astomos-denki.github.io/basic-plan/#features">プランの特徴</a>
+<a href="https://astomos-denki.github.io/basic-plan/#flow">ご利用までの流れ</a>
+<a href="https://astomos-denki.github.io/basic-plan/#faq">よくあるご質問</a>
+<a class="nav-cta" href="https://astomos-denki.github.io/basic-plan/application.html">お申し込みはこちら</a>
 </nav></div></header>
 </div><!-- /.site-header-shell -->
-</div><!-- /.site-header-shell -->
-
+<!-- /.site-header-shell -->
 <style id="simulation-application-tone-final">
 /* シミュレーションページを申込ページと同一デザインシステムへ統一 */
 #simulationPage{--brand:#eaa527;--brand-dark:#c65d16;--brand-light:#fff0df;--coral:#f58220;--bg:#fffaf5;--card:#fff;--text:#333;--muted:#777;--border:#eadfd4;--focus:#eaa527;--shadow:0 8px 28px rgba(120,80,30,.08);background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;line-height:1.7;min-height:calc(100vh - 80px)}
@@ -1710,173 +1679,162 @@ h1,h2,h3,
  #simulationPage .body{padding:20px 18px 24px}
 }
 </style>
-<div id="simulationPage" class="simulation-page is-active" aria-hidden="false">
+<div aria-hidden="false" class="simulation-page is-active" id="simulationPage">
 <section class="sim-hero"><div class="sim-hero-inner"><div class="sim-eyebrow">ASTOMOS DENKI · SIMULATION</div><h1>料金シミュレーション</h1><p>かんたん２ＳＴＥＰで年間の電気料金を試算します。</p></div></section>
-
-<div class="sim-progress" aria-label="シミュレーション進捗">
-  <div class="sim-progress-item active" data-sim-progress="1"><div class="sim-progress-dot">1</div>お住まいの地域</div>
-  <div class="sim-progress-item" data-sim-progress="2"><div class="sim-progress-dot">2</div>電気のご使用状況</div>
-  <div class="sim-progress-item" data-sim-progress="3"><div class="sim-progress-dot">3</div>シミュレーション結果確認</div>
+<div aria-label="シミュレーション進捗" class="sim-progress">
+<div class="sim-progress-item active" data-sim-progress="1"><div class="sim-progress-dot">1</div>お住まいの地域</div>
+<div class="sim-progress-item" data-sim-progress="2"><div class="sim-progress-dot">2</div>電気のご使用状況</div>
+<div class="sim-progress-item" data-sim-progress="3"><div class="sim-progress-dot">3</div>シミュレーション結果確認</div>
 </div>
-
 <div class="shell">
 <section id="simulationArea">
 <section class="card condition-step" id="areaConditionStep">
-  <div class="head"><div class="step">STEP 1</div><h2>お住まいの地域</h2>
-    <div class="condition-summary" id="areaConditionSummary"><div class="condition-summary-row"><div>選択中のエリア：<strong id="postAreaText"></strong></div><button type="button" class="condition-edit-btn" data-edit-step="area">変更する</button></div></div><p>電気を使用する地域を選択してください。</p></div>
-  <div class="body">
-    <div class="region-layout">
-      <div class="region-choice-pane">
-        <div id="areas" class="region-buttons"></div>
-      </div>
-      <div class="map-wrap">
-        <svg class="japan-map" viewBox="0 0 620 360" role="img" aria-label="日本地図から地域を選択">
-          <text x="320" y="22" text-anchor="middle" class="map-title">地図の地域を押して選択できます</text>
-          <!-- 北海道 -->
-          <path class="map-region" data-area="北海道" d="M472 38 L532 26 L575 53 L559 93 L505 104 L468 77 Z"/>
-          <text class="map-label" data-label="北海道" x="522" y="69" text-anchor="middle">北海道</text>
-          <!-- 東北 -->
-          <path class="map-region" data-area="東北" d="M448 111 L492 103 L512 127 L498 181 L462 194 L440 158 Z"/>
-          <text class="map-label" data-label="東北" x="478" y="149" text-anchor="middle">東北</text>
-          <!-- 東京/関東 -->
-          <path class="map-region" data-area="東京" d="M425 191 L466 188 L488 208 L467 238 L427 232 L411 209 Z"/>
-          <text class="map-label" data-label="東京" x="451" y="216" text-anchor="middle">関東</text>
-          <!-- 中部 -->
-          <path class="map-region" data-area="中部" d="M361 182 L414 180 L427 205 L407 239 L366 245 L344 216 Z"/>
-          <text class="map-label" data-label="中部" x="386" y="215" text-anchor="middle">中部</text>
-          <!-- 北陸 -->
-          <path class="map-region" data-area="北陸" d="M326 163 L372 153 L400 174 L366 194 L326 191 L307 178 Z"/>
-          <text class="map-label" data-label="北陸" x="351" y="177" text-anchor="middle">北陸</text>
-          <!-- 関西 -->
-          <path class="map-region" data-area="関西" d="M305 201 L347 194 L365 220 L348 249 L306 250 L289 226 Z"/>
-          <text class="map-label" data-label="関西" x="327" y="225" text-anchor="middle">関西</text>
-          <!-- 中国 -->
-          <path class="map-region" data-area="中国" d="M225 201 L292 198 L303 224 L278 242 L219 236 L198 220 Z"/>
-          <text class="map-label" data-label="中国" x="252" y="221" text-anchor="middle">中国</text>
-          <!-- 四国 -->
-          <path class="map-region" data-area="四国" d="M262 254 L321 249 L337 269 L313 289 L257 285 L243 269 Z"/>
-          <text class="map-label" data-label="四国" x="291" y="272" text-anchor="middle">四国</text>
-          <!-- 九州 -->
-          <path class="map-region" data-area="九州" d="M157 233 L205 226 L225 251 L207 294 L176 321 L146 300 L139 260 Z"/>
-          <text class="map-label" data-label="九州" x="183" y="268" text-anchor="middle">九州</text>
-          <!-- 沖縄はArea_Configに登録されていないため現在は対象外 -->
-          <path class="map-region area-disabled" data-area="沖縄" d="M101 315 L115 310 L121 322 L111 336 L98 332 Z"/>
-          <text class="map-label area-disabled" data-label="沖縄" x="83" y="338" text-anchor="middle">沖縄</text>
-        </svg>
-      </div>
-      <div id="mapHelp" class="map-help region-help-wide"></div>
-    </div>
-  </div>
+<div class="head"><div class="step">STEP 1</div><h2>お住まいの地域</h2>
+<div class="condition-summary" id="areaConditionSummary"><div class="condition-summary-row"><div>選択中のエリア：<strong id="postAreaText"></strong></div><button class="condition-edit-btn" data-edit-step="area" type="button">変更する</button></div></div><p>電気を使用する地域を選択してください。</p></div>
+<div class="body">
+<div class="region-layout">
+<div class="region-choice-pane">
+<div class="region-buttons" id="areas"></div>
+</div>
+<div class="map-wrap">
+<svg aria-label="日本地図から地域を選択" class="japan-map" role="img" viewbox="0 0 620 360">
+<text class="map-title" text-anchor="middle" x="320" y="22">地図の地域を押して選択できます</text>
+<!-- 北海道 -->
+<path class="map-region" d="M472 38 L532 26 L575 53 L559 93 L505 104 L468 77 Z" data-area="北海道"></path>
+<text class="map-label" data-label="北海道" text-anchor="middle" x="522" y="69">北海道</text>
+<!-- 東北 -->
+<path class="map-region" d="M448 111 L492 103 L512 127 L498 181 L462 194 L440 158 Z" data-area="東北"></path>
+<text class="map-label" data-label="東北" text-anchor="middle" x="478" y="149">東北</text>
+<!-- 東京/関東 -->
+<path class="map-region" d="M425 191 L466 188 L488 208 L467 238 L427 232 L411 209 Z" data-area="東京"></path>
+<text class="map-label" data-label="東京" text-anchor="middle" x="451" y="216">関東</text>
+<!-- 中部 -->
+<path class="map-region" d="M361 182 L414 180 L427 205 L407 239 L366 245 L344 216 Z" data-area="中部"></path>
+<text class="map-label" data-label="中部" text-anchor="middle" x="386" y="215">中部</text>
+<!-- 北陸 -->
+<path class="map-region" d="M326 163 L372 153 L400 174 L366 194 L326 191 L307 178 Z" data-area="北陸"></path>
+<text class="map-label" data-label="北陸" text-anchor="middle" x="351" y="177">北陸</text>
+<!-- 関西 -->
+<path class="map-region" d="M305 201 L347 194 L365 220 L348 249 L306 250 L289 226 Z" data-area="関西"></path>
+<text class="map-label" data-label="関西" text-anchor="middle" x="327" y="225">関西</text>
+<!-- 中国 -->
+<path class="map-region" d="M225 201 L292 198 L303 224 L278 242 L219 236 L198 220 Z" data-area="中国"></path>
+<text class="map-label" data-label="中国" text-anchor="middle" x="252" y="221">中国</text>
+<!-- 四国 -->
+<path class="map-region" d="M262 254 L321 249 L337 269 L313 289 L257 285 L243 269 Z" data-area="四国"></path>
+<text class="map-label" data-label="四国" text-anchor="middle" x="291" y="272">四国</text>
+<!-- 九州 -->
+<path class="map-region" d="M157 233 L205 226 L225 251 L207 294 L176 321 L146 300 L139 260 Z" data-area="九州"></path>
+<text class="map-label" data-label="九州" text-anchor="middle" x="183" y="268">九州</text>
+<!-- 沖縄はArea_Configに登録されていないため現在は対象外 -->
+<path class="map-region area-disabled" d="M101 315 L115 310 L121 322 L111 336 L98 332 Z" data-area="沖縄"></path>
+<text class="map-label area-disabled" data-label="沖縄" text-anchor="middle" x="83" y="338">沖縄</text>
+</svg>
+</div>
+<div class="map-help region-help-wide" id="mapHelp"></div>
+</div>
+</div>
 </section>
-
 <section class="card condition-step" id="methodConditionStep">
-  <div class="head"><div class="step">STEP 2</div><h2>シミュレーション方法</h2>
-    <div class="condition-summary" id="methodConditionSummary"><div class="condition-summary-row"><div id="postHouseholdRow">世帯人数：<strong id="postHouseholdText"></strong></div><button type="button" class="condition-edit-btn" data-edit-step="method">変更する</button></div></div></div>
-  <div class="body">
-    <div class="choices two">
-      <button class="choice method" data-mode="simple"><strong>簡易版</strong><span>世帯人数から標準使用量を算出</span></button>
-      <button class="choice method" data-mode="detail"><strong>詳細版</strong><span>1か月の使用量・契約容量から年間を推計</span></button>
-    </div>
-
-    <div id="simple" class="input">
-      <div class="field"><label>世帯人数</label>
-        <select id="household"><option value="">選択してください</option><option>1人世帯</option><option>2人世帯</option><option>3～4人世帯</option><option>5人以上世帯</option></select>
-      </div>
-    </div>
-
-    <div id="detail" class="input">
-      <div class="field">
-        <label>対象月</label><select id="baseMonth"><option value="">選択</option></select>
-        <label>使用量</label><input id="baseUsage" type="number" min="1"><span>kWh</span>
-        <span id="ampereFields"><label style="margin-left:6px">契約容量</label>
-          <select id="capacity"><option value="">選択</option><option>10A</option><option>15A</option><option>20A</option><option>30A</option><option>40A</option><option>50A</option><option>60A</option></select>
-        </span>
-        <span id="ampereNotRequired" class="amp-note">このエリアはアンペア数の選択は不要です。</span>
-      </div>
-    </div>
-  </div>
-
-  <div id="error" class="error"></div>
-  <div id="loading" class="loading">計算しています…</div>
-  <div class="actions"><button id="run" class="btn">シミュレーションする</button></div>
+<div class="head"><div class="step">STEP 2</div><h2>シミュレーション方法</h2>
+<div class="condition-summary" id="methodConditionSummary"><div class="condition-summary-row"><div id="postHouseholdRow">世帯人数：<strong id="postHouseholdText"></strong></div><button class="condition-edit-btn" data-edit-step="method" type="button">変更する</button></div></div></div>
+<div class="body">
+<div class="choices two">
+<button class="choice method" data-mode="simple"><strong>簡易版</strong><span>世帯人数から標準使用量を算出</span></button>
+<button class="choice method" data-mode="detail"><strong>詳細版</strong><span>1か月の使用量・契約容量から年間を推計</span></button>
+</div>
+<div class="input" id="simple">
+<div class="field"><label>世帯人数</label>
+<select id="household"><option value="">選択してください</option><option>1人世帯</option><option>2人世帯</option><option>3～4人世帯</option><option>5人以上世帯</option></select>
+</div>
+</div>
+<div class="input" id="detail">
+<div class="field">
+<label>対象月</label><select id="baseMonth"><option value="">選択</option></select>
+<label>使用量</label><input id="baseUsage" min="1" type="number"/><span>kWh</span>
+<span id="ampereFields"><label style="margin-left:6px">契約容量</label>
+<select id="capacity"><option value="">選択</option><option>10A</option><option>15A</option><option>20A</option><option>30A</option><option>40A</option><option>50A</option><option>60A</option></select>
+</span>
+<span class="amp-note" id="ampereNotRequired">このエリアはアンペア数の選択は不要です。</span>
+</div>
+</div>
+</div>
+<div class="error" id="error"></div>
+<div class="loading" id="loading">計算しています…</div>
+<div class="actions"><button class="btn" id="run">シミュレーションする</button></div>
 </section>
-
-<section id="result" class="card result">
-  <div class="resultTop">
-    <div class="result-eyebrow">年間の電気料金比較</div>
-    <h2>シミュレーション結果</h2>
-    <div class="prices">
-      <div class="price legacy-price">
-        <small id="oldLabel"></small>
-        <div class="annual-price"><strong id="oldAnnual"></strong><span>円／年</span></div>
-      </div>
-      <div class="price new">
-        <small id="newLabel"></small>
-        <div class="annual-price"><strong id="newAnnual"></strong><span>円／年</span></div>
-      </div>
-    </div>
-    <div id="saving" class="saving" role="status"></div>
-    <section class="bar-comparison-section" aria-labelledby="barComparisonHeading">
-      <div class="bar-comparison-title">
-        <span class="result-eyebrow">年間の料金比較</span>
-        <h3 id="barComparisonHeading">現在の価格とアストモスでんきを比較</h3>
-        <p>年間の電気料金を縦棒で比較し、どれくらい削減できるかを表示します。</p>
-      </div>
-      <div class="annual-saving-summary" id="annualSavingSummary" aria-live="polite"></div>
-      <div class="annual-bar-chart" role="img" aria-label="年間電気料金の比較">
-        <div class="bar-axis-title">年間料金（円）</div>
-        <div class="bar-y-axis" id="barYAxis"></div>
-        <div class="bar-chart-area">
-          <div class="bar-column">
-            <div class="bar-value" id="barCurrentValue"></div>
-            <div class="bar current-bar" id="barCurrent"></div>
-            <div class="bar-label" id="barCurrentLabel">現在のご契約</div>
-          </div>
-          <div class="bar-column">
-            <div class="bar-value" id="barAstomosValue"></div>
-            <div class="bar astomos-bar" id="barAstomos"></div>
-            <div class="bar-label">アストモスでんき</div>
-          </div>
-          <svg class="bar-slope-line" id="barSlopeLine" aria-hidden="true" preserveAspectRatio="none">
-            <line id="barSlopeSegment" x1="0" y1="0" x2="0" y2="0"></line>
-          </svg>
-        </div>
-      </div>
-      <div class="bar-comparison-message" id="barComparisonMessage"></div>
-    </section>
-    <div class="cta-area result-cta"><button type="button" id="goApplication" class="btn">お申し込みはこちら</button></div>
-  </div>
-  <div class="resultBody">
-
-
-    <section class="monthly-table-section" aria-labelledby="monthlyTableHeading">
-      <details class="monthly-details">
-        <summary id="monthlyTableHeading"><span>月別シミュレーション結果</span><span class="monthly-toggle">表示する</span></summary>
-        <div class="monthly-table-wrap">
-        <table id="monthlyTable" class="monthly-table" aria-label="月別の使用量と電気料金の比較">
-          <colgroup><col class="col-month"><col class="col-usage"><col class="col-current"><col class="col-astomos"><col class="col-diff"></colgroup>
-          <thead>
-            <tr><th rowspan="2" scope="col"></th><th rowspan="2" scope="col">使用量（kWh）</th><th colspan="2" scope="colgroup">電気料金（円）</th><th rowspan="2" scope="col">差額（円）</th></tr>
-            <tr><th scope="col" id="tableOldLabel">現在のご契約</th><th scope="col">アストモスでんき</th></tr>
-          </thead>
-          <tbody id="monthlyTableBody"></tbody>
-          <tfoot id="monthlyTableFoot"></tfoot>
-        </table>
-      </div>
-      </details>
-    </section>
-    <div class="condition-note"><strong>試算条件：</strong><span id="sumCondition"></span></div>
-    <div class="notes">
-      <p id="exclude"></p>
-      <div id="disclaimerTitle" class="disclaimer-title">電気料金シミュレーションのご利用上の注意事項</div>
-      <p id="disclaimer"></p>
-    </div>
+<section class="card result" id="result">
+<div class="resultTop">
+<div class="result-eyebrow">年間の電気料金比較</div>
+<h2>シミュレーション結果</h2>
+<div class="prices">
+<div class="price legacy-price">
+<small id="oldLabel"></small>
+<div class="annual-price"><strong id="oldAnnual"></strong><span>円／年</span></div>
+</div>
+<div class="price new">
+<small id="newLabel"></small>
+<div class="annual-price"><strong id="newAnnual"></strong><span>円／年</span></div>
+</div>
+</div>
+<div class="saving" id="saving" role="status"></div>
+<section aria-labelledby="barComparisonHeading" class="bar-comparison-section">
+<div class="bar-comparison-title">
+<span class="result-eyebrow">年間の料金比較</span>
+<h3 id="barComparisonHeading">現在の価格とアストモスでんきを比較</h3>
+<p>年間の電気料金を縦棒で比較し、どれくらい削減できるかを表示します。</p>
+</div>
+<div aria-live="polite" class="annual-saving-summary" id="annualSavingSummary"></div>
+<div aria-label="年間電気料金の比較" class="annual-bar-chart" role="img">
+<div class="bar-axis-title">年間料金（円）</div>
+<div class="bar-y-axis" id="barYAxis"></div>
+<div class="bar-chart-area">
+<div class="bar-column">
+<div class="bar-value" id="barCurrentValue"></div>
+<div class="bar current-bar" id="barCurrent"></div>
+<div class="bar-label" id="barCurrentLabel">現在のご契約</div>
+</div>
+<div class="bar-column">
+<div class="bar-value" id="barAstomosValue"></div>
+<div class="bar astomos-bar" id="barAstomos"></div>
+<div class="bar-label">アストモスでんき</div>
+</div>
+<svg aria-hidden="true" class="bar-slope-line" id="barSlopeLine" preserveaspectratio="none">
+<line id="barSlopeSegment" x1="0" x2="0" y1="0" y2="0"></line>
+</svg>
+</div>
+</div>
+<div class="bar-comparison-message" id="barComparisonMessage"></div>
+</section>
+<div class="cta-area result-cta"><button class="btn" id="goApplication" type="button">お申し込みはこちら</button></div>
+</div>
+<div class="resultBody">
+<section aria-labelledby="monthlyTableHeading" class="monthly-table-section">
+<details class="monthly-details">
+<summary id="monthlyTableHeading"><span>月別シミュレーション結果</span><span class="monthly-toggle">表示する</span></summary>
+<div class="monthly-table-wrap">
+<table aria-label="月別の使用量と電気料金の比較" class="monthly-table" id="monthlyTable">
+<colgroup><col class="col-month"/><col class="col-usage"/><col class="col-current"/><col class="col-astomos"/><col class="col-diff"/></colgroup>
+<thead>
+<tr><th rowspan="2" scope="col"></th><th rowspan="2" scope="col">使用量（kWh）</th><th colspan="2" scope="colgroup">電気料金（円）</th><th rowspan="2" scope="col">差額（円）</th></tr>
+<tr><th id="tableOldLabel" scope="col">現在のご契約</th><th scope="col">アストモスでんき</th></tr>
+</thead>
+<tbody id="monthlyTableBody"></tbody>
+<tfoot id="monthlyTableFoot"></tfoot>
+</table>
+</div>
+</details>
+</section>
+<div class="condition-note"><strong>試算条件：</strong><span id="sumCondition"></span></div>
+<div class="notes">
+<p id="exclude"></p>
+<div class="disclaimer-title" id="disclaimerTitle">電気料金シミュレーションのご利用上の注意事項</div>
+<p id="disclaimer"></p>
+</div>
 </div>
 </section>
 </section>
 </div>
-
-
 <footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜電気料金シミュレーション</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span></div></footer>
 </div><!-- /#simulationPage -->
 <script>
@@ -2231,7 +2189,7 @@ const analyticsVisitorId=getAnalyticsVisitorId();
  * 本番の申込ページ完成後、下記URLを差し替えてください。
  */
 $('goApplication').onclick=()=>{
-  const targetUrl='https://script.google.com/macros/s/AKfycbzYjx6DOM4QVenrN6xDcgPZ9QJoxoj3-jd2OI_V0yHd5B95mAHdCFkJFjdsutACqNW_nQ/exec';
+  const targetUrl='https://astomos-denki.github.io/basic-plan/application.html';
   // 申込ページへの遷移自体は外部URLで行います（クリック計測は行いません）。
   window.location.href=targetUrl;
 };
@@ -2271,25 +2229,25 @@ body{padding-bottom:90px}
 .qa-contact-unset{margin:7px 0;color:#777;font-size:12px}
 @media(max-width:630px){.qa-launch{right:12px;padding:12px 18px}.qa-panel{right:12px;bottom:calc(78px + env(safe-area-inset-bottom,0px));width:calc(100vw - 24px);height:560px;max-height:calc(100dvh - 96px)}}
 </style>
-<button type="button" id="qaLaunch" class="qa-launch" aria-expanded="false" aria-controls="qaPanel">Q&A お困りですか？</button>
-<section id="qaPanel" class="qa-panel" role="dialog" aria-labelledby="qaTitle" hidden>
-  <header class="qa-head"><div><h2 id="qaTitle">よくあるご質問</h2><small>質問を選択すると回答を表示します</small></div><button type="button" id="qaClose" class="qa-close" aria-label="Q&Aを閉じる">×</button></header>
-  <div class="qa-main">
-    <div id="qaCatalogView">
-      <p class="qa-intro">知りたい内容に近い質問を選択してください。回答の最後に「解決した／解決していない」を選べます。</p>
-      <div id="qaCatalog"></div>
-    </div>
-    <div id="qaAnswerView" class="qa-answer-view">
-      <button type="button" id="qaBack" class="qa-back">← 質問一覧に戻る</button>
-      <div id="qaSelectedQuestion" class="qa-selected-q"></div>
-      <div id="qaAnswer" class="qa-answer"></div>
-      <div id="qaFeedbackArea">
-        <p class="qa-feedback-title">この回答で解決しましたか？</p>
-        <div class="qa-feedback"><button type="button" id="qaSolved">解決した</button><button type="button" id="qaUnsolved">解決していない</button></div>
-      </div>
-      <div id="qaAfterFeedback"></div>
-    </div>
-  </div>
+<button aria-controls="qaPanel" aria-expanded="false" class="qa-launch" id="qaLaunch" type="button">Q&amp;A お困りですか？</button>
+<section aria-labelledby="qaTitle" class="qa-panel" hidden="" id="qaPanel" role="dialog">
+<header class="qa-head"><div><h2 id="qaTitle">よくあるご質問</h2><small>質問を選択すると回答を表示します</small></div><button aria-label="Q&amp;Aを閉じる" class="qa-close" id="qaClose" type="button">×</button></header>
+<div class="qa-main">
+<div id="qaCatalogView">
+<p class="qa-intro">知りたい内容に近い質問を選択してください。回答の最後に「解決した／解決していない」を選べます。</p>
+<div id="qaCatalog"></div>
+</div>
+<div class="qa-answer-view" id="qaAnswerView">
+<button class="qa-back" id="qaBack" type="button">← 質問一覧に戻る</button>
+<div class="qa-selected-q" id="qaSelectedQuestion"></div>
+<div class="qa-answer" id="qaAnswer"></div>
+<div id="qaFeedbackArea">
+<p class="qa-feedback-title">この回答で解決しましたか？</p>
+<div class="qa-feedback"><button id="qaSolved" type="button">解決した</button><button id="qaUnsolved" type="button">解決していない</button></div>
+</div>
+<div id="qaAfterFeedback"></div>
+</div>
+</div>
 </section>
 <script id="qa-static-selector-script-v2">
 (()=>{
@@ -2356,8 +2314,6 @@ body{padding-bottom:90px}
   renderCatalog();
 })();
 </script>
-
-
 <style>
 /* ブランドトーン統一：参考ページのシンプルな入力フォームに合わせた共通スタイル */
 
@@ -2407,8 +2363,6 @@ body{background:var(--bg);color:var(--ink);font-family:"Noto Sans JP","Yu Gothic
  .btn,.cta-area .btn{border-radius:6px}
 }
 </style>
-
-
 <style>
 /* ロゴ画像・オレンジ系背景の最終調整 */
 
@@ -2475,26 +2429,6 @@ body{background:var(--bg)}
 #goApplication:disabled { background: #bbbbbb !important; box-shadow: none !important; }
 </style>
 
-
-
-
-<script>
-/* =========================================================
-   LPへの遷移先URL設定
-   変更するときは、次のURLだけを書き換えてください。
-   現在は仮の遷移先としてYahoo! JAPANを設定しています。
-   ========================================================= */
-const LP_LINK_URL = 'https://astomos-denki.github.io/basic-plan/';
-
-document.querySelectorAll('[data-lp-link]').forEach(link => {
-  const originalHref = link.getAttribute('href');
-
-  if (!originalHref || originalHref === '#') {
-    link.href = LP_LINK_URL;
-  }
-});
-</script>
-
 <style>
 /* ヘッダー：ロゴは左、ナビゲーションと申込ボタンは右上にコンパクトに配置 */
 .site-header-shell .topbar{display:none !important}
@@ -2514,8 +2448,6 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   .site-header-shell .header .nav .nav-cta{min-height:36px !important;height:36px !important;padding:0 12px !important;font-size:11px !important}
 }
 </style>
-
-
 <style>
 /* ヘッダー最終調整：右上メニューを拡大し、申込ボタンをブランドオレンジに統一 */
 .site-header-shell .header .nav{gap:20px !important;font-size:20px !important}
@@ -2525,8 +2457,6 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   .site-header-shell .header .nav .nav-cta{font-size:13px !important;padding:0 12px !important}
 }
 </style>
-
-
 <style>
 /* ヘッダー最終修正：右半分に収まる文字サイズと、既存のコーラルレッドに統一 */
 @media (min-width: 901px) {
@@ -2558,8 +2488,6 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   }
 }
 </style>
-
-
 <style id="precheck-modal-style">
 .precheck-overlay{position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:8px;font-family:"Noto Sans JP",sans-serif}
 .precheck-overlay.open{display:flex}.precheck-dialog{width:min(576px,100%);max-height:calc(100dvh - 16px);overflow-y:auto;background:white;border-radius:9px;box-shadow:0 12px 50px #0004}
@@ -2568,494 +2496,11 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
 .precheck-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.precheck-card{border:1px solid #e0d2c0;border-radius:8px;padding:15px;font-size:13px;line-height:1.8}.precheck-card strong{display:block;margin-bottom:12px}.precheck-card p{margin:0}.precheck-sample{margin-top:14px;padding:16px 12px;background:#fafafa;border:1px dashed #ccc;border-radius:8px;text-align:center}.precheck-paper{margin:auto;width:168px;max-width:100%;background:white;padding:10px 12px;text-align:left;box-shadow:0 1px 6px #0003;font-size:10px}.precheck-line{height:6px;background:#ddd;border-radius:4px;margin:8px 0}.precheck-paper small{font-size:8px}.precheck-sample>small{display:block;color:#888;margin-top:5px}.precheck-actions{display:grid;grid-template-columns:1fr 1fr;gap:38px;padding:0 53px 20px}.precheck-actions button{border:0;border-radius:30px;background:#f2a31b;color:white;min-height:40px;font-weight:800;cursor:pointer}.precheck-actions button:focus-visible{outline:3px solid #444;outline-offset:2px}
 @media(max-width:480px){.precheck-heading{font-size:16px;padding:19px 8px}.precheck-content{padding:13px}.precheck-needed{padding:12px;font-size:12px}.precheck-cards{gap:8px}.precheck-card{padding:10px;font-size:11px}.precheck-sample{padding:10px 5px}.precheck-actions{gap:10px;padding:0 13px 14px}.precheck-actions button{font-size:12px}}
 </style>
-<div class="precheck-overlay" id="precheckOverlay" aria-hidden="true">
- <div class="precheck-dialog" role="dialog" aria-modal="true" aria-labelledby="precheckTitle">
-  <div class="precheck-heading" id="precheckTitle">お申し込み前にご確認ください</div>
-  <div class="precheck-content"><div class="precheck-needed"><strong>お手元にご用意ください。</strong><ol><li>お客さま番号</li><li>供給地点特定番号</li><li>契約名義</li><li>現在ご契約されている電力会社の正式名称</li></ol></div>
-   <div class="precheck-cards"><div class="precheck-card"><strong>検針票をお持ちの方</strong><p>検針票に記載されている情報をご確認ください。</p><div class="precheck-sample"><div class="precheck-paper"><b>電気ご使用量のお知らせ</b><div class="precheck-line"></div><div class="precheck-line" style="width:65%"></div><div class="precheck-line"></div><small>お客さま番号　XXXXXXXXXX</small><div class="precheck-line"></div><small>供給地点特定番号　22桁</small></div><small>検針票イメージ</small></div></div>
-   <div class="precheck-card"><strong>検針票をお持ちでない方</strong><p>現在ご契約中の電力会社にお問い合わせいただくか、WEB会員ページなどをご確認ください。</p></div></div>
-  </div><div class="precheck-actions"><button type="button" id="precheckBack">戻る</button><button type="button" id="precheckContinue">準備完了・入力に進む</button></div>
- </div>
-</div>
-<script id="precheck-modal-script">
-(function(){
- const overlay=document.getElementById('precheckOverlay');
- const back=document.getElementById('precheckBack');
- const next=document.getElementById('precheckContinue');
- let priorOverflow='';
- function open(){if(!overlay)return;priorOverflow=document.body.style.overflow;overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';next.focus();}
- function close(){overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');document.body.style.overflow=priorOverflow;}
- window.openApplicationPrecheck=open;
- back.addEventListener('click',function(){close();if(typeof window.showIntegratedSimulation==='function')window.showIntegratedSimulation();});
- next.addEventListener('click',close);
- document.addEventListener('keydown',function(e){if(overlay.classList.contains('open')&&e.key==='Tab'){const buttons=[back,next];if(e.shiftKey&&document.activeElement===back){e.preventDefault();next.focus();}else if(!e.shiftKey&&document.activeElement===next){e.preventDefault();back.focus();}}});
-})();
-</script>
-
-<div id="applicationPage" class="application-page" aria-hidden="true" hidden>
-<section class="hero">
-  <div class="hero-inner">
-    <div class="eyebrow">ASTOMOS DENKI · APPLICATION</div>
-    <h1> Webお申込み</h1>
-    <p>以下の項目をご入力ください。</p>
-  </div>
-</section>
 
 
-<div class="progress" aria-label="申込み進捗">
-  <div class="progress-item active"><div class="progress-dot">1</div>お申込者情報</div>
-  <div class="progress-item"><div class="progress-dot">2</div>電気契約情報</div>
-  <div class="progress-item"><div class="progress-dot">3</div>確認・同意</div>
-</div>
 
 
-<main class="form-shell">
 
-<form action="https://business.form-mailer.jp/fm/service/Forms/complete" method="post" target="formmailerTarget" name="form1" enctype="multipart/form-data" accept-charset="UTF-8" id="formmailerForm">
-  <input type="hidden" name="key" value="a63374e8371730">
-  <input type="hidden" name="code" value="utf8">
-
-  <div class="form-note">* は必須項目です</div>
-
-  <section class="fm-step-panel active" data-step="1">
-    <div class="card-head">
-      <div class="step">STEP 1</div>
-      <h2>お申込者情報</h2>
-      <p>お申込みされる方の情報をご入力ください。マンション・ビル名のみ任意項目です。</p>
-    </div>
-    <div class="card-body">
-      <div class="form-item">
-        <label>名前 <span class="required">必須</span></label>
-        <div class="two-col">
-          <input name="field_6423901_sei" type="text" placeholder="姓" required>
-          <input name="field_6423901_mei" type="text" placeholder="名" required>
-        </div>
-      </div>
-
-      <div class="form-item">
-        <label>フリガナ <span class="required">必須</span></label>
-        <div class="two-col">
-          <input name="field_6423934_sei" type="text" placeholder="セイ" required>
-          <input name="field_6423934_mei" type="text" placeholder="メイ" required>
-        </div>
-      </div>
-
-      <div class="form-item">
-        <label>住所 <span class="required">必須</span></label>
-        <div class="sub-label">郵便番号</div>
-        <input class="short-input" name="field_6423905_zip" type="text" maxlength="7" inputmode="numeric" placeholder="0000000" required>
-
-        <div class="sub-label">都道府県</div>
-        <select name="field_6423905_pref" required>
-          <option value="">選択してください</option>
-          <option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option>
-          <option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option>
-          <option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option>
-          <option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option>
-          <option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option>
-          <option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option>
-          <option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option>
-          <option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option>
-          <option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option>
-          <option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option>
-          <option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option>
-          <option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option>
-          <option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option>
-          <option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option>
-          <option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option>
-          <option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option><option value="その他">その他</option>
-        </select>
-
-        <div class="sub-label">市区町村</div>
-        <input name="field_6423905_city" type="text" required>
-
-        <div class="sub-label">番地</div>
-        <input name="field_6423905_block" type="text" required>
-
-        <div class="sub-label">マンション・ビル名 <span class="optional">任意</span></div>
-        <input name="field_6423905_building" type="text">
-      </div>
-
-      <div class="form-item">
-        <label>電話番号 <span class="required">必須</span></label>
-        <input name="field_6423906" type="text" inputmode="tel" placeholder="090-0000-0000" required>
-      </div>
-
-      <div class="form-item">
-        <label>メールアドレス <span class="required">必須</span></label>
-        <input name="field_6423902" type="text" inputmode="email" placeholder="info@example.com" required>
-        <div class="sub-label">確認用</div>
-        <input name="field_6423902_mcon" type="text" inputmode="email" placeholder="もう一度入力してください" required>
-      </div>
-
-      <div class="step-actions">
-        <button type="button" class="step-btn next" data-next="2">次へ進む →</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="fm-step-panel" data-step="2">
-    <div class="card-head">
-      <div class="step">STEP 2</div>
-      <h2>現在の電気契約情報</h2>
-      <p>現在ご契約中の電気についてご入力ください。すべて必須項目です。</p>
-    </div>
-    <div class="card-body">
-      <div class="form-item">
-        <label><span class="required">必須</span>現在ご契約中の電力会社</label>
-        <input name="field_6423986" type="text" value="" placeholder="例：東北電力" required>
-      </div>
-
-      <div class="form-item">
-        <label><span class="required">必須</span>契約容量</label>
-        <select name="field_6423980" required>
-          <option value="">選択してください</option>
-          <option value="0">30A</option>
-          <option value="1">40A</option>
-          <option value="2">50A</option>
-          <option value="3">60A</option>
-        </select>
-      </div>
-
-      <div class="form-item">
-        <label><span class="required">必須</span>お客様番号</label>
-        <input name="field_6423990" type="text" value="" required>
-      </div>
-
-      <div class="form-item">
-        <label><span class="required">必須</span>供給地点特定番号</label>
-        <input name="field_6423991" type="text" value="" minlength="22" maxlength="22" inputmode="numeric" placeholder="22桁の番号" required>
-        <div class="help">電気の検針票・請求書などに記載されている22桁の番号です。</div>
-      </div>
-
-      <div class="step-actions">
-        <button type="button" class="step-btn back" data-back="1">← 戻る</button>
-        <button type="button" class="step-btn next" data-next="3">次へ進む →</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="fm-step-panel" data-step="3">
-    <div class="card-head">
-      <div class="step">STEP 3</div>
-      <h2>入力内容の確認</h2>
-      <p>入力内容をご確認ください。修正する場合は「戻る」で前の画面へ戻れます。</p>
-    </div>
-    <div class="card-body">
-      <div class="review-box">
-        <div class="review-group">
-          <h3>お申込者情報</h3>
-          <dl>
-            <div><dt>名前</dt><dd data-review="name"></dd></div>
-            <div><dt>フリガナ</dt><dd data-review="kana"></dd></div>
-            <div><dt>住所</dt><dd data-review="address"></dd></div>
-            <div><dt>電話番号</dt><dd data-review="phone"></dd></div>
-            <div><dt>メールアドレス</dt><dd data-review="email"></dd></div>
-          </dl>
-        </div>
-        <div class="review-group">
-          <h3>現在の電気契約情報</h3>
-          <dl>
-            <div><dt>電力会社</dt><dd data-review="company"></dd></div>
-            <div><dt>契約容量</dt><dd data-review="capacity"></dd></div>
-            <div><dt>お客様番号</dt><dd data-review="customer"></dd></div>
-            <div><dt>供給地点特定番号</dt><dd data-review="supply"></dd></div>
-          </dl>
-        </div>
-      </div>
-
-      <div class="agreement-box">
-        <p class="agreement-title">個人情報の取扱いについて</p>
-        <p>お預かりした個人情報は、お申込みの受付・確認・ご連絡等の目的で利用します。</p>
-        <p class="agreement-placeholder">※ ここに正式な個人情報保護方針・利用規約の案内を設定できます。</p>
-      </div>
-
-      <div class="agreement-check">
-        <label>
-          <input name="field_6423993" type="checkbox" value="同意する" required>
-          <span>個人情報の取扱いに同意する</span>
-          <span class="required">必須</span>
-        </label>
-      </div>
-
-      <div class="step-actions">
-        <button type="button" class="step-btn back" data-back="2">← 戻る</button>
-        <button name="submit" type="submit" class="step-btn submit">この内容で申し込む</button>
-
-      </div>
-    </div>
-  </section>
-</form>
-<iframe name="formmailerTarget" id="formmailerTarget" title="送信処理" style="display:none;width:0;height:0;border:0;"></iframe>
-
-</main>
-<div class="application-footer">© アストモスエネルギー株式会社</div>
-</div>
-<div id="completeScreen" aria-hidden="true">
-  <div class="complete-shell">
-    <div class="complete-card">
-      <div class="complete-mark" aria-hidden="true">✓</div>
-      <h1>お申込みを受け付けました</h1>
-      <p class="complete-lead">アストモスでんきへお申込みいただき、ありがとうございます。受付内容を確認のうえ、必要に応じてご連絡いたします。</p>
-      <div class="complete-receipt" aria-label="受付情報">
-        <div class="complete-receipt-row"><div class="complete-receipt-label">受付日時</div><div class="complete-receipt-value" id="completeReceivedAt">－</div></div>
-        <div class="complete-receipt-row"><div class="complete-receipt-label">お申込者</div><div class="complete-receipt-value" id="completeApplicantName">－</div></div>
-      </div>
-      <div class="complete-note">ご入力いただいたメールアドレス宛に、お申込み内容の控えをご案内します。メールが届かない場合は、迷惑メールフォルダ等もご確認ください。</div>
-      <div class="complete-actions">
-        <button type="button" class="complete-btn primary" id="completeBackSimulation">料金シミュレーションへ戻る</button>
-        <a class="complete-btn secondary" data-lp-link href="https://astomos-denki.github.io/basic-plan/">アストモスでんきトップへ戻る</a>
-      </div>
-    </div>
-    <div class="complete-footer">© アストモスエネルギー株式会社</div>
-  </div>
-</div>
-
-
-<script>
-(function(){
-  const simPage=document.getElementById('simulationPage');
-  const appPage=document.getElementById('applicationPage');
-  const completeScreen=document.getElementById('completeScreen');
-  const appForm=document.getElementById('formmailerForm');
-  const targetFrame=document.getElementById('formmailerTarget');
-  const appNavButton=document.querySelector('.site-header-shell .nav .nav-cta');
-  const qaLaunch=document.getElementById('qaLaunch');
-  let sending=false;
-
-  function setAppMode(on){
-    if(!simPage||!appPage) return;
-
-    if(on){
-      document.body.classList.add('app-mode');
-      simPage.classList.remove('is-active');
-      simPage.setAttribute('aria-hidden','true');
-
-      appPage.hidden=false;
-      appPage.setAttribute('aria-hidden','false');
-
-      if(appNavButton){
-        appNavButton.textContent='料金シミュレーションはこちら';
-        appNavButton.style.background='#f58220';
-        appNavButton.style.borderColor='#f58220';
-        appNavButton.href='#simulationArea';
-      }
-      if(qaLaunch) qaLaunch.style.display='';
-
-      window.scrollTo({top:0,behavior:'smooth'});
-      if(typeof window.openApplicationPrecheck==='function')window.openApplicationPrecheck();
-    }else{
-      document.body.classList.remove('app-mode');
-      appPage.hidden=true;
-      appPage.setAttribute('aria-hidden','true');
-
-      simPage.classList.add('is-active');
-      simPage.setAttribute('aria-hidden','false');
-
-      if(appNavButton){
-        appNavButton.textContent='お申し込みはこちら';
-        appNavButton.style.background='';
-        appNavButton.style.borderColor='';
-        appNavButton.href='#simulationArea';
-      }
-      if(qaLaunch) qaLaunch.style.display='';
-
-      window.scrollTo({top:0,behavior:'smooth'});
-    }
-  }
-
-  window.showIntegratedApplication=function(){setAppMode(true);};
-  window.showIntegratedSimulation=function(){setAppMode(false);};
-
-  /* シミュレーション結果の申込みボタンとヘッダーの申込みボタンを
-     外部URLへ遷移させず、同一HTML内の申込み画面へ切り替える */
-  document.addEventListener('click',function(e){
-    const apply=e.target.closest('#goApplication,.site-header-shell .nav .nav-cta');
-    if(!apply) return;
-
-    e.preventDefault();
-    e.stopPropagation();
-    if(e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-    if(appPage && !appPage.hidden && apply.classList.contains('nav-cta')){
-      setAppMode(false);
-    }else{
-      setAppMode(true);
-    }
-  },true);
-
-  function val(name){
-    const el=appForm && appForm.elements[name];
-    return el?String(el.value||'').trim():'';
-  }
-  function esc(s){
-    return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  }
-  function setReview(key,value){
-    const el=document.querySelector('#applicationPage [data-review="'+key+'"]');
-    if(el)el.innerHTML=esc(value||'未入力');
-  }
-  function updateReview(){
-    setReview('name',val('field_6423901_sei')+' '+val('field_6423901_mei'));
-    setReview('kana',val('field_6423934_sei')+' '+val('field_6423934_mei'));
-    setReview('address','〒'+val('field_6423905_zip')+' '+val('field_6423905_pref')+' '+val('field_6423905_city')+' '+val('field_6423905_block')+' '+val('field_6423905_building'));
-    setReview('phone',val('field_6423906'));
-    setReview('email',val('field_6423902'));
-
-    const cap=appForm.elements['field_6423980'];
-    setReview('company',val('field_6423986'));
-    setReview('capacity',cap&&cap.selectedIndex>=0?cap.options[cap.selectedIndex].text:'');
-    setReview('customer',val('field_6423990'));
-    setReview('supply',val('field_6423991'));
-  }
-
-  function showStep(n){
-    document.querySelectorAll('#applicationPage .fm-step-panel').forEach(p=>{
-      p.classList.toggle('active',Number(p.dataset.step)===n);
-    });
-    document.querySelectorAll('#applicationPage .progress-item').forEach((p,i)=>{
-      const step=i+1;
-      p.classList.toggle('active',step===n);
-      p.classList.toggle('done',step<n);
-    });
-    if(n===3) updateReview();
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  document.querySelectorAll('#applicationPage [data-next]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const current=btn.closest('.fm-step-panel');
-      for(const field of current.querySelectorAll('input,select,textarea')){
-        if(!field.checkValidity()){
-          field.reportValidity();
-          return;
-        }
-      }
-      showStep(Number(btn.dataset.next));
-    });
-  });
-
-  document.querySelectorAll('#applicationPage [data-back]').forEach(btn=>{
-    btn.addEventListener('click',()=>showStep(Number(btn.dataset.back)));
-  });
-
-  function showComplete(){
-    if(!sending)return;
-    sending=false;
-    const now=new Date();
-    const receivedAt=new Intl.DateTimeFormat('ja-JP',{
-      timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',
-      hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false
-    }).format(now);
-    const sei=val('field_6423901_sei');
-    const mei=val('field_6423901_mei');
-    const receivedEl=document.getElementById('completeReceivedAt');
-    const applicantEl=document.getElementById('completeApplicantName');
-    if(receivedEl)receivedEl.textContent=receivedAt;
-    if(applicantEl)applicantEl.textContent=((sei+' '+mei).trim()||'－');
-    document.body.classList.remove('app-mode');
-    document.body.classList.add('is-complete');
-    completeScreen.setAttribute('aria-hidden','false');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  if(targetFrame){
-    targetFrame.addEventListener('load',()=>{
-      if(sending)showComplete();
-    });
-  }
-
-  if(appForm){
-    appForm.addEventListener('submit',function(e){
-      for(const field of appForm.querySelectorAll('input,select,textarea')){
-        if(!field.checkValidity()){
-          e.preventDefault();
-          field.reportValidity();
-          const panel=field.closest('.fm-step-panel');
-          if(panel)showStep(Number(panel.dataset.step));
-          return;
-        }
-      }
-
-      const agree=appForm.elements['field_6423993'];
-      if(agree&&!agree.checked){
-        e.preventDefault();
-        alert('個人情報の取扱いに同意してください。');
-        showStep(3);
-        return;
-      }
-
-      const email=val('field_6423902');
-      const mcon=val('field_6423902_mcon');
-      if(email!==mcon){
-        e.preventDefault();
-        alert('メールアドレスと確認用メールアドレスが一致していません。');
-        showStep(1);
-        return;
-      }
-
-      sending=true;
-      const btn=appForm.querySelector('button[type="submit"]');
-      if(btn){
-        btn.disabled=true;
-        btn.textContent='送信中…';
-      }
-    });
-  }
-
-  const completeBackSimulation=document.getElementById('completeBackSimulation');
-  if(completeBackSimulation){
-    completeBackSimulation.addEventListener('click',()=>{
-      document.body.classList.remove('is-complete');
-      completeScreen.setAttribute('aria-hidden','true');
-      setAppMode(false);
-      if(simPage){
-        simPage.hidden=false;
-        simPage.setAttribute('aria-hidden','false');
-        simPage.style.display='';
-      }
-      window.scrollTo({top:0,behavior:'smooth'});
-    });
-  }
-
-  /* ページ再表示時は通常のシミュレーション画面に戻す */
-  window.addEventListener('pageshow',()=>{
-    if(document.body.classList.contains('is-complete')){
-      document.body.classList.remove('is-complete');
-      setAppMode(false);
-    }
-  });
-})();
-</script>
-<script id="latest-fix">
-(function(){
-  function goApplication(){
-    if(typeof window.setAppMode === 'function'){ window.setAppMode(true); return; }
-    const sim=document.getElementById('simulationPage'), app=document.getElementById('applicationPage');
-    if(sim) sim.style.display='none'; if(app) app.style.display='block'; document.body.classList.add('app-mode');
-    if(app) app.scrollIntoView({behavior:'smooth',block:'start'});
-  }
-  function closeOtherConditions(){
-    const ds=document.querySelectorAll('details');
-    ds.forEach(function(d){ d.open=false; });
-    ds.forEach(function(d){
-      const t=(d.textContent||'').replace(/\s+/g,'');
-      if(/エリア/.test(t) || /シミュレーション方法|試算方法/.test(t)) d.open=true;
-    });
-  }
-  document.addEventListener('click',function(e){
-    const b=e.target.closest('button,a,input[type=button],input[type=submit]'); if(!b)return;
-    const t=(b.textContent||b.value||'').replace(/\s+/g,'');
-    if(/シミュレーションする|シミュレーション実行/.test(t)){ setTimeout(closeOtherConditions,100); setTimeout(closeOtherConditions,500); }
-    if(t==='お申し込みはこちら' && !b.matches('.site-header-shell .nav .nav-cta')){ e.preventDefault(); e.stopImmediatePropagation(); goApplication(); }
-  },true);
-  const mo=new MutationObserver(function(){
-    const r=document.querySelector('#simulationResult,#resultArea,#result-section,.simulation-result');
-    if(r && getComputedStyle(r).display!=='none' && r.offsetHeight>0) closeOtherConditions();
-  });
-  mo.observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['style','class','open']});
-})();
-</script>
 
 <script id="post-simulation-condition-js">
 (function(){
@@ -3089,7 +2534,6 @@ document.querySelectorAll('[data-lp-link]').forEach(link => {
   });
 })();
 </script>
-
 <style id="final-header-cta-color-fix">
 /* 最終優先：通常は申込=#e15f56、申込画面ではシミュレーション=#f58220 */
 .site-header-shell .header .nav .nav-cta {
@@ -3101,7 +2545,6 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
   border-color:#f58220 !important;
 }
 </style>
-
 <style id="final-simulation-ui-fix">
 /* 最終優先：シミュレーションタイトルを申込ページ同様に中央揃え */
 #simulationPage .sim-hero {
@@ -3131,8 +2574,6 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
   color:#ffffff !important;
 }
 </style>
-
-
 <script id="condition-edit-and-rerun-controls">
 (function(){
   const simArea=document.getElementById('simulationArea');
@@ -3160,7 +2601,6 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
   });
 })();
 </script>
-
 <style id="final-simulation-step-illustration-v7">
 /* 申込ページと同じ3STEP進捗表示 */
 #simulationPage .sim-progress{
@@ -3218,8 +2658,6 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
   #simulationPage .sim-progress-dot{width:27px;height:27px;margin-bottom:5px;font-size:11px}
 }
 </style>
-
-
 <script id="simulation-progress-sync-v7">
 (function(){
   const items=[...document.querySelectorAll('#simulationPage .sim-progress-item')];
@@ -3259,7 +2697,6 @@ body.app-mode .site-header-shell .header .nav .nav-cta {
   if(simArea) observer.observe(simArea,{attributes:true,attributeFilter:['class'],subtree:true});
 })();
 </script>
-
 <style id="final-mobile-header-hero-qa-fix-v8">
 /* 申込画面でも、スマホ右上のシミュレーション導線を残す */
 @media(max-width:900px){
@@ -3346,146 +2783,6 @@ body.is-complete #qaLaunch,body.is-complete #qaPanel{display:none !important}
   #simulationPage .sim-hero p{font-size:13px !important}
 }
 </style>
-
-
-<script id="astomos-clarity-events-v1">
-(function(){
-  const track=(name)=>{ if(typeof window.astomosTrack==='function') window.astomosTrack(name); };
-  const onceFlags=new Set();
-  const trackOnce=(name)=>{ if(onceFlags.has(name)) return; onceFlags.add(name); track(name); };
-
-  function simulationInputsAreValid(){
-    try{
-      const selectedArea=document.querySelector('#areas .choice.selected');
-      const mode=document.querySelector('#methodConditionStep [data-mode].selected');
-      if(!selectedArea || !mode) return false;
-      const modeName=mode.dataset.mode;
-      if(modeName==='simple'){
-        const household=document.getElementById('household');
-        return !!(household && household.value);
-      }
-      if(modeName==='detail'){
-        const month=document.getElementById('baseMonth');
-        const usage=document.getElementById('baseUsage');
-        if(!month || !month.value || !usage || Number(usage.value)<=0) return false;
-        const capWrap=document.getElementById('ampereFields');
-        const cap=document.getElementById('capacity');
-        if(capWrap && getComputedStyle(capWrap).display!=='none' && (!cap || !cap.value)) return false;
-        return true;
-      }
-      return false;
-    }catch(e){ return false; }
-  }
-
-  function isVisible(el){
-    return !!(el && !el.hidden && getComputedStyle(el).display!=='none');
-  }
-
-  window.addEventListener('DOMContentLoaded',function(){
-    // Clarity自体がPVを自動取得します。以下は画面・操作単位の追加イベントです。
-    const simPage=document.getElementById('simulationPage');
-    if(isVisible(simPage)) track('simulation_open');
-
-    let resultWasVisible=false;
-    const result=document.getElementById('result');
-    if(result){
-      const resultObserver=new MutationObserver(function(){
-        const now=result.classList.contains('show') && isVisible(result);
-        if(now && !resultWasVisible) track('simulation_complete');
-        resultWasVisible=now;
-      });
-      resultObserver.observe(result,{attributes:true,attributeFilter:['class','style','hidden']});
-    }
-
-    const body=document.body;
-    let appModeWas=body.classList.contains('app-mode');
-    let completeWas=body.classList.contains('is-complete');
-    const bodyObserver=new MutationObserver(function(){
-      const appNow=body.classList.contains('app-mode');
-      const completeNow=body.classList.contains('is-complete');
-      if(appNow && !appModeWas) track('application_open');
-      if(!appNow && appModeWas && !completeNow) track('simulation_open');
-      if(completeNow && !completeWas) track('application_complete');
-      appModeWas=appNow;
-      completeWas=completeNow;
-    });
-    bodyObserver.observe(body,{attributes:true,attributeFilter:['class']});
-
-    // 申込STEPの遷移を、実際にactiveになったタイミングで計測。
-    const panels=[...document.querySelectorAll('#applicationPage .fm-step-panel')];
-    let lastStep=Number((panels.find(p=>p.classList.contains('active'))||{}).dataset?.step||1);
-    if(panels.length){
-      const stepObserver=new MutationObserver(function(){
-        const active=panels.find(p=>p.classList.contains('active'));
-        if(!active) return;
-        const step=Number(active.dataset.step||0);
-        if(step===lastStep) return;
-        if(lastStep===1 && step===2) trackOnce('application_step1_complete');
-        if(lastStep===2 && step===3){
-          trackOnce('application_step2_complete');
-          trackOnce('application_confirm');
-        }
-        lastStep=step;
-      });
-      panels.forEach(p=>stepObserver.observe(p,{attributes:true,attributeFilter:['class']}));
-    }
-
-    // Q&Aパネル開閉
-    const qaPanel=document.getElementById('qaPanel');
-    let qaWasOpen=qaPanel ? !qaPanel.hidden : false;
-    if(qaPanel){
-      const qaObserver=new MutationObserver(function(){
-        const open=!qaPanel.hidden;
-        if(open && !qaWasOpen) track('qa_open');
-        qaWasOpen=open;
-      });
-      qaObserver.observe(qaPanel,{attributes:true,attributeFilter:['hidden']});
-    }
-
-    document.addEventListener('click',function(e){
-      const target=e.target;
-      if(!(target instanceof Element)) return;
-
-      if(target.closest('#run')){
-        if(simulationInputsAreValid()) track('simulation_start');
-        return;
-      }
-
-      if(target.closest('#goApplication')){
-        track('result_application_click');
-        return;
-      }
-
-      const navCta=target.closest('.site-header-shell .nav .nav-cta');
-      if(navCta){
-        if(document.body.classList.contains('app-mode')) track('header_simulation_click');
-        else track('header_application_click');
-        return;
-      }
-
-      if(target.closest('.qa-question')){
-        track('qa_answer_view');
-        return;
-      }
-      if(target.closest('#qaSolved')){
-        track('qa_solved');
-        return;
-      }
-      if(target.closest('#qaUnsolved')){
-        track('qa_unsolved');
-        return;
-      }
-
-      const monthly=target.closest('.monthly-details > summary');
-      if(monthly){
-        const details=monthly.parentElement;
-        // click前の状態なので、閉じていれば今回「表示する」操作
-        if(details && !details.open) track('monthly_result_open');
-      }
-    },true);
-  });
-})();
-</script>
 
 </body>
 </html>
