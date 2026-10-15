@@ -2485,8 +2485,13 @@ body{background:var(--bg)}
    現在は仮の遷移先としてYahoo! JAPANを設定しています。
    ========================================================= */
 const LP_LINK_URL = 'https://astomos-denki.github.io/basic-plan/';
+
 document.querySelectorAll('[data-lp-link]').forEach(link => {
-  link.href = LP_LINK_URL;
+  const originalHref = link.getAttribute('href');
+
+  if (!originalHref || originalHref === '#') {
+    link.href = LP_LINK_URL;
+  }
 });
 </script>
 
