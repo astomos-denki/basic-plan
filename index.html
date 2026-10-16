@@ -562,6 +562,39 @@ html { scroll-padding-top: 90px; }
 }
 </style>
 
+<style id="astomos-header-stable-columns-v1">
+/* 全ページ共通: ロゴ / エリア / 3つのナビ / CTA の座標を統一 */
+@media (min-width: 1001px) {
+  .header .header-inner {
+    display:grid!important;
+    grid-template-columns: 268px 175px minmax(0,1fr)!important;
+    column-gap:18px!important;
+    align-items:center!important;
+    justify-content:initial!important;
+  }
+  .header .brand {width:268px!important;min-width:0!important;}
+  .header .brand-logo {width:268px!important;max-width:100%!important;}
+  .header .area-control {width:175px!important;min-width:175px!important;justify-content:flex-start!important;gap:8px!important;}
+  .header .nav {
+    width:100%!important;min-width:0!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1.35fr) minmax(0,1fr) 184px!important;
+    column-gap:9px!important;align-items:center!important;justify-content:initial!important;
+    font-size:12px!important;
+  }
+  .header .nav > a:not(.nav-cta) {justify-self:center!important;text-align:center!important;white-space:nowrap!important;font-size:12px!important;}
+  .header .nav > .nav-cta {
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    box-sizing:border-box!important;width:184px!important;min-width:184px!important;max-width:184px!important;
+    height:40px!important;padding:0 10px!important;white-space:nowrap!important;
+    font-size:12px!important;line-height:1.2!important;
+  }
+}
+/* 狭い画面では既存LPのレスポンシブ表示を維持しつつCTAを等幅にする */
+@media (min-width:701px) and (max-width:1000px){
+  .header .nav > .nav-cta {width:170px!important;min-width:170px!important;box-sizing:border-box!important;text-align:center!important;}
+}
+</style>
 </head>
 <body>
 <div class="topbar"><div class="wrap"><span>アストモスでんき｜料金プランのご案内</span><span>電気の使い方に合ったプラン選びをサポート</span></div></div>
@@ -621,7 +654,6 @@ html { scroll-padding-top: 90px; }
 <section id="faq"><div class="wrap"><div class="section-head"><div class="eyebrow">FAQ</div><h2>よくあるご質問</h2></div><div class="faq"><details><summary>Q1. 切り替えると停電しやすくなりますか？</summary><p>変わりません。電線や設備はこれまでと同じものを使うため、電気の品質は同じです。</p></details><details><summary>Q2. 工事や立ち会いは必要ですか？</summary><p>原則不要です。アナログメーターの場合のみスマートメーターへ交換しますが、費用はかかりません。</p></details><details><summary>Q3. 解約するときに費用はかかりますか？</summary><p>かかりません。契約期間のしばりも解約金もなく、いつでも解約できます。</p></details><details><summary>Q4. 支払い方法と明細の確認方法は？</summary><p>お支払いはクレジットカードのみです。明細は会員専用サイトで確認できます。</p></details><details><summary>Q5. 引っ越すときはどうなりますか？</summary><p>現住所での利用停止と、新住所での利用開始のお手続きが必要です。</p></details><details><summary>Q6. LPガスを使っていなくても申し込めますか？</summary><p>はい、お申込みいただけます。対象のLPガスをご契約の方には「ふぁみりあプラン」もあります。</p></details><details><summary>Q7. 申し込めない契約はありますか？</summary><p>「従量電灯C」「低圧電力」でご契約の場合は、お申込みいただけません。</p></details></div></div></section>
 <section class="cta-band"><div class="wrap"><h2>まずは電気料金を比較してみませんか？</h2><p>現在の使用量をもとに、料金の目安をシミュレーションできます。</p><a class="btn" href="simulation.html">料金シミュレーションを始める →</a></div></section>
 </main>
-
 <footer class="footer"><div class="wrap footer-inner"><span>© アストモスでんき｜新ベーシックプラン</span><span>Copyrights © 2026 Astomos Energy. All Rights Reserved.</span><a class="footer-legal-link" href="legal.html">特定商取引法に基づく表記について</a></div></footer>
 <script>
 // ★エリアの有効・無効はここだけ変更してください（true=有効、false=無効）
